@@ -1,5 +1,6 @@
 project:
   type: book
+  output-dir: docs
 book:
   title: NZILBB R and Open Science Workshops
   author:
