@@ -1,0 +1,37 @@
+# Introduction {.unnumbered}
+
+From the first semester of 2024, we will be running a series of workshops on 
+R at NZILBB. This document will contain materials for the introductory sessions,
+with another collection for the more advanced sessions.
+
+The focus of the workshops is on R and Open Science. The aim is to get you up to
+speed with the use of R and associated Open Science infrastructure so that your
+research is maximally reproducible, replicable, and helpful to the wider
+scientific community. This requires us to learn some programming!
+
+This resource will gradually grow as I write up workshops. The ideal is that
+it will allow people to follow the material at their own pace and/or to catch
+up to wherever we are at in our tutorial sessions.
+
+For UC students and staff, I am happy to talk over any issues you have with this
+material. Please get in touch with me at <joshua.black@canterbury.ac.nz>.
+
+If you have found your way to this material by some other means, you can also
+email me!
+
+# Other resources
+
+At this stage, this is a somewhat disorganised list of texts and video which
+you may find interesting.
+
+- The alternative to data analysis with a programming language is usually some 
+kind of spreadsheet. Here are some spreadsheet horror stories: 
+<https://eusprig.org/research-info/horror-stories/>.
+- Why do we have to learn how to program? Why is science 'amateur software 
+development'? This is a good lecture on the topic: 
+<https://www.youtube.com/watch?v=8qzVV7eEiaI>.
+  - Usually these techniques aren't explicitly taught. These workshops are our
+  attempt to respond to this problem!
+- Why can't you do data science with a spreadsheet? <https://www.youtube.com/watch?v=cpbtcsGE0OA>
+- These workshops have been heavily influenced by @winterStatisticsLinguistsIntroduction2019
+

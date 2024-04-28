@@ -1,0 +1,5 @@
+# Preface {.unnumbered}
+
+This 'book' will slowly evolve and add contributors as the [NZILBB](https://www.canterbury.ac.nz/research/about-uc-research/research-groups-and-centres/new-zealand-institute-of-language-brain-and-behaviour) R and Open
+Science workshops develop. The hope is that this resource will allow people
+to study at their own pace.

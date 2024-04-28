@@ -1,0 +1,7 @@
+# RStudio Server
+
+Academics at the University of Canterbury can use the RStudio Server.
+
+As of this writing writing... [details]
+
+Current details

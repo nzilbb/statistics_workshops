@@ -1,0 +1,428 @@
+# Getting Started
+
+## Install R and RStudio
+
+R is a programming language. RStudio is a piece of software for interacting
+with R.
+
+You don't *have* to use RStudio in order to use R, but we will assume you are
+using it in these workshops.^[For alternatives which you might explore see @sec-alternatives]
+
+To install R and RStudio on your own device follow the steps at 
+<https://posit.co/download/rstudio-desktop/>.
+
+To install R and RStudio on a University of Canterbury device:
+
+- Windows: open the "Software Center", search for RStudio, and press the install button.
+- Mac: open "UC Self Service", search for RStudio, and press the install button.
+
+Installing RStudio on a University of Canterbury device will also install R.
+
+## Open RStudio
+
+If you have installed RStudio, if should now appear in your start menu on
+Windows, and your Applications folder and launchpad if you are on macOS. Open
+it. You should see something like this:
+
+![The RStudio interface.](images/rstudio.png)\
+
+The RStudio interface has four primary 'panes'. Only three of these will be
+visible when you first open RStudio. The largest pane is the **console** pane.
+It is usually on the bottom left of the RStudio window, but currently takes up
+the entire left side. We also see the **environment** pane at the top right and
+the **output** pane at the bottom right. 
+
+The **console** pane should have a message telling you what version of R you are
+using and the platform you are on (i.e. your hardware and operating system).
+This is what you would see if you opened R by itself.^[Try this. You should find
+a shortcut to open R in the Start menu on Windows or the Launchpad in macOS. On
+Linux or macOS you can also open a terminal window, type 'r', and press enter.]
+
+The **environment** pane should be empty. You will see multiple tabs across the
+top of this pane. The environment tab will allow us to see the data which we are
+working with at a given time. At this stage, you _may_ see a tab labelled
+'Tutorial'. I'll tell you how to use this later (@sec-gs-additional).
+
+The **output** pane will start by showing you a list of files on your computer. 
+This is useful for finding and manipulating files (just like a file browser) 
+In future, it is also where plots and help pages will appear.
+
+## Interact with R in the Console
+
+We will get started by interacting with R in the console pane. You should
+see a `> ` in the console pane. We can enter code here. If the code works, we
+will see the output immediately below (or perhaps in the output pane, depending
+on the code). If the code doesn't work, an error message will appear.
+
+### Basic arithmetic
+
+We'll start with some basic arithmetic. We add two numbers together by writing
+the first number, the `+` sign, and the second number. Enter the code in the 
+box below after the `> ` in your console. The expected output appears below
+the box. You should see the same thing in your console after you press
+enter/return.
+
+``` {r}
+1 + 1
+```
+
+The other basic arithmetic operators work in the same way. Subtraction:
+
+```{r}
+500 - 49
+```
+
+We use `*` for multiplication. We enter real numbers by using a decimal point.
+
+```{r}
+43 * 6.4
+```
+
+For exponentiation we use `^` (usually, shift + 6).
+
+```{r}
+924^5
+```
+
+The output given here is in scientific notation. It is important to be able to
+read this notation when using R. It makes very very small and very very large
+numbers much easier to write and is often used in the output of R functions. To
+convert from scientific notation to regular digits, multiple the number which
+appears _before_ the `e` by 10 to the power of the number _after_ the `e`. In
+this case, we take the number $6.735345$ and multiply it by $10^{14}$ to get
+$673,534,500,000,000$. That is, six hundred seventy-three trillion and a bit.
+According to Wikipedia, this is something like the total number of cells in six
+and a half adult humans and a bit fewer than the number of ants on Earth.
+
+There are a few different operators associated with division. Usually, you will 
+want to use `/`. e.g.:
+
+```{r}
+43 / 7
+```
+
+Sometimes, it is useful to get the integer component on the answer or the
+remainder. If we want the integer, we use `%/%`:
+```{r}
+43 %/% 7
+```
+
+If we want the remainder, we use:
+```{r}
+43 %% 7
+```
+
+That is, if we divide 43 by 7, we get 6 groups of 7, with 1 remaining.
+
+Computer programming requires attention to minor details of punctuation and
+spacing. Hours can be spent trying to discover why code is not working, only to
+discover a missing comma. This is especially true in the early stages of
+learning, where error messages can be very confusing.
+
+It is worth knowing when you can add spaces and when you can't. The spaces in 
+the code above between the numbers and the arithmetic operators are not 
+necessary. So, for instance, you could write:
+
+```{r}
+43/7
+```
+
+In fact, you can add however many spaces you like!
+```{r}
+34  /    2
+```
+
+The only reason to prefer one over the other is readability. This raises the
+issue of code _style_, which we will discuss in future workshops. Note that,
+above, there wasn't a space in `924^5`---this is a style convention for `^` and
+some other ('high precedence') operators which we will encounter later.^[You
+might want to look at this page: <https://style.tidyverse.org/>. I try to follow
+this style guide as much as possible.]
+
+### Vectors and Variables
+
+We work with large collections of experimental data or values derived from
+corpora. But the commands we've looked at above only deal with two 
+numbers at a time. The simplest structure for dealing with more than one
+value is a vector.
+
+We create vectors using the function `c()`. The `c()` function _combines_
+values in to a vector.
+
+```{r}
+c(1, 2, 3, 4)
+```
+
+The `[1]` you see in the output is followed by the first element of the vector.
+If you print out a very long vector you will see numbers other than 1 inside the
+square brackets. For instance:
+```{r}
+60:124
+```
+The `:` operator produces a vector from the first number to the second number
+(inclusive) in steps of one. The resulting output is long enough that it has
+to go across two lines. When the new line starts you will see another number in
+square brackets. This tells you how far through the vector you are at the line
+break. Exactly _which_ number it is will vary according to the system you
+are using. For me, currently editing this text in RStudio, it is `[38]`. That is,
+the number which _follows_ `[38]` is the 38th number in the vector.
+
+We call the values in a vector the **elements** of the vector. The elements of a
+vector have to be the same _type_ of thing. We'll talk about types more later.
+For now, just note that a number is a different kind of thing from a string of
+characters. So, what happens if we try to mix numbers and strings in a vector?
+
+```{r}
+c(1, 2, 3, "dog")
+```
+
+R hasn't explicitly complained, but it has done something without telling you
+what it has done. The numbers we entered now have quotation marks around them.
+They have been turned in to strings. Keep an eye out for quotation marks ---
+sometimes you might think you are dealing with numbers, but really you are
+dealing with strings. This is a common problem when loading up your own data.
+
+Why worry? Well, your code likely won't work if you have strings rather than
+numbers. For instance, you can't apply arithmetic operators to strings.
+
+```{r}
+#| error: true
+"1" + "2"
+```
+
+The above is the first **error message** you've seen in this course. You will
+see many more in your time working with R. The error message is telling you that
+what you are doing does not work on anything but numbers.
+
+Vectors can also be used for arithmetic. Under the hood, statistics is mostly
+arithmetic with collections of vectors. How are these arithmetic operations
+implemented in R?
+
+The simplest case is when we use a vector and a single number, as follows
+```{r}
+2 * c(1, 2, 3, 4)
+```
+
+Each element of the vector has been multiplied by $2$. The same is true of
+addition, division, and subtraction. These are 'element-wise' operations. That
+is, they are applied to each element individually.
+```{r}
+3 / c(1, 2, 3, 4)
+```
+
+This also works with two vectors. For instance:
+```{r}
+c(1, 2, 3, 4) * c(1, 2, 3, 4)
+```
+Here we get the first elements multiplied together, then the second, then 
+the third, and so on. 
+
+If one vector is shorter than the other, is will be
+'recycled' to match the longer vector:
+```{r}
+c(1, 2) * c(1, 2, 3, 4)
+```
+
+You do not want to be entering the same vector over and over again. This is
+where **variables** come in. Variables allow us to associate names with values.
+
+To _assign_ an object to a name, we use `<-`. For instance:
+```{r}
+my_cool_vector <- c(6, 9, 4, 5, 2, 2)
+```
+
+Now the name `my_cool_vector` is associated with the vector
+`c(6, 9, 4, 5, 2, 2)`. If you look to the top right of the RStudio window you
+should now see this variable in your environment pane. The name will be on the
+right and the value on the left.
+
+![Our cool vector in the RStudio environment pane. Your screen may look a little different.](images/environment.png)
+
+::: {.callout-warning}
+In most cases you can also use `=` to assign an object to a name. This may seem more
+natural to you if you are coming from another programming languages. The convention is
+to use `<-`. Sometimes `=` takes on a different function, but `<-` is _always_
+assignment of an object to a name.
+:::
+
+We can now apply operations using the name. For instance:
+```{r}
+4 * my_cool_vector
+```
+
+To see what object is associated with a name we can look in the environment
+pane or simply enter the name into the console.
+```{r}
+my_cool_vector
+```
+
+Naming variables is serious business. It is important to know what you _could_
+do and what you _should_ do. 
+
+R institutes the following rules for names:
+
+- A name must consist of letters, digits, `.`, and `_`.
+- It **cannot** begin with digits or `_`.
+- It cannot come from a list of reserved words (e.g. `TRUE` --- these names have important roles in R and can't be overridden.)
+
+::: {.callout-note}
+What counts as a 'letter' varies by operating system and local settings (your
+'locale'). The recommendation from Hadley Wickham is that you only use ASCII 
+letters (for instance, avoid use of any diacritics/accents).^[See (<https://adv-r.hadley.nz/names-values.html>)]
+
+One local reason you might want to use non-ASCII characters is if you want to
+use te reo Māori with macrons for your variable names. This might be appropriate for a 
+particular project (the question is always who you want to share your code
+with). Pretty much anyone using a modern operating system should be able to 
+use your code. You may decide that the small risk of incompatibility is worth
+it in this case.
+:::
+
+I follow the convention of using `_` rather than `.` in my variable names. So,
+e.g., I'd prefer `my_cool_vector` over `my.cool.vector`. This reduces ambiguity 
+in some cases.
+
+While we are talking about naming, R will accept _anything_ placed within
+backticks ('`') as a variable name. If you have a chaotic
+temperament, you might decide to use variable names like this:
+```{r}
+#| error: true
+# Eldritch variable
+`t̸̡͚̳͓̜̘̪̙̟̣͛̋̈̐͜ḩ̷̛̗̬̪̔̾͋̌̂̓͑̔̚͝ë̵̮̟̟̼̲̦͙̠̟́͋̇̏̓ ̶̟̱̲̠͎̙̠̆̑̈́̉̆̏̋͠͠t̷̲͉͔̘̬̪͖̗́͌̏̉̏̄͊̍̽͋̈̈́̀͝͠o̵͚͙̮͙͉̱̱͕̗̘̻͋͋͋̀́̒͝ͅw̸͖͚̖̣̭̥͍̹͚̞͕̺͇͙͌͛͋̆̿̈́̎̆̋̑͌̏͘͠͝e̵͖̝̞̙͕̤̅̃̓r̴͍̼̱̜̹͚̎̌̂͆͗̏́ṡ̷͔͉͇͗̍̆̔̕ͅ ̷̪̱̞͈̰̈́͜ǫ̷̤͍̫̠̻̣̪̻͖̒̈́͐͂̿̆̑̄̂͘f̶̠͉̯̪̪̖̦͋͝ ̶̙̻̝͆̈͠C̴̳̪̪̻̫̬̳̜̅͑̇͌̆̕a̶̡͚̼͍̺͂̈́̄r̷̨̛̛̜̹͙̲̝̲̖͍̓̊͒̄̓̏͂͐͛͑̊͘c̸͇̲̲͈͕͉͍̗̐ơ̵̟̠̒̔͑͆s̶̨̢̱̱̲͇͉̪̻̖̠͊̈́̐͋́̈́͜a̸̗̩̯̳̝͈̰̅͒̂̏͛̽̓͑̈́̾ͅ ̷̢͎͎̳̖̤̥̜̀̑̈́̈́r̴̦͌͛͘o̴̩̩̯̤̝̊͗̿̉͗͂͂̆̈́͘s̶͔̼̞̱̻̭̻͑̔͛̔ḙ̸̢̀̎͗̓͊̈̊̉̚̚͝ ̸̠̰̞̬̐̆̽̅̀̈̂̌͠b̶̧̜̟͍͔̘̥͇̈́͒̃͒̈́͊̓̉́̉̐͘͘͝͝ę̵͚̀̈́̿̌̆̈́͘̕͠͝ͅh̸̛͎̱͚͕̹̘̥̠͕̟̼͝ͅî̶̞̹̺̰̎̿̊̽͒͑͑̽͝n̵̢̢̛̛̟͓̗̮̦̪̥̩͓̪̘͗͗̑̊̌̉̂͊͠͝d̵͎̭̤̲͋͌̃̎̊ ̷̧̧̛̤͇̫̝̗̻͚̐̊̈́̇̂͗̋t̵͓̻̦̻̗͇̜̼̻̫̼̭̄́͘̚h̵̨̅̉̄e̸̡̡̨̞̪̝̝̟͔̞̞͔̰̒̓͆̐͛̂̒͂̊̆̽̃̌͘ ̴̛̦̖̖̖̹̖̹̣̳̕m̶̡͉̦̣͉̳̪͖͕͍͙̪̟͌̍̏͆̐̄̂̚͘o̸̭̯̠̭͎̖͐͗̏̉͋̅͊̓̓̂̏̓̏̍͝ǫ̴͖͈̖̣̤͍̝̩̳̪̔͂̋̄̑̏̒̏̏̈́ñ̸̙̪͉͓̼̯̩͋̋̌̏̃͘̕͘.̵̙̮̾̐͠ͅ` <- 10
+
+# Spooky variable
+`👻` <- 5
+```
+
+And you could even do some maths with these variables:
+``` {r}
+#| error: true
+`t̸̡͚̳͓̜̘̪̙̟̣͛̋̈̐͜ḩ̷̛̗̬̪̔̾͋̌̂̓͑̔̚͝ë̵̮̟̟̼̲̦͙̠̟́͋̇̏̓ ̶̟̱̲̠͎̙̠̆̑̈́̉̆̏̋͠͠t̷̲͉͔̘̬̪͖̗́͌̏̉̏̄͊̍̽͋̈̈́̀͝͠o̵͚͙̮͙͉̱̱͕̗̘̻͋͋͋̀́̒͝ͅw̸͖͚̖̣̭̥͍̹͚̞͕̺͇͙͌͛͋̆̿̈́̎̆̋̑͌̏͘͠͝e̵͖̝̞̙͕̤̅̃̓r̴͍̼̱̜̹͚̎̌̂͆͗̏́ṡ̷͔͉͇͗̍̆̔̕ͅ ̷̪̱̞͈̰̈́͜ǫ̷̤͍̫̠̻̣̪̻͖̒̈́͐͂̿̆̑̄̂͘f̶̠͉̯̪̪̖̦͋͝ ̶̙̻̝͆̈͠C̴̳̪̪̻̫̬̳̜̅͑̇͌̆̕a̶̡͚̼͍̺͂̈́̄r̷̨̛̛̜̹͙̲̝̲̖͍̓̊͒̄̓̏͂͐͛͑̊͘c̸͇̲̲͈͕͉͍̗̐ơ̵̟̠̒̔͑͆s̶̨̢̱̱̲͇͉̪̻̖̠͊̈́̐͋́̈́͜a̸̗̩̯̳̝͈̰̅͒̂̏͛̽̓͑̈́̾ͅ ̷̢͎͎̳̖̤̥̜̀̑̈́̈́r̴̦͌͛͘o̴̩̩̯̤̝̊͗̿̉͗͂͂̆̈́͘s̶͔̼̞̱̻̭̻͑̔͛̔ḙ̸̢̀̎͗̓͊̈̊̉̚̚͝ ̸̠̰̞̬̐̆̽̅̀̈̂̌͠b̶̧̜̟͍͔̘̥͇̈́͒̃͒̈́͊̓̉́̉̐͘͘͝͝ę̵͚̀̈́̿̌̆̈́͘̕͠͝ͅh̸̛͎̱͚͕̹̘̥̠͕̟̼͝ͅî̶̞̹̺̰̎̿̊̽͒͑͑̽͝n̵̢̢̛̛̟͓̗̮̦̪̥̩͓̪̘͗͗̑̊̌̉̂͊͠͝d̵͎̭̤̲͋͌̃̎̊ ̷̧̧̛̤͇̫̝̗̻͚̐̊̈́̇̂͗̋t̵͓̻̦̻̗͇̜̼̻̫̼̭̄́͘̚h̵̨̅̉̄e̸̡̡̨̞̪̝̝̟͔̞̞͔̰̒̓͆̐͛̂̒͂̊̆̽̃̌͘ ̴̛̦̖̖̖̹̖̹̣̳̕m̶̡͉̦̣͉̳̪͖͕͍͙̪̟͌̍̏͆̐̄̂̚͘o̸̭̯̠̭͎̖͐͗̏̉͋̅͊̓̓̂̏̓̏̍͝ǫ̴͖͈̖̣̤͍̝̩̳̪̔͂̋̄̑̏̒̏̏̈́ñ̸̙̪͉͓̼̯̩͋̋̌̏̃͘̕͘.̵̙̮̾̐͠ͅ` + `👻`
+```
+
+Unsurprisingly, if you try this without the backticks, you will get an error:
+```{r}
+#| error: true
+👻 <- 5
+```
+
+Do not take advantage of backticks to use names like this.
+
+Why am I even telling you about backticks? They often appear in practice 
+as a result of importing data from a spreadsheet. Usually they appear because
+the column names in the spreadsheet have spaces in them. One of the first
+things to do when tidying up data loading from a spreadsheet is to change the
+names.
+
+### Exercises
+
+::: {.webex-check .webex-box}
+
+```{r}
+#| output: asis
+#| echo: false
+opts <- c(
+   "`c(5, 10)`",
+   answer = "`[1]  5  6  7  8  9 10`",
+   "`[1]  5  6  7  8  9`"
+)
+
+cat("What is the output of `5:10`?", longmcq(opts))
+```
+
+```{r}
+#| output: asis
+#| echo: false
+opts <- c(
+   answer = "`[1] 10 20`",
+   "`[1]  30`",
+   "`Error in 10 * c(1, 2) : non-numeric argument to binary operator`"
+)
+
+cat("What is the output of `10 * c(1, 2)`?", longmcq(opts))
+```
+
+
+Look at the variable names in the following list.
+Some of them are very bad names for _stylistic_ reasons, but will they be 
+accepted by R? I.e., are they syntactically valid?
+
+- `nz_vowels` `r torf(TRUE)`
+- `_nz_vowels` `r torf(FALSE)`
+- `🥝_vowels` `r torf(FALSE)`
+- `` `🥝_vowels\` `` `r torf(TRUE)`
+- `Traditional languages should be taught in school` `r torf(FALSE)`
+- `Traditional.languages_should_be.taught.in_school` `r torf(TRUE)`
+- `in_school` `r torf(TRUE)`
+- `5_points_attitude` `r torf(FALSE)`
+- `attitude_5` `r torf(TRUE)`
+- `:::::` `r torf(FALSE)`
+- `function` `r torf(FALSE)`
+
+:::
+
+## Start an R Script
+
+If we just used R in the console, we would be in no better position than if we
+just used Excel or another spreadsheet programme. We want to be able to retrace
+our steps _and_ for other researchers to be able to retrace our steps.
+
+Open a new R script by ....
+
+***COMMENTS***
+
+### Matrices and Dataframes
+
+
+### Functions and Packages
+
+### Install and Use a Package
+
+One of the great advantages of R is that it has a large community of developers
+making 'packages' to share their code. Packages allow us to cumulatively 
+build on each others work and to do things _quickly_ which might otherwise take
+a lot of time and statistical knowledge to achieve.
+
+Well start with a silly package: `cowsay`.^[I first became aware of this package through
+a tutorial produced by Kevin Watson.]
+
+## Modify RStudio Defaults
+
+There are many useful options which you might want to change to improve your 
+RStudio experience.
+
+First, there are a series of aesthetic options. ...
+
+Second, I'm going to assert that you should change some settings now without
+properly explaining myself. I trust that the reasons for these changes should
+become clear soon.
+
+## Additional Resources {#sec-gs-additional}
+
+Try the tutorials from `learnr`.
+RStudio contains inbuilt tutorials, which you may find useful! 
+
+These also provide you with an opportunity to 
+
+It's always a good idea to have a look at the RStudio documentation: <https://docs.posit.co/ide/user/>.
+
+Chapter ... winter.
+
+If you want to be a bit more technical about the syntax of R, have a look the
+documentation here: <https://www.stat.auckland.ac.nz/~paul/ItDT/HTML/node75.html>; or in 
+even more detail here: <https://cran.r-project.org/doc/manuals/r-devel/R-lang.html>
+
+
+## Alternatives to RStudio {#sec-alternatives}
+
+You can write R code in any text editor which you like. Popular options with more
+or less integration of R include:
+
+- [Visual Studio Code](https://code.visualstudio.com/)
+- [ESS](https://ess.r-project.org/) (i.e. *E*macs *S*peaks *S*tatistics).
+
+We won't discuss these alternatives in these workshops. The most likely reason
+for you to use one of them is that you are already a keen programmer with
+strong preferences concerning your tools.
+
+
