@@ -54,7 +54,26 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="site_libs/quarto-nav/quarto-nav.js"></script>
@@ -218,8 +237,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#start-an-r-script" id="toc-start-an-r-script" class="nav-link" data-scroll-target="#start-an-r-script"><span class="header-section-number">1.4</span> Start an R Script</a>
   <ul class="collapse">
   <li><a href="#matrices-and-dataframes" id="toc-matrices-and-dataframes" class="nav-link" data-scroll-target="#matrices-and-dataframes"><span class="header-section-number">1.4.1</span> Matrices and Dataframes</a></li>
-  <li><a href="#functions-and-packages" id="toc-functions-and-packages" class="nav-link" data-scroll-target="#functions-and-packages"><span class="header-section-number">1.4.2</span> Functions and Packages</a></li>
+  <li><a href="#functions-and-help" id="toc-functions-and-help" class="nav-link" data-scroll-target="#functions-and-help"><span class="header-section-number">1.4.2</span> Functions and Help</a></li>
   <li><a href="#install-and-use-a-package" id="toc-install-and-use-a-package" class="nav-link" data-scroll-target="#install-and-use-a-package"><span class="header-section-number">1.4.3</span> Install and Use a Package</a></li>
+  <li><a href="#exercises-1" id="toc-exercises-1" class="nav-link" data-scroll-target="#exercises-1"><span class="header-section-number">1.4.4</span> Exercises</a></li>
   </ul></li>
   <li><a href="#modify-rstudio-defaults" id="toc-modify-rstudio-defaults" class="nav-link" data-scroll-target="#modify-rstudio-defaults"><span class="header-section-number">1.5</span> Modify RStudio Defaults</a></li>
   <li><a href="#sec-gs-additional" id="toc-sec-gs-additional" class="nav-link" data-scroll-target="#sec-gs-additional"><span class="header-section-number">1.6</span> Additional Resources</a></li>
@@ -264,8 +284,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>If you have installed RStudio, if should now appear in your start menu on Windows, and your Applications folder and launchpad if you are on macOS. Open it. You should see something like this:</p>
 <p><img src="images/rstudio.png" class="img-fluid" alt="The RStudio interface."><br>
 </p>
-<p>The RStudio interface has four primary ‘panes’. Only three of these will be visible when you first open RStudio. The largest pane is the <strong>console</strong> pane. It is usually on the bottom left of the RStudio window, but currently takes up the entire left side. We also see the <strong>environment</strong> pane at the top right and the <strong>output</strong> pane at the bottom right.</p>
-<p>The <strong>console</strong> pane should have a message telling you what version of R you are using and the platform you are on (i.e.&nbsp;your hardware and operating system). This is what you would see if you opened R by itself.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>The RStudio interface has four primary ‘panes’. Only three of these will be visible when you first open RStudio. The largest pane is the <strong>console</strong> pane. It is usually on the bottom left of the RStudio window, but currently takes up the entire left side. We also see the <strong>environment</strong> pane at the top right and the <strong>output</strong> pane at the bottom right.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
+<p>The <strong>console</strong> pane should have a message telling you what version of R you are using and the platform you are on (i.e.&nbsp;your hardware and operating system). This is what you would see if you opened R by itself.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
 <p>The <strong>environment</strong> pane should be empty. You will see multiple tabs across the top of this pane. The environment tab will allow us to see the data which we are working with at a given time. At this stage, you <em>may</em> see a tab labelled ‘Tutorial’. I’ll tell you how to use this later (<a href="#sec-gs-additional"><span>Section&nbsp;1.6</span></a>).</p>
 <p>The <strong>output</strong> pane will start by showing you a list of files on your computer. This is useful for finding and manipulating files (just like a file browser) In future, it is also where plots and help pages will appear.</p>
 </section>
@@ -340,7 +360,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] 17</code></pre>
 </div>
 </div>
-<p>The only reason to prefer one over the other is readability. This raises the issue of code <em>style</em>, which we will discuss in future workshops. Note that, above, there wasn’t a space in <code>924^5</code>—this is a style convention for <code>^</code> and some other (‘high precedence’) operators which we will encounter later.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>The only reason to prefer one over the other is readability. This raises the issue of code <em>style</em>, which we will discuss in future workshops. Note that, above, there wasn’t a space in <code>924^5</code>—this is a style convention for <code>^</code> and some other (‘high precedence’) operators which we will encounter later.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
 </section>
 <section id="vectors-and-variables" class="level3" data-number="1.3.2">
 <h3 data-number="1.3.2" class="anchored" data-anchor-id="vectors-and-variables"><span class="header-section-number">1.3.2</span> Vectors and Variables</h3>
@@ -370,7 +390,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <pre><code>[1] "1"   "2"   "3"   "dog"</code></pre>
 </div>
 </div>
-<p>R hasn’t explicitly complained, but it has done something without telling you what it has done. The numbers we entered now have quotation marks around them. They have been turned in to strings. Keep an eye out for quotation marks — sometimes you might think you are dealing with numbers, but really you are dealing with strings. This is a common problem when loading up your own data.</p>
+<p>R hasn’t explicitly complained, but it has done something without telling you what it has done. The numbers we entered now have quotation marks around them. They have been turned in to strings. Keep an eye out for quotation marks — sometimes you might think you are dealing with numbers, but really you are dealing with strings. This is a common problem when loading your own data.</p>
 <p>Why worry? Well, your code likely won’t work if you have strings rather than numbers. For instance, you can’t apply arithmetic operators to strings.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="st">"1"</span> <span class="sc">+</span> <span class="st">"2"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -379,6 +399,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The above is the first <strong>error message</strong> you’ve seen in this course. You will see many more in your time working with R. The error message is telling you that what you are doing does not work on anything but numbers.</p>
+<p>To enter a string, you can use either double quotes or single quotes.</p>
 <p>Vectors can also be used for arithmetic. Under the hood, statistics is mostly arithmetic with collections of vectors. How are these arithmetic operations implemented in R?</p>
 <p>The simplest case is when we use a vector and a single number, as follows</p>
 <div class="cell">
@@ -448,6 +469,22 @@ Warning
 <pre><code>[1] 6 9 4 5 2 2</code></pre>
 </div>
 </div>
+<p>We can also look up specific elements using square brackets. If we wanted to look up the fourth element in <code>my_cool_vector</code> we would enter the following code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector[<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 5</code></pre>
+</div>
+</div>
+<p>We can even change elements by using the assignment opperator (<code>&lt;-</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector[<span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>my_cool_vector</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6 9 4 3 2 2</code></pre>
+</div>
+</div>
+<p>The fourth entry in the vector is now <code>3</code> rather than <code>5</code>.</p>
 <p>Naming variables is serious business. It is important to know what you <em>could</em> do and what you <em>should</em> do.</p>
 <p>R institutes the following rules for names:</p>
 <ul>
@@ -465,29 +502,29 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>What counts as a ‘letter’ varies by operating system and local settings (your ‘locale’). The recommendation from Hadley Wickham is that you only use ASCII letters (for instance, avoid use of any diacritics/accents).<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>What counts as a ‘letter’ varies by operating system and local settings (your ‘locale’). The recommendation from Hadley Wickham is that you only use ASCII letters (for instance, avoid use of any diacritics/accents).<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
 <p>One local reason you might want to use non-ASCII characters is if you want to use te reo Māori with macrons for your variable names. This might be appropriate for a particular project (the question is always who you want to share your code with). Pretty much anyone using a modern operating system should be able to use your code. You may decide that the small risk of incompatibility is worth it in this case.</p>
 </div>
 </div>
 <p>I follow the convention of using <code>_</code> rather than <code>.</code> in my variable names. So, e.g., I’d prefer <code>my_cool_vector</code> over <code>my.cool.vector</code>. This reduces ambiguity in some cases.</p>
 <p>While we are talking about naming, R will accept <em>anything</em> placed within backticks (‘`’) as a variable name. If you have a chaotic temperament, you might decide to use variable names like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eldritch variable</span></span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">t̸̡͚̳͓̜̘̪̙̟̣͛̋̈̐͜ḩ̷̛̗̬̪̔̾͋̌̂̓͑̔̚͝ë̵̮̟̟̼̲̦͙̠̟́͋̇̏̓ ̶̟̱̲̠͎̙̠̆̑̈́̉̆̏̋͠͠t̷̲͉͔̘̬̪͖̗́͌̏̉̏̄͊̍̽͋̈̈́̀͝͠o̵͚͙̮͙͉̱̱͕̗̘̻͋͋͋̀́̒͝ͅw̸͖͚̖̣̭̥͍̹͚̞͕̺͇͙͌͛͋̆̿̈́̎̆̋̑͌̏͘͠͝e̵͖̝̞̙͕̤̅̃̓r̴͍̼̱̜̹͚̎̌̂͆͗̏́ṡ̷͔͉͇͗̍̆̔̕ͅ ̷̪̱̞͈̰̈́͜ǫ̷̤͍̫̠̻̣̪̻͖̒̈́͐͂̿̆̑̄̂͘f̶̠͉̯̪̪̖̦͋͝ ̶̙̻̝͆̈͠C̴̳̪̪̻̫̬̳̜̅͑̇͌̆̕a̶̡͚̼͍̺͂̈́̄r̷̨̛̛̜̹͙̲̝̲̖͍̓̊͒̄̓̏͂͐͛͑̊͘c̸͇̲̲͈͕͉͍̗̐ơ̵̟̠̒̔͑͆s̶̨̢̱̱̲͇͉̪̻̖̠͊̈́̐͋́̈́͜a̸̗̩̯̳̝͈̰̅͒̂̏͛̽̓͑̈́̾ͅ ̷̢͎͎̳̖̤̥̜̀̑̈́̈́r̴̦͌͛͘o̴̩̩̯̤̝̊͗̿̉͗͂͂̆̈́͘s̶͔̼̞̱̻̭̻͑̔͛̔ḙ̸̢̀̎͗̓͊̈̊̉̚̚͝ ̸̠̰̞̬̐̆̽̅̀̈̂̌͠b̶̧̜̟͍͔̘̥͇̈́͒̃͒̈́͊̓̉́̉̐͘͘͝͝ę̵͚̀̈́̿̌̆̈́͘̕͠͝ͅh̸̛͎̱͚͕̹̘̥̠͕̟̼͝ͅî̶̞̹̺̰̎̿̊̽͒͑͑̽͝n̵̢̢̛̛̟͓̗̮̦̪̥̩͓̪̘͗͗̑̊̌̉̂͊͠͝d̵͎̭̤̲͋͌̃̎̊ ̷̧̧̛̤͇̫̝̗̻͚̐̊̈́̇̂͗̋t̵͓̻̦̻̗͇̜̼̻̫̼̭̄́͘̚h̵̨̅̉̄e̸̡̡̨̞̪̝̝̟͔̞̞͔̰̒̓͆̐͛̂̒͂̊̆̽̃̌͘ ̴̛̦̖̖̖̹̖̹̣̳̕m̶̡͉̦̣͉̳̪͖͕͍͙̪̟͌̍̏͆̐̄̂̚͘o̸̭̯̠̭͎̖͐͗̏̉͋̅͊̓̓̂̏̓̏̍͝ǫ̴͖͈̖̣̤͍̝̩̳̪̔͂̋̄̑̏̒̏̏̈́ñ̸̙̪͉͓̼̯̩͋̋̌̏̃͘̕͘.̵̙̮̾̐͠ͅ</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Spooky variable</span></span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">👻</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eldritch variable</span></span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">t̸̡͚̳͓̜̘̪̙̟̣͛̋̈̐͜ḩ̷̛̗̬̪̔̾͋̌̂̓͑̔̚͝ë̵̮̟̟̼̲̦͙̠̟́͋̇̏̓ ̶̟̱̲̠͎̙̠̆̑̈́̉̆̏̋͠͠t̷̲͉͔̘̬̪͖̗́͌̏̉̏̄͊̍̽͋̈̈́̀͝͠o̵͚͙̮͙͉̱̱͕̗̘̻͋͋͋̀́̒͝ͅw̸͖͚̖̣̭̥͍̹͚̞͕̺͇͙͌͛͋̆̿̈́̎̆̋̑͌̏͘͠͝e̵͖̝̞̙͕̤̅̃̓r̴͍̼̱̜̹͚̎̌̂͆͗̏́ṡ̷͔͉͇͗̍̆̔̕ͅ ̷̪̱̞͈̰̈́͜ǫ̷̤͍̫̠̻̣̪̻͖̒̈́͐͂̿̆̑̄̂͘f̶̠͉̯̪̪̖̦͋͝ ̶̙̻̝͆̈͠C̴̳̪̪̻̫̬̳̜̅͑̇͌̆̕a̶̡͚̼͍̺͂̈́̄r̷̨̛̛̜̹͙̲̝̲̖͍̓̊͒̄̓̏͂͐͛͑̊͘c̸͇̲̲͈͕͉͍̗̐ơ̵̟̠̒̔͑͆s̶̨̢̱̱̲͇͉̪̻̖̠͊̈́̐͋́̈́͜a̸̗̩̯̳̝͈̰̅͒̂̏͛̽̓͑̈́̾ͅ ̷̢͎͎̳̖̤̥̜̀̑̈́̈́r̴̦͌͛͘o̴̩̩̯̤̝̊͗̿̉͗͂͂̆̈́͘s̶͔̼̞̱̻̭̻͑̔͛̔ḙ̸̢̀̎͗̓͊̈̊̉̚̚͝ ̸̠̰̞̬̐̆̽̅̀̈̂̌͠b̶̧̜̟͍͔̘̥͇̈́͒̃͒̈́͊̓̉́̉̐͘͘͝͝ę̵͚̀̈́̿̌̆̈́͘̕͠͝ͅh̸̛͎̱͚͕̹̘̥̠͕̟̼͝ͅî̶̞̹̺̰̎̿̊̽͒͑͑̽͝n̵̢̢̛̛̟͓̗̮̦̪̥̩͓̪̘͗͗̑̊̌̉̂͊͠͝d̵͎̭̤̲͋͌̃̎̊ ̷̧̧̛̤͇̫̝̗̻͚̐̊̈́̇̂͗̋t̵͓̻̦̻̗͇̜̼̻̫̼̭̄́͘̚h̵̨̅̉̄e̸̡̡̨̞̪̝̝̟͔̞̞͔̰̒̓͆̐͛̂̒͂̊̆̽̃̌͘ ̴̛̦̖̖̖̹̖̹̣̳̕m̶̡͉̦̣͉̳̪͖͕͍͙̪̟͌̍̏͆̐̄̂̚͘o̸̭̯̠̭͎̖͐͗̏̉͋̅͊̓̓̂̏̓̏̍͝ǫ̴͖͈̖̣̤͍̝̩̳̪̔͂̋̄̑̏̒̏̏̈́ñ̸̙̪͉͓̼̯̩͋̋̌̏̃͘̕͘.̵̙̮̾̐͠ͅ</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Spooky variable</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">👻</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>And you could even do some maths with these variables:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">t̸̡͚̳͓̜̘̪̙̟̣͛̋̈̐͜ḩ̷̛̗̬̪̔̾͋̌̂̓͑̔̚͝ë̵̮̟̟̼̲̦͙̠̟́͋̇̏̓ ̶̟̱̲̠͎̙̠̆̑̈́̉̆̏̋͠͠t̷̲͉͔̘̬̪͖̗́͌̏̉̏̄͊̍̽͋̈̈́̀͝͠o̵͚͙̮͙͉̱̱͕̗̘̻͋͋͋̀́̒͝ͅw̸͖͚̖̣̭̥͍̹͚̞͕̺͇͙͌͛͋̆̿̈́̎̆̋̑͌̏͘͠͝e̵͖̝̞̙͕̤̅̃̓r̴͍̼̱̜̹͚̎̌̂͆͗̏́ṡ̷͔͉͇͗̍̆̔̕ͅ ̷̪̱̞͈̰̈́͜ǫ̷̤͍̫̠̻̣̪̻͖̒̈́͐͂̿̆̑̄̂͘f̶̠͉̯̪̪̖̦͋͝ ̶̙̻̝͆̈͠C̴̳̪̪̻̫̬̳̜̅͑̇͌̆̕a̶̡͚̼͍̺͂̈́̄r̷̨̛̛̜̹͙̲̝̲̖͍̓̊͒̄̓̏͂͐͛͑̊͘c̸͇̲̲͈͕͉͍̗̐ơ̵̟̠̒̔͑͆s̶̨̢̱̱̲͇͉̪̻̖̠͊̈́̐͋́̈́͜a̸̗̩̯̳̝͈̰̅͒̂̏͛̽̓͑̈́̾ͅ ̷̢͎͎̳̖̤̥̜̀̑̈́̈́r̴̦͌͛͘o̴̩̩̯̤̝̊͗̿̉͗͂͂̆̈́͘s̶͔̼̞̱̻̭̻͑̔͛̔ḙ̸̢̀̎͗̓͊̈̊̉̚̚͝ ̸̠̰̞̬̐̆̽̅̀̈̂̌͠b̶̧̜̟͍͔̘̥͇̈́͒̃͒̈́͊̓̉́̉̐͘͘͝͝ę̵͚̀̈́̿̌̆̈́͘̕͠͝ͅh̸̛͎̱͚͕̹̘̥̠͕̟̼͝ͅî̶̞̹̺̰̎̿̊̽͒͑͑̽͝n̵̢̢̛̛̟͓̗̮̦̪̥̩͓̪̘͗͗̑̊̌̉̂͊͠͝d̵͎̭̤̲͋͌̃̎̊ ̷̧̧̛̤͇̫̝̗̻͚̐̊̈́̇̂͗̋t̵͓̻̦̻̗͇̜̼̻̫̼̭̄́͘̚h̵̨̅̉̄e̸̡̡̨̞̪̝̝̟͔̞̞͔̰̒̓͆̐͛̂̒͂̊̆̽̃̌͘ ̴̛̦̖̖̖̹̖̹̣̳̕m̶̡͉̦̣͉̳̪͖͕͍͙̪̟͌̍̏͆̐̄̂̚͘o̸̭̯̠̭͎̖͐͗̏̉͋̅͊̓̓̂̏̓̏̍͝ǫ̴͖͈̖̣̤͍̝̩̳̪̔͂̋̄̑̏̒̏̏̈́ñ̸̙̪͉͓̼̯̩͋̋̌̏̃͘̕͘.̵̙̮̾̐͠ͅ</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">👻</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">t̸̡͚̳͓̜̘̪̙̟̣͛̋̈̐͜ḩ̷̛̗̬̪̔̾͋̌̂̓͑̔̚͝ë̵̮̟̟̼̲̦͙̠̟́͋̇̏̓ ̶̟̱̲̠͎̙̠̆̑̈́̉̆̏̋͠͠t̷̲͉͔̘̬̪͖̗́͌̏̉̏̄͊̍̽͋̈̈́̀͝͠o̵͚͙̮͙͉̱̱͕̗̘̻͋͋͋̀́̒͝ͅw̸͖͚̖̣̭̥͍̹͚̞͕̺͇͙͌͛͋̆̿̈́̎̆̋̑͌̏͘͠͝e̵͖̝̞̙͕̤̅̃̓r̴͍̼̱̜̹͚̎̌̂͆͗̏́ṡ̷͔͉͇͗̍̆̔̕ͅ ̷̪̱̞͈̰̈́͜ǫ̷̤͍̫̠̻̣̪̻͖̒̈́͐͂̿̆̑̄̂͘f̶̠͉̯̪̪̖̦͋͝ ̶̙̻̝͆̈͠C̴̳̪̪̻̫̬̳̜̅͑̇͌̆̕a̶̡͚̼͍̺͂̈́̄r̷̨̛̛̜̹͙̲̝̲̖͍̓̊͒̄̓̏͂͐͛͑̊͘c̸͇̲̲͈͕͉͍̗̐ơ̵̟̠̒̔͑͆s̶̨̢̱̱̲͇͉̪̻̖̠͊̈́̐͋́̈́͜a̸̗̩̯̳̝͈̰̅͒̂̏͛̽̓͑̈́̾ͅ ̷̢͎͎̳̖̤̥̜̀̑̈́̈́r̴̦͌͛͘o̴̩̩̯̤̝̊͗̿̉͗͂͂̆̈́͘s̶͔̼̞̱̻̭̻͑̔͛̔ḙ̸̢̀̎͗̓͊̈̊̉̚̚͝ ̸̠̰̞̬̐̆̽̅̀̈̂̌͠b̶̧̜̟͍͔̘̥͇̈́͒̃͒̈́͊̓̉́̉̐͘͘͝͝ę̵͚̀̈́̿̌̆̈́͘̕͠͝ͅh̸̛͎̱͚͕̹̘̥̠͕̟̼͝ͅî̶̞̹̺̰̎̿̊̽͒͑͑̽͝n̵̢̢̛̛̟͓̗̮̦̪̥̩͓̪̘͗͗̑̊̌̉̂͊͠͝d̵͎̭̤̲͋͌̃̎̊ ̷̧̧̛̤͇̫̝̗̻͚̐̊̈́̇̂͗̋t̵͓̻̦̻̗͇̜̼̻̫̼̭̄́͘̚h̵̨̅̉̄e̸̡̡̨̞̪̝̝̟͔̞̞͔̰̒̓͆̐͛̂̒͂̊̆̽̃̌͘ ̴̛̦̖̖̖̹̖̹̣̳̕m̶̡͉̦̣͉̳̪͖͕͍͙̪̟͌̍̏͆̐̄̂̚͘o̸̭̯̠̭͎̖͐͗̏̉͋̅͊̓̓̂̏̓̏̍͝ǫ̴͖͈̖̣̤͍̝̩̳̪̔͂̋̄̑̏̒̏̏̈́ñ̸̙̪͉͓̼̯̩͋̋̌̏̃͘̕͘.̵̙̮̾̐͠ͅ</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">👻</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 15</code></pre>
 </div>
 </div>
 <p>Unsurprisingly, if you try this without the backticks, you will get an error:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>👻 <span class="ot">&lt;-</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>👻 <span class="ot">&lt;-</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error: &lt;text&gt;:1:1: unexpected input
 1: 👻
@@ -501,19 +538,23 @@ Note
 <h3 data-number="1.3.3" class="anchored" data-anchor-id="exercises"><span class="header-section-number">1.3.3</span> Exercises</h3>
 <div class="webex-check webex-box">
 What is the output of <code>5:10</code>?
-<div id="radio_QITIUVJXRN" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_QITIUVJXRN" value=""> <span><code>c(5, 10)</code></span></label><label><input type="radio" autocomplete="off" name="radio_QITIUVJXRN" value="answer"> <span><code>[1]  5  6  7  8  9 10</code></span></label><label><input type="radio" autocomplete="off" name="radio_QITIUVJXRN" value=""> <span><code>[1]  5  6  7  8  9</code></span></label>
+<div id="radio_QGWETDAJVT" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_QGWETDAJVT" value=""> <span><code>c(5, 10)</code></span></label><label><input type="radio" autocomplete="off" name="radio_QGWETDAJVT" value="answer"> <span><code>[1]  5  6  7  8  9 10</code></span></label><label><input type="radio" autocomplete="off" name="radio_QGWETDAJVT" value=""> <span><code>[1]  5  6  7  8  9</code></span></label>
 </div>
 What is the output of <code>10 * c(1, 2)</code>?
-<div id="radio_LCNJICPVFW" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_LCNJICPVFW" value="answer"> <span><code>[1] 10 20</code></span></label><label><input type="radio" autocomplete="off" name="radio_LCNJICPVFW" value=""> <span><code>[1]  30</code></span></label><label><input type="radio" autocomplete="off" name="radio_LCNJICPVFW" value=""> <span><code>Error in 10 * c(1, 2) : non-numeric argument to binary operator</code></span></label>
+<div id="radio_YZAFWHWKPX" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_YZAFWHWKPX" value="answer"> <span><code>[1] 10 20</code></span></label><label><input type="radio" autocomplete="off" name="radio_YZAFWHWKPX" value=""> <span><code>[1]  30</code></span></label><label><input type="radio" autocomplete="off" name="radio_YZAFWHWKPX" value=""> <span><code>Error in 10 * c(1, 2) : non-numeric argument to binary operator</code></span></label>
+</div>
+What is the output of <code>c(3, 4, 6, 2)[2]</code>?
+<div id="radio_XCFSGHRVLE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XCFSGHRVLE" value="answer"> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_XCFSGHRVLE" value=""> <span><code>[1] 3 4 6 2</code></span></label>
 </div>
 <p>Look at the variable names in the following list. Some of them are very bad names for <em>stylistic</em> reasons, but will they be accepted by R? I.e., are they syntactically valid?</p>
 <ul>
 <li><code>nz_vowels</code> <select class="webex-select"><option value="blank"></option><option value="answer">TRUE</option><option value="">FALSE</option></select></li>
 <li><code>_nz_vowels</code> <select class="webex-select"><option value="blank"></option><option value="">TRUE</option><option value="answer">FALSE</option></select></li>
 <li><code>🥝_vowels</code> <select class="webex-select"><option value="blank"></option><option value="">TRUE</option><option value="answer">FALSE</option></select></li>
-<li><code>`🥝_vowels\`</code> <select class="webex-select"><option value="blank"></option><option value="answer">TRUE</option><option value="">FALSE</option></select></li>
+<li><code>`🥝_vowels`</code> <select class="webex-select"><option value="blank"></option><option value="answer">TRUE</option><option value="">FALSE</option></select></li>
 <li><code>Traditional languages should be taught in school</code> <select class="webex-select"><option value="blank"></option><option value="">TRUE</option><option value="answer">FALSE</option></select></li>
 <li><code>Traditional.languages_should_be.taught.in_school</code> <select class="webex-select"><option value="blank"></option><option value="answer">TRUE</option><option value="">FALSE</option></select></li>
 <li><code>in_school</code> <select class="webex-select"><option value="blank"></option><option value="answer">TRUE</option><option value="">FALSE</option></select></li>
@@ -527,34 +568,255 @@ What is the output of <code>10 * c(1, 2)</code>?
 </section>
 <section id="start-an-r-script" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="start-an-r-script"><span class="header-section-number">1.4</span> Start an R Script</h2>
-<p>If we just used R in the console, we would be in no better position than if we just used Excel or another spreadsheet programme. We want to be able to retrace our steps <em>and</em> for other researchers to be able to retrace our steps.</p>
-<p>Open a new R script by ….</p>
-<p><strong><em>COMMENTS</em></strong></p>
+<p>If we exclusively used R in the console, we would be in no better position than if we just used Excel or another spreadsheet programme. We want to be able to retrace our steps.</p>
+<p>In order to start an R script go to <code>File &gt; New File &gt; R Script</code> or use the keyboard shortcut <code>Cmd + Shift + N</code> (macOS) or <code>Ctrl + Shift + N</code> (Windows).</p>
+<p>This will open the <strong>source</strong> pane. We will now enter code in the source pane rather than the console.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<p>You can enter R code into a script in the same way you have been adding it to the console. Unlike the console, each command is saved in the script and pressing return/enter will not run the code.</p>
+<p>Usually you will run code by selecting it and pressing <code>Cmd + Return</code> (macOS) or <code>Ctrl + Enter</code> (Windows).<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> If you have no code selected, this command will run the line which your cursor is on. The alternative is to run the entire script all at once. This can be done by pressing <code>Source</code> at the top right of the source pane.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<p>Copy and paste the following into your new script then run it. You should see the output in the console pane.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There is some wisdom to the idea that you should get coding ‘into your fingers’ by typing out examples yourself. This may be true, but it is up to you! I have enabled the ‘copy/paste’ button in all code blocks. You should see a clipboard icon when you have your cursor over a code block. Click the clipboard to copy the code.</p>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="sc">^</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 36 81 16 25  4  4</code></pre>
+</div>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/script.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">The source pane with our script entered. Note the ‘Source’ button at the right.</figcaption>
+</figure>
+</div>
+<p>It is important to leave <strong>comments</strong>, so that your code can be interpreted by other researchers (including yourself in the future!). Anything which appears after a <code>#</code> is a comment and will be ignored by R.</p>
+<p>We could change our script as follows, and the result will be identical:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Square each element of my cool vector and output to console.</span></span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="sc">^</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 36 81 16 25  4  4</code></pre>
+</div>
+</div>
+<p>In actual data analysis projects, commenting is vital. We’ll see some more useful examples of commenting as we go on.</p>
 <section id="matrices-and-dataframes" class="level3" data-number="1.4.1">
 <h3 data-number="1.4.1" class="anchored" data-anchor-id="matrices-and-dataframes"><span class="header-section-number">1.4.1</span> Matrices and Dataframes</h3>
+<p>In data analysis we want to find associations between multiple variables. So single vectors aren’t going to cut it. We need collections of vectors.</p>
+<p>The simplest version of this is a <strong>matrix</strong>. Matricies are like vectors in that they can only contain elements of the same type.</p>
+<p>Add the following lines to your script and run them:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>my_cool_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(my_cool_vector, <span class="at">nrow =</span> <span class="dv">3</span>)</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>my_cool_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2]
+[1,]    6    5
+[2,]    9    2
+[3,]    4    2</code></pre>
+</div>
+</div>
+<p>We now have a <span class="math inline">\(3\times2\)</span> matrix of numbers.</p>
+<p>Square brackets are again used to manipulate individual elements. But we now have to include both rows and columns. If we want the second column and third row we can use <code>my_cool_matrix[3, 2]</code>. If you want the entire second column you would enter <code>my_cool_matrix[, 2]</code>. If you want the entire first row, you would enter <code>my_cool_matrix[1, ]</code>. Try out these commands in either the script or the console window.</p>
+<p>Have a look in the environment pane. You should now see a separation between “data” and “values”. The “data” section contains structured objects, such as matrices. The one practical difference here is that if you click on something in the data section it will usually open in a new tab. In this case, you’ll see something that looks a lot like a spreadsheet application.</p>
+<p>Often our data will include elements of multiple different types. For instance, it might include <em>numbers</em> indicating the age of a participant, or which of a series of options they chose. It might also include <em>words</em> (strings) indicating which experimental condition they are in, or a transcript of an interview. Matricies can’t handle this, but <strong>data frames</strong> can.</p>
+<p>We create data frames using the <code>data.frame</code> function. Enter the following into your script and run it:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Re-enter the vector to revert modifications made above.</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>my_data_frame <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>  <span class="st">"numbers"</span> <span class="ot">=</span> my_cool_vector,</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"letters"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"N"</span>, <span class="st">"Z"</span>, <span class="st">"I"</span>, <span class="st">"L"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>)</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>my_data_frame</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  numbers letters
+1       6       N
+2       9       Z
+3       4       I
+4       5       L
+5       2       B
+6       2       B</code></pre>
+</div>
+</div>
+<p>We now have a data frame with a column of <em>numbers</em> and a column of corresponding <em>letters</em>. We have also given each of these columns a name ( ‘numbers’ for the column of numbers and ‘letters’ for the column of letters). Each row of the data frame is an observation, and each column is a variable.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> Perhaps you can figure out what the association between the two variables is.</p>
+<p>When we have names for columns, we can access the column using the name by means of the <code>$</code> symbol:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>my_data_frame<span class="sc">$</span>numbers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 6 9 4 5 2 2</code></pre>
+</div>
+</div>
+<p>Note the use of a comment to explain why we are re-creating <code>my_cool_vector</code>. This is the kind of step in the middle of a script which is likely to cause confusion without a comment.</p>
 </section>
-<section id="functions-and-packages" class="level3" data-number="1.4.2">
-<h3 data-number="1.4.2" class="anchored" data-anchor-id="functions-and-packages"><span class="header-section-number">1.4.2</span> Functions and Packages</h3>
+<section id="functions-and-help" class="level3" data-number="1.4.2">
+<h3 data-number="1.4.2" class="anchored" data-anchor-id="functions-and-help"><span class="header-section-number">1.4.2</span> Functions and Help</h3>
+<p>We have now seen a few <strong>functions</strong> (<code>matrix</code> to create a matrix, and <code>data.frame</code> to create a data frame). Functions are what we use to perform data analysis tasks in R. To apply a function, we writes its name and then enter a series of <strong>arguments</strong> inside brackets. The arguments are the information which we pass for the function in order for it to do its work.</p>
+<p>Recall the matrix code from above:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>my_cool_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(my_cool_vector, <span class="at">nrow =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here the <code>matrix</code> function is given two arguments. The first is the vector <code>my_cool_vector</code> and the second is <code>nrow = 3</code>. The two arguments are separated by a comma. If we want to work out where these came from, we need to look at the help page for the function. To do that enter the following in either the script or the console:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>?matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>You should now see the help screen in the output pane (bottom right). This help page tells you about three related functions. In the ‘usage’ section, you will see some code examples which use the functions. The section <code>arguments</code> tells you what you can include as an argument to the function. So, for instance, you see that the <code>nrow</code> argument expects you to tell it how many rows you want the matrix to have.</p>
+<p>The functions come in the order they appear in the usage example. In this case, each of the possible arguments is <em>named</em>. So, for instance, the first argument is called <code>data</code>. We did not enter this explicitly when we used the argument. But we could have:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>my_cool_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> my_cool_vector, <span class="at">nrow =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Sometimes it makes your code more clear to include a name, like this.</p>
+<p>The help screen also shows the default values for these argument. If there are default values, then you don’t need to manually enter every argument. If you are modifying only one argument, which appears latter in the list, then you will need to use the name.</p>
+<p>For instance, if we wanted to say the matrix has two columns (rather than three rows), we would have to add <code>ncol</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>my_cool_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(my_cool_vector, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>my_cool_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     [,1] [,2] [,3]
+[1,]    6    4    2
+[2,]    9    5    2</code></pre>
+</div>
+</div>
+<p>If we didn’t, R would not know what argument we intended to modify. If you look in the ‘details’ section of the help page, you will see that if we only specify a number of rows or a number of columns, it will attempt to work out the other value.</p>
 </section>
 <section id="install-and-use-a-package" class="level3" data-number="1.4.3">
 <h3 data-number="1.4.3" class="anchored" data-anchor-id="install-and-use-a-package"><span class="header-section-number">1.4.3</span> Install and Use a Package</h3>
-<p>One of the great advantages of R is that it has a large community of developers making ‘packages’ to share their code. Packages allow us to cumulatively build on each others work and to do things <em>quickly</em> which might otherwise take a lot of time and statistical knowledge to achieve.</p>
-<p>Well start with a silly package: <code>cowsay</code>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<p>One of the great advantages of R is that it has a large community of developers making <strong>packages</strong> to share their code. Packages allow us to cumulatively build on each others work and to do things <em>quickly</em> which might otherwise take a lot of time and statistical knowledge to achieve.</p>
+<p>Well start with a silly package: <code>cowsay</code>.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> This package produces text art animals who will ‘say’ whatever text you enter.</p>
+<p>To install a package, enter the following to the console:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'cowsay'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This means that the package <code>cowsay</code> is now installed on your computer. To use it in a script, you need to enter the following at the top of your script:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowsay)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>By convention, we add libraries at the start of a script. This lets other researchers see exactly what is needed to run the script at the start. In addition, packages sometimes conflict with one another, and it is important to see this before we carry out any data analysis.</p>
+<p>To see what functions <code>cowsay</code> has, look at the documentation. In this case, if you enter <code>?cowsay</code> you will see a link at the bottom of the help page. Alternatively, if you just want to see the names of functions, you can enter <code>cowsay::</code> and RStudio will suggest the names of functions.</p>
+<p>The main function which comes with <code>cowsay</code> is called <code>say</code>, so enter <code>?say</code> in the console.</p>
+<p>Now enter the following into your script:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">say</span>(</span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">what =</span> <span class="st">""</span>, <span class="co"># Write your own quote here (between the quotation marks)</span></span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">""</span> <span class="co"># Enter a 'type of thing' from the list on the help page.</span></span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Here, I have used comments to indicate what you need to do to complete the code.</p>
+<p>Here’s one possible answer:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">say</span>(</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">what =</span> <span class="st">"It sure is lonely down here."</span>,</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">"whale"</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+            ------ 
+           It sure is lonely down here. 
+            ------ 
+               \   
+                \  
+                 \
+     .-'          
+'--./ /     _.---.
+'-,  (__..-`       \
+   \          .     |
+    `,.__.   ,__.--/
+     '._/_.'___.-`</code></pre>
+</div>
+</div>
+<p>Sometimes packages contain data. This is one day to get data in to your analysis.</p>
+<p>In fact, there’s plenty of data built in to R. Often this is used to demonstrate different functions. To see these, enter <code>data()</code> in the console. You can load one of these datasets in to your script by entering the name of the dataset as an argument to the function <code>data()</code>. The following code block loads up one of these datasets.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(warpbreaks)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="co"># This will open up an RStudio window to view that data</span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="fu">View</span>(warpbreaks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>There datasets also have help pages (see <code>?warpbreaks</code>). What does this data represent?</p>
+<p>As a final bit of R code, and to show you another function in action, let’s plot the numeric information in <code>warpbreaks</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(warpbreaks<span class="sc">$</span>breaks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="getting_started_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Here we see the distribution of the count of warp breaks while weaving for a fixed length of yarn.</p>
+</section>
+<section id="exercises-1" class="level3" data-number="1.4.4">
+<h3 data-number="1.4.4" class="anchored" data-anchor-id="exercises-1"><span class="header-section-number">1.4.4</span> Exercises</h3>
+<div class="webex-check webex-box">
+What is the output of <code># 2 + 2</code>?
+<div id="radio_XFWSOIGRDL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XFWSOIGRDL" value=""> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_XFWSOIGRDL" value=""> <span><code>2 + 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_XFWSOIGRDL" value="answer"> <span>Nothing.</span></label>
+</div>
+<p>Consider the following code to create a matrix:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>,</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ncol =</span> <span class="dv">5</span></span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>How many columns does the matrix have? <select class="webex-select"><option value="blank"></option><option value="">10</option><option value="answer">5</option><option value="">Not enough information.</option></select></p>
+<p>Have a look at the documentation for the function <code>say()</code>, are the following statements true or false:</p>
+<ul>
+<li>The default argument value for <code>by</code> is <code>"cat"</code>. <select class="webex-select"><option value="blank"></option><option value="answer">TRUE</option><option value="">FALSE</option></select></li>
+<li>Kākapo is an option for the <code>by</code> argument. <select class="webex-select"><option value="blank"></option><option value="">TRUE</option><option value="answer">FALSE</option></select></li>
+<li>If you enter <code>what = "catfact"</code> the animal will say <code>"catfact"</code>. <select class="webex-select"><option value="blank"></option><option value="">TRUE</option><option value="answer">FALSE</option></select>.</li>
+</ul>
+</div>
 </section>
 </section>
 <section id="modify-rstudio-defaults" class="level2" data-number="1.5">
 <h2 data-number="1.5" class="anchored" data-anchor-id="modify-rstudio-defaults"><span class="header-section-number">1.5</span> Modify RStudio Defaults</h2>
-<p>There are many useful options which you might want to change to improve your RStudio experience.</p>
-<p>First, there are a series of aesthetic options. …</p>
-<p>Second, I’m going to assert that you should change some settings now without properly explaining myself. I trust that the reasons for these changes should become clear soon.</p>
+<p>There are many useful options which you might want to change to improve your RStudio experience. These can be found at <code>Tools &gt; Global Options</code>.</p>
+<p>I’m going to assert that you should change some settings in the ‘General’ window which will have appeared for you without properly explaining myself.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> Make it so that your settings match the following image:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/basic.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">The desired state of the General settings.</figcaption>
+</figure>
+</div>
+<p>This means that nothing will be saved between times when you open R. This, in turn, means that your script has to contain everything that is important for your analysis and you will not accidentally rely on something being carried over between programming sessions. What do I mean? Well, you might run a piece of code and then accidentally delete it from the script. The results of running the code could hang around between sessions and you would not notice your mistake. When it comes to sharing your code, the research you share it with will not be able to run it successfully and it might take a long time to discover the problem.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>If you have been using R for a while, you may be relying on R to keep the result of long computations between sessions. If so, leave the settings as they are for now and talk to me (Josh). There are a few ways to save computations so that you do not have to, say, refit a large model from scratch every time.</p>
+</div>
+</div>
+<p>You should also modify the appearance of RStudio to your liking using the <code>Appearance</code> options.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/appearance.png" class="img-fluid figure-img"></p>
+<figcaption class="figure-caption">The appearance pane in General Options</figcaption>
+</figure>
+</div>
 </section>
 <section id="sec-gs-additional" class="level2" data-number="1.6">
 <h2 data-number="1.6" class="anchored" data-anchor-id="sec-gs-additional"><span class="header-section-number">1.6</span> Additional Resources</h2>
-<p>Try the tutorials from <code>learnr</code>. RStudio contains inbuilt tutorials, which you may find useful!</p>
-<p>These also provide you with an opportunity to</p>
-<p>It’s always a good idea to have a look at the RStudio documentation: <a href="https://docs.posit.co/ide/user/" class="uri">https://docs.posit.co/ide/user/</a>.</p>
-<p>Chapter … winter.</p>
-<p>If you want to be a bit more technical about the syntax of R, have a look the documentation here: <a href="https://www.stat.auckland.ac.nz/~paul/ItDT/HTML/node75.html" class="uri">https://www.stat.auckland.ac.nz/~paul/ItDT/HTML/node75.html</a>; or in even more detail here: <a href="https://cran.r-project.org/doc/manuals/r-devel/R-lang.html" class="uri">https://cran.r-project.org/doc/manuals/r-devel/R-lang.html</a></p>
+<ul>
+<li><p>There are many good R and RStudio tutorials out there. One, which you can use from within RStudio is <code>learnr</code>. Install the package by entering <code>install.packages('learnr')</code> and you should see the tutorials in the environment pane.</p></li>
+<li><p>The material which you get in <code>learnr</code> is from the book <em>R for Data Science</em>, available here: <a href="https://r4ds.hadley.nz/" class="uri">https://r4ds.hadley.nz/</a></p></li>
+<li><p>See the first chapter of <span class="citation" data-cites="winterStatisticsLinguistsIntroduction2019">Winter (<a href="references.html#ref-winterStatisticsLinguistsIntroduction2019" role="doc-biblioref">2019</a>)</span></p></li>
+</ul>
 </section>
 <section id="sec-alternatives" class="level2" data-number="1.7">
 <h2 data-number="1.7" class="anchored" data-anchor-id="sec-alternatives"><span class="header-section-number">1.7</span> Alternatives to RStudio</h2>
@@ -566,15 +828,26 @@ What is the output of <code>10 * c(1, 2)</code>?
 <p>We won’t discuss these alternatives in these workshops. The most likely reason for you to use one of them is that you are already a keen programmer with strong preferences concerning your tools.</p>
 
 
+<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="ref-winterStatisticsLinguistsIntroduction2019" class="csl-entry" role="listitem">
+Winter, Bodo. 2019. <em>Statistics for <span>Linguists</span>: <span>An Introduction Using R</span></em>. New York: Routledge. <a href="https://doi.org/10.4324/9781315165547">https://doi.org/10.4324/9781315165547</a>.
+</div>
+</div>
 </section>
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
 <li id="fn1"><p>For alternatives which you might explore see <a href="#sec-alternatives"><span>Section&nbsp;1.7</span></a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn2"><p>Try this. You should find a shortcut to open R in the Start menu on Windows or the Launchpad in macOS. On Linux or macOS you can also open a terminal window, type ‘r’, and press enter.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p>You might want to look at this page: <a href="https://style.tidyverse.org/" class="uri">https://style.tidyverse.org/</a>. I try to follow this style guide as much as possible.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p>See (<a href="https://adv-r.hadley.nz/names-values.html" class="uri">https://adv-r.hadley.nz/names-values.html</a>)<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn5"><p>I first became aware of this package through a tutorial produced by Kevin Watson.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>You will find different terminology out there. I’m following the language in the official RStudio User Guide: <a href="https://docs.posit.co/ide/user/ide/guide/ui/ui-panes.html" class="uri">https://docs.posit.co/ide/user/ide/guide/ui/ui-panes.html</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Try this. You should find a shortcut to open R in the Start menu on Windows or the Launchpad in macOS. On Linux or macOS you can also open a terminal window, type ‘r’, and press enter.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>You might want to look at this page: <a href="https://style.tidyverse.org/" class="uri">https://style.tidyverse.org/</a>. I try to follow this style guide as much as possible.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>See (<a href="https://adv-r.hadley.nz/names-values.html" class="uri">https://adv-r.hadley.nz/names-values.html</a>)<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>While you are writing, you may find it occasionally useful to use the console to double check something. But all steps required to repeat your analysis should be in a script or markdown (more about markdown later).<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p> The same can be achieved by pressing the <code>Run</code> button at the top right. But since you are likely to be running code very frequently, it is best to learn the keyboard shortcut.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p> The keyboard shortcut for this is <code>Cmd + Shift + S</code> (macOS) or <code>Ctrl + Shift + S</code> (Windows). From now on you can look up keyboard shortcuts by using <code>Option + Shift + K</code> (macOS) or <code>Alt + Shift + K</code> (Windows).<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>More on this in the next session.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>I first became aware of this package through a tutorial produced by Kevin Watson for LING316.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p> For the rationale see: <a href="https://r4ds.hadley.nz/workflow-scripts.html" class="uri">https://r4ds.hadley.nz/workflow-scripts.html</a>.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

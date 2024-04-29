@@ -30,7 +30,9 @@ The RStudio interface has four primary 'panes'. Only three of these will be
 visible when you first open RStudio. The largest pane is the **console** pane.
 It is usually on the bottom left of the RStudio window, but currently takes up
 the entire left side. We also see the **environment** pane at the top right and
-the **output** pane at the bottom right. 
+the **output** pane at the bottom right.^[You will find different terminology
+out there. I'm following the language in the official RStudio User Guide: 
+<https://docs.posit.co/ide/user/ide/guide/ui/ui-panes.html>.]
 
 The **console** pane should have a message telling you what version of R you are
 using and the platform you are on (i.e. your hardware and operating system).
@@ -180,7 +182,7 @@ R hasn't explicitly complained, but it has done something without telling you
 what it has done. The numbers we entered now have quotation marks around them.
 They have been turned in to strings. Keep an eye out for quotation marks ---
 sometimes you might think you are dealing with numbers, but really you are
-dealing with strings. This is a common problem when loading up your own data.
+dealing with strings. This is a common problem when loading your own data.
 
 Why worry? Well, your code likely won't work if you have strings rather than
 numbers. For instance, you can't apply arithmetic operators to strings.
@@ -193,6 +195,8 @@ numbers. For instance, you can't apply arithmetic operators to strings.
 The above is the first **error message** you've seen in this course. You will
 see many more in your time working with R. The error message is telling you that
 what you are doing does not work on anything but numbers.
+
+To enter a string, you can use either double quotes or single quotes.
 
 Vectors can also be used for arithmetic. Under the hood, statistics is mostly
 arithmetic with collections of vectors. How are these arithmetic operations
@@ -255,6 +259,20 @@ pane or simply enter the name into the console.
 ```{r}
 my_cool_vector
 ```
+
+We can also look up specific elements using square brackets. If we wanted to
+look up the fourth element in `my_cool_vector` we would enter the following
+code.
+```{r}
+my_cool_vector[4]
+```
+
+We can even change elements by using the assignment opperator (`<-`).
+```{r}
+my_cool_vector[4] <- 3
+my_cool_vector
+```
+The fourth entry in the vector is now `3` rather than `5`.
 
 Naming variables is serious business. It is important to know what you _could_
 do and what you _should_ do. 
@@ -343,6 +361,17 @@ cat("What is the output of `10 * c(1, 2)`?", longmcq(opts))
 ```
 
 
+```{r}
+#| output: asis
+#| echo: false
+opts <- c(
+   answer = "`[1] 4`",
+   "`[1] 3 4 6 2`"
+)
+
+cat("What is the output of `c(3, 4, 6, 2)[2]`?", longmcq(opts))
+```
+
 Look at the variable names in the following list.
 Some of them are very bad names for _stylistic_ reasons, but will they be 
 accepted by R? I.e., are they syntactically valid?
@@ -350,7 +379,7 @@ accepted by R? I.e., are they syntactically valid?
 - `nz_vowels` `r torf(TRUE)`
 - `_nz_vowels` `r torf(FALSE)`
 - `🥝_vowels` `r torf(FALSE)`
-- `` `🥝_vowels\` `` `r torf(TRUE)`
+- `` `🥝_vowels` `` `r torf(TRUE)`
 - `Traditional languages should be taught in school` `r torf(FALSE)`
 - `Traditional.languages_should_be.taught.in_school` `r torf(TRUE)`
 - `in_school` `r torf(TRUE)`
@@ -363,55 +392,363 @@ accepted by R? I.e., are they syntactically valid?
 
 ## Start an R Script
 
-If we just used R in the console, we would be in no better position than if we
-just used Excel or another spreadsheet programme. We want to be able to retrace
-our steps _and_ for other researchers to be able to retrace our steps.
+If we exclusively used R in the console, we would be in no better position than
+if we just used Excel or another spreadsheet programme. We want to be able to
+retrace our steps.
 
-Open a new R script by ....
+In order to start an R script go to `File > New File > R Script` or use the 
+keyboard shortcut `Cmd + Shift + N` (macOS) or `Ctrl + Shift + N` (Windows).
 
-***COMMENTS***
+This will open the **source** pane. We will now enter code in the source pane
+rather than the console.^[While you are writing, you may find it occasionally
+useful to use the console to double check something. But all steps required
+to repeat your analysis should be in a script or markdown (more about markdown
+later).]
+
+You can enter R code into a script in the same way you have been adding it to
+the console. Unlike the console, each command is saved in the script and 
+pressing return/enter will not run the code. 
+
+Usually you will run code by selecting it and pressing `Cmd + Return` (macOS)
+or `Ctrl + Enter` (Windows).^[
+The same can be achieved by pressing the `Run` button at the top right. But 
+since you are likely to be running code very frequently, it is best to learn 
+the keyboard shortcut.
+] If you have no code selected, this command will run the line which your cursor
+is on. The alternative is to run the entire script all at once. This can be done
+by pressing `Source` at the top right of the source pane.^[ The keyboard
+shortcut for this is `Cmd + Shift + S` (macOS) or `Ctrl + Shift + S` (Windows).
+From now on you can look up keyboard shortcuts by using `Option + Shift + K` (macOS)
+or `Alt + Shift + K` (Windows).]
+
+Copy and paste the following into your new script then run it. You should see
+the output in the console pane.
+
+::: {.callout-note}
+There is some wisdom to the idea that you should get coding 'into your fingers'
+by typing out examples yourself. This may be true, but it is up to you! I have
+enabled the 'copy/paste' button in all code blocks. You should see a clipboard
+icon when you have your cursor over a code block. Click the clipboard to copy
+the code.
+:::
+
+```{r}
+my_cool_vector <- c(6, 9, 4, 5, 2, 2)
+my_cool_vector ^ 2
+```
+
+
+![The source pane with our script entered. Note the 'Source' button at the right.](images/script.png)
+
+It is important to leave **comments**, so that your code can be interpreted 
+by other researchers (including yourself in the future!). Anything which 
+appears after a `#` is a comment and will be ignored by R.
+
+We could change our script as follows, and the result will be identical:
+```{r}
+my_cool_vector <- c(6, 9, 4, 5, 2, 2)
+# Square each element of my cool vector and output to console.
+my_cool_vector ^ 2
+```
+
+In actual data analysis projects, commenting is vital. We'll see some more 
+useful examples of commenting as we go on.
 
 ### Matrices and Dataframes
 
+In data analysis we want to find associations between multiple variables. So
+single vectors aren't going to cut it. We need collections of vectors. 
 
-### Functions and Packages
+The simplest version of this is a **matrix**. Matricies are like vectors in 
+that they can only contain elements of the same type. 
+
+Add the following lines to your script and run them:
+```{r}
+my_cool_matrix <- matrix(my_cool_vector, nrow = 3)
+my_cool_matrix
+```
+We now have a $3\times2$ matrix of numbers. 
+
+Square brackets are again used to manipulate individual elements. But we now
+have to include both rows and columns. If we want the second column and third
+row we can use `my_cool_matrix[3, 2]`. If you want the entire second column 
+you would enter `my_cool_matrix[, 2]`. If you want the entire first row, you 
+would enter `my_cool_matrix[1, ]`. Try out these commands in either the script
+or the console window.
+
+Have a look in the environment pane. You should now see a separation between
+"data" and "values". The "data" section contains structured objects, such as
+matrices. The one practical difference here is that if you click on something
+in the data section it will usually open in a new tab. In this case, you'll
+see something that looks a lot like a spreadsheet application. 
+
+Often our data will include elements of multiple different types. For instance,
+it might include _numbers_ indicating the age of a participant, or which of a 
+series of options they chose. It might also include _words_ (strings) indicating
+which experimental condition they are in, or a transcript of an interview. 
+Matricies can't handle this, but **data frames** can. 
+
+We create data frames using the `data.frame` function. Enter the following into
+your script and run it:
+```{r}
+# Re-enter the vector to revert modifications made above.
+my_cool_vector <- c(6, 9, 4, 5, 2, 2)
+
+my_data_frame <- data.frame(
+  "numbers" = my_cool_vector,
+  "letters" = c("N", "Z", "I", "L", "B", "B")
+)
+
+my_data_frame
+```
+
+We now have a data frame with a column of _numbers_ and a column of
+corresponding _letters_. We have also given each of these columns a name (
+'numbers' for the column of numbers and 'letters' for the column of letters).
+Each row of the data frame is an observation, and each
+column is a variable.^[More on this in the next session.] Perhaps you can figure
+out what the association between the two variables is.
+
+When we have names for columns, we can access the column using the name by 
+means of the `$` symbol:
+```{r}
+my_data_frame$numbers
+```
+
+Note the use of a comment to explain why we are re-creating
+`my_cool_vector`. This is the kind of step in the middle of a script which is
+likely to cause confusion without a comment.
+
+### Functions and Help
+
+We have now seen a few **functions** (`matrix` to create a matrix, and 
+`data.frame` to create a data frame). Functions are what we use to perform 
+data analysis tasks in R. To apply a function, we writes its name and then
+enter a series of **arguments** inside brackets. The arguments are the 
+information which we pass for the function in order for it to do its work.
+
+Recall the matrix code from above:
+```{r}
+#| eval: false
+my_cool_matrix <- matrix(my_cool_vector, nrow = 3)
+```
+
+Here the `matrix` function is given two arguments. The first is the vector
+`my_cool_vector` and the second is `nrow = 3`. The two arguments are separated
+by a comma. If we want to work out where these came from, we need to look at 
+the help page for the function. To do that enter the following in either the
+script or the console:
+```{r}
+?matrix
+```
+
+You should now see the help screen in the output pane (bottom right). This
+help page tells you about three related functions. In the 'usage' section, you
+will see some code examples which use the functions. The section `arguments`
+tells you what you can include as an argument to the function. So, 
+for instance, you see that the `nrow` argument expects you to tell it how many
+rows you want the matrix to have.
+
+The functions come in the order they appear in the usage example. In this 
+case, each of the possible arguments is _named_. So, for instance, the 
+first argument is called `data`. We did not enter this explicitly when we 
+used the argument. But we could have:
+```{r}
+#| eval: false
+my_cool_matrix <- matrix(data = my_cool_vector, nrow = 3)
+```
+
+Sometimes it makes your code more clear to include a name, like this.
+
+The help screen also shows the default values for these argument. If there are
+default values, then you don't need to manually enter every argument. If you
+are modifying only one argument, which appears latter in the list, then you will
+need to use the name. 
+
+For instance, if we wanted to say the matrix has two columns (rather than three
+rows), we would have to add `ncol`:
+```{r}
+my_cool_matrix <- matrix(my_cool_vector, ncol = 3)
+my_cool_matrix
+```
+
+If we didn't, R would not know what argument we intended to modify. If you 
+look in the 'details' section of the help page, you will see that if we only
+specify a number of rows or a number of columns, it will attempt to work out
+the other value. 
 
 ### Install and Use a Package
 
 One of the great advantages of R is that it has a large community of developers
-making 'packages' to share their code. Packages allow us to cumulatively 
+making **packages** to share their code. Packages allow us to cumulatively 
 build on each others work and to do things _quickly_ which might otherwise take
 a lot of time and statistical knowledge to achieve.
 
-Well start with a silly package: `cowsay`.^[I first became aware of this package through
-a tutorial produced by Kevin Watson.]
+Well start with a silly package: `cowsay`.^[I first became aware of this package
+through a tutorial produced by Kevin Watson for LING316.] This package produces
+text art animals who will 'say' whatever text you enter.
+
+To install a package, enter the following to the console:
+```{r}
+#| eval: false
+install.packages('cowsay')
+```
+
+This means that the package `cowsay` is now installed on your computer. To use
+it in a script, you need to enter the following at the top of your script:
+```{r}
+library(cowsay)
+```
+
+By convention, we add libraries at the start of a script. This lets other
+researchers see exactly what is needed to run the script at the start. In
+addition, packages sometimes conflict with one another, and it is important to
+see this before we carry out any data analysis.
+
+To see what functions `cowsay` has, look at the documentation. In this case, 
+if you enter `?cowsay` you will see a link at the bottom of the help page.
+Alternatively, if you just want to see the names of functions, you can enter
+`cowsay::` and RStudio will suggest the names of functions.
+
+The main function which comes with `cowsay` is called `say`, so enter `?say` in
+the console.
+
+Now enter the following into your script:
+```{r}
+#| eval: false
+say(
+  what = "", # Write your own quote here (between the quotation marks)
+  by = "" # Enter a 'type of thing' from the list on the help page.
+)
+```
+Here, I have used comments to indicate what you need to do to complete the 
+code. 
+
+Here's one possible answer:
+```{r}
+say(
+  what = "It sure is lonely down here.",
+  by = "whale"
+)
+```
+
+Sometimes packages contain data. This is one day to get data in to your 
+analysis.
+
+In fact, there's plenty of data built in to R. Often this is used to demonstrate
+different functions. To see these, enter `data()` in the console. You can load
+one of these datasets in to your script by entering the name of the dataset
+as an argument to the function `data()`. The following code block loads up one
+of these datasets.
+```{r}
+data(warpbreaks)
+
+# This will open up an RStudio window to view that data
+View(warpbreaks)
+```
+
+There datasets also have help pages (see `?warpbreaks`). What does this
+data represent?
+
+As a final bit of R code, and to show you another function in action, let's 
+plot the numeric information in `warpbreaks`:
+```{r}
+hist(warpbreaks$breaks)
+```
+Here we see the distribution of the count of warp breaks while weaving for a
+fixed length of yarn.
+
+### Exercises
+
+::: {.webex-check .webex-box}
+
+```{r}
+#| output: asis
+#| echo: false
+opts <- c(
+   "`[1] 4`",
+   "`2 + 2`",
+   answer = "Nothing."
+)
+
+cat("What is the output of `# 2 + 2`?", longmcq(opts))
+```
+
+Consider the following code to create a matrix:
+```{r}
+#| eval: false
+matrix(
+  data = 1:50,
+  ncol = 5
+)
+```
+
+```{r}
+#| output: asis
+#| echo: false
+opts <- c(
+   "10",
+   answer = "5",
+   "Not enough information."
+)
+
+cat("How many columns does the matrix have?", mcq(opts))
+```
+
+Have a look at the documentation for the function `say()`, are the following
+statements true or false:
+
+- The default argument value for `by` is `"cat"`. `r torf(TRUE)`
+- Kākapo is an option for the `by` argument. `r torf(FALSE)`
+-  If you enter `what = "catfact"` the animal will say `"catfact"`. `r torf(FALSE)`.
+
+:::
 
 ## Modify RStudio Defaults
 
 There are many useful options which you might want to change to improve your 
-RStudio experience.
+RStudio experience. These can be found at `Tools > Global Options`. 
 
-First, there are a series of aesthetic options. ...
+I'm going to assert that you should change some settings in the 'General' window
+which will have appeared for you without properly explaining myself.^[
+For the rationale see: <https://r4ds.hadley.nz/workflow-scripts.html>.
+]
+Make it so that your settings match the following image:
 
-Second, I'm going to assert that you should change some settings now without
-properly explaining myself. I trust that the reasons for these changes should
-become clear soon.
+![The desired state of the General settings.](images/basic.png)
+
+This means that nothing will be saved between times when you open R. This, in 
+turn, means that your script has to contain everything that is important for 
+your analysis and you will not accidentally rely on something being carried over
+between programming sessions. What do I mean? Well, you might run a piece of
+code and then accidentally delete it from the script. The results of running
+the code could hang around between sessions and you would not notice your 
+mistake. When it comes to sharing your code, the research you share it with
+will not be able to run it successfully and it might take a long time to 
+discover the problem.
+
+::: {.callout-warning}
+If you have been using R for a while, you may be relying on R to keep the result
+of long computations between sessions. If so, leave the settings as they are for
+now and talk to me (Josh). There are a few ways to save computations so that you
+do not have to, say, refit a large model from scratch every time.
+:::
+
+You should also modify the appearance of RStudio to your liking using the
+`Appearance` options.
+
+![The appearance pane in General Options](images/appearance.png)
 
 ## Additional Resources {#sec-gs-additional}
 
-Try the tutorials from `learnr`.
-RStudio contains inbuilt tutorials, which you may find useful! 
+- There are many good R and RStudio tutorials out there. One, which you can use
+from within RStudio is `learnr`. Install the package by entering `install.packages('learnr')`
+and you should see the tutorials in the environment pane.
 
-These also provide you with an opportunity to 
+- The material which you get in `learnr` is from the book _R for Data Science_,
+available here: <https://r4ds.hadley.nz/> 
 
-It's always a good idea to have a look at the RStudio documentation: <https://docs.posit.co/ide/user/>.
-
-Chapter ... winter.
-
-If you want to be a bit more technical about the syntax of R, have a look the
-documentation here: <https://www.stat.auckland.ac.nz/~paul/ItDT/HTML/node75.html>; or in 
-even more detail here: <https://cran.r-project.org/doc/manuals/r-devel/R-lang.html>
-
+- See the first chapter of @winterStatisticsLinguistsIntroduction2019
 
 ## Alternatives to RStudio {#sec-alternatives}
 
