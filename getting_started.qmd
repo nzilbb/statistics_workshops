@@ -715,7 +715,7 @@ For the rationale see: <https://r4ds.hadley.nz/workflow-scripts.html>.
 ]
 Make it so that your settings match the following image:
 
-![The desired state of the General settings.](images/basic.png)
+![The desired state of the General settings.](/images/basic.png)
 
 This means that nothing will be saved between times when you open R. This, in 
 turn, means that your script has to contain everything that is important for 
