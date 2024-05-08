@@ -238,7 +238,7 @@ my_cool_vector <- c(6, 9, 4, 5, 2, 2)
 Now the name `my_cool_vector` is associated with the vector
 `c(6, 9, 4, 5, 2, 2)`. If you look to the top right of the RStudio window you
 should now see this variable in your environment pane. The name will be on the
-right and the value on the left.
+left and the value on the right.
 
 ![Our cool vector in the RStudio environment pane. Your screen may look a little different.](images/environment.png)
 
@@ -605,12 +605,13 @@ researchers see exactly what is needed to run the script at the start. In
 addition, packages sometimes conflict with one another, and it is important to
 see this before we carry out any data analysis.
 
-To see what functions `cowsay` has, look at the documentation. In this case, 
-if you enter `?cowsay` you will see a link at the bottom of the help page.
-Alternatively, if you just want to see the names of functions, you can enter
-`cowsay::` and RStudio will suggest the names of functions.
+To see what functions `cowsay` has, look at the documentation. If you want to
+see the names of functions, you can enter `cowsay::` and RStudio will suggest
+the names of functions. You can add a `?` in front of any of these function
+names to see the help file for the function.
 
-The main function which comes with `cowsay` is called `say`, so enter `?say` in
+There are two functions which come with `cowsay`: `say` and `endless_horse`. 
+The function we will use is called `say`, so enter `?say` in
 the console.
 
 Now enter the following into your script:

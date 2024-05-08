@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.3.450">
+<meta name="generator" content="quarto-1.4.553">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -22,7 +22,7 @@ ul.task-list li input[type="checkbox"] {
 }
 /* CSS for syntax highlighting */
 pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span { line-height: 1.25; }
 pre > code.sourceCode > span:empty { height: 1.2em; }
 .sourceCode { overflow: visible; }
 code.sourceCode > span { color: inherit; text-decoration: inherit; }
@@ -58,6 +58,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 div.csl-bib-body { }
 div.csl-entry {
   clear: both;
+  margin-bottom: 0em;
 }
 .hanging-indent div.csl-entry {
   margin-left:2em;
@@ -100,7 +101,13 @@ div.csl-indent {
   "collapse-after": 3,
   "panel-placement": "start",
   "type": "textbox",
-  "limit": 20,
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
   "language": {
     "search-no-results-text": "No results",
     "search-matching-documents-text": "matching documents",
@@ -109,6 +116,7 @@ div.csl-indent {
     "search-more-match-text": "more match in this document",
     "search-more-matches-text": "more matches in this document",
     "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
     "search-detached-cancel-button-title": "Cancel",
     "search-submit-button-title": "Submit",
     "search-label": "Search"
@@ -117,6 +125,33 @@ div.csl-indent {
 
   <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="include/webex.css">
 </head>
@@ -127,12 +162,12 @@ div.csl-indent {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./foundations.html">Foundations</a></li><li class="breadcrumb-item"><a href="./getting_started.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started</span></a></li></ol></nav>
-      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
-      </a>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./foundations.html">Foundations</a></li><li class="breadcrumb-item"><a href="./getting_started.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
@@ -142,7 +177,7 @@ div.csl-indent {
 <!-- content -->
 <div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
 <!-- sidebar -->
-  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
       <a href="./index.html" class="sidebar-logo-link">
       <img src="./images/nzilbb-logo.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
@@ -219,7 +254,7 @@ div.csl-indent {
     </ul>
     </div>
 </nav>
-<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         <nav id="TOC" role="doc-toc" class="toc-active">
@@ -250,7 +285,7 @@ div.csl-indent {
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./foundations.html">Foundations</a></li><li class="breadcrumb-item"><a href="./getting_started.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started</span></a></li></ol></nav>
 <div class="quarto-title">
 <h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started</span></h1>
 </div>
@@ -265,7 +300,9 @@ div.csl-indent {
   </div>
   
 
+
 </header>
+
 
 <section id="install-r-and-rstudio" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="install-r-and-rstudio"><span class="header-section-number">1.1</span> Install R and RStudio</h2>
@@ -286,7 +323,7 @@ div.csl-indent {
 </p>
 <p>The RStudio interface has four primary ‘panes’. Only three of these will be visible when you first open RStudio. The largest pane is the <strong>console</strong> pane. It is usually on the bottom left of the RStudio window, but currently takes up the entire left side. We also see the <strong>environment</strong> pane at the top right and the <strong>output</strong> pane at the bottom right.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>The <strong>console</strong> pane should have a message telling you what version of R you are using and the platform you are on (i.e.&nbsp;your hardware and operating system). This is what you would see if you opened R by itself.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
-<p>The <strong>environment</strong> pane should be empty. You will see multiple tabs across the top of this pane. The environment tab will allow us to see the data which we are working with at a given time. At this stage, you <em>may</em> see a tab labelled ‘Tutorial’. I’ll tell you how to use this later (<a href="#sec-gs-additional"><span>Section&nbsp;1.6</span></a>).</p>
+<p>The <strong>environment</strong> pane should be empty. You will see multiple tabs across the top of this pane. The environment tab will allow us to see the data which we are working with at a given time. At this stage, you <em>may</em> see a tab labelled ‘Tutorial’. I’ll tell you how to use this later (<a href="#sec-gs-additional" class="quarto-xref"><span>Section 1.6</span></a>).</p>
 <p>The <strong>output</strong> pane will start by showing you a list of files on your computer. This is useful for finding and manipulating files (just like a file browser) In future, it is also where plots and help pages will appear.</p>
 </section>
 <section id="interact-with-r-in-the-console" class="level2" data-number="1.3">
@@ -435,11 +472,11 @@ div.csl-indent {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>Now the name <code>my_cool_vector</code> is associated with the vector <code>c(6, 9, 4, 5, 2, 2)</code>. If you look to the top right of the RStudio window you should now see this variable in your environment pane. The name will be on the right and the value on the left.</p>
+<p>Now the name <code>my_cool_vector</code> is associated with the vector <code>c(6, 9, 4, 5, 2, 2)</code>. If you look to the top right of the RStudio window you should now see this variable in your environment pane. The name will be on the left and the value on the right.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/environment.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">Our cool vector in the RStudio environment pane. Your screen may look a little different.</figcaption>
+<figcaption>Our cool vector in the RStudio environment pane. Your screen may look a little different.</figcaption>
 </figure>
 </div>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -526,7 +563,7 @@ Note
 <div class="cell">
 <div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>👻 <span class="ot">&lt;-</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
-<pre><code>Error: &lt;text&gt;:1:1: unexpected input
+<pre><code>Error: &lt;text&gt;:1:1: unexpected invalid token
 1: 👻
     ^</code></pre>
 </div>
@@ -538,16 +575,16 @@ Note
 <h3 data-number="1.3.3" class="anchored" data-anchor-id="exercises"><span class="header-section-number">1.3.3</span> Exercises</h3>
 <div class="webex-check webex-box">
 What is the output of <code>5:10</code>?
-<div id="radio_LTBDAGOPJC" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_LTBDAGOPJC" value=""> <span><code>c(5, 10)</code></span></label><label><input type="radio" autocomplete="off" name="radio_LTBDAGOPJC" value="answer"> <span><code>[1]  5  6  7  8  9 10</code></span></label><label><input type="radio" autocomplete="off" name="radio_LTBDAGOPJC" value=""> <span><code>[1]  5  6  7  8  9</code></span></label>
+<div id="radio_FMVWLEAFNG" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_FMVWLEAFNG" value=""> <span><code>c(5, 10)</code></span></label><label><input type="radio" autocomplete="off" name="radio_FMVWLEAFNG" value="answer"> <span><code>[1]  5  6  7  8  9 10</code></span></label><label><input type="radio" autocomplete="off" name="radio_FMVWLEAFNG" value=""> <span><code>[1]  5  6  7  8  9</code></span></label>
 </div>
 What is the output of <code>10 * c(1, 2)</code>?
-<div id="radio_YEPPDHQQQR" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_YEPPDHQQQR" value="answer"> <span><code>[1] 10 20</code></span></label><label><input type="radio" autocomplete="off" name="radio_YEPPDHQQQR" value=""> <span><code>[1]  30</code></span></label><label><input type="radio" autocomplete="off" name="radio_YEPPDHQQQR" value=""> <span><code>Error in 10 * c(1, 2) : non-numeric argument to binary operator</code></span></label>
+<div id="radio_LEPUYKXSQL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_LEPUYKXSQL" value="answer"> <span><code>[1] 10 20</code></span></label><label><input type="radio" autocomplete="off" name="radio_LEPUYKXSQL" value=""> <span><code>[1]  30</code></span></label><label><input type="radio" autocomplete="off" name="radio_LEPUYKXSQL" value=""> <span><code>Error in 10 * c(1, 2) : non-numeric argument to binary operator</code></span></label>
 </div>
 What is the output of <code>c(3, 4, 6, 2)[2]</code>?
-<div id="radio_WXWXXLTGVW" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_WXWXXLTGVW" value="answer"> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_WXWXXLTGVW" value=""> <span><code>[1] 3 4 6 2</code></span></label>
+<div id="radio_RFEBBMKMUU" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_RFEBBMKMUU" value="answer"> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_RFEBBMKMUU" value=""> <span><code>[1] 3 4 6 2</code></span></label>
 </div>
 <p>Look at the variable names in the following list. Some of them are very bad names for <em>stylistic</em> reasons, but will they be accepted by R? I.e., are they syntactically valid?</p>
 <ul>
@@ -597,7 +634,7 @@ Note
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/script.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">The source pane with our script entered. Note the ‘Source’ button at the right.</figcaption>
+<figcaption>The source pane with our script entered. Note the ‘Source’ button at the right.</figcaption>
 </figure>
 </div>
 <p>It is important to leave <strong>comments</strong>, so that your code can be interpreted by other researchers (including yourself in the future!). Anything which appears after a <code>#</code> is a comment and will be ignored by R.</p>
@@ -704,8 +741,8 @@ Note
 <div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowsay)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>By convention, we add libraries at the start of a script. This lets other researchers see exactly what is needed to run the script at the start. In addition, packages sometimes conflict with one another, and it is important to see this before we carry out any data analysis.</p>
-<p>To see what functions <code>cowsay</code> has, look at the documentation. In this case, if you enter <code>?cowsay</code> you will see a link at the bottom of the help page. Alternatively, if you just want to see the names of functions, you can enter <code>cowsay::</code> and RStudio will suggest the names of functions.</p>
-<p>The main function which comes with <code>cowsay</code> is called <code>say</code>, so enter <code>?say</code> in the console.</p>
+<p>To see what functions <code>cowsay</code> has, look at the documentation. If you want to see the names of functions, you can enter <code>cowsay::</code> and RStudio will suggest the names of functions. You can add a <code>?</code> in front of any of these function names to see the help file for the function.</p>
+<p>There are two functions which come with <code>cowsay</code>: <code>say</code> and <code>endless_horse</code>. The function we will use is called <code>say</code>, so enter <code>?say</code> in the console.</p>
 <p>Now enter the following into your script:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">say</span>(</span>
@@ -749,7 +786,11 @@ Note
 <div class="cell">
 <div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(warpbreaks<span class="sc">$</span>breaks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<p><img src="getting_started_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid" width="672"></p>
+<div>
+<figure class="figure">
+<p><img src="getting_started_files/figure-html/unnamed-chunk-43-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
 </div>
 </div>
 <p>Here we see the distribution of the count of warp breaks while weaving for a fixed length of yarn.</p>
@@ -758,8 +799,8 @@ Note
 <h3 data-number="1.4.4" class="anchored" data-anchor-id="exercises-1"><span class="header-section-number">1.4.4</span> Exercises</h3>
 <div class="webex-check webex-box">
 What is the output of <code># 2 + 2</code>?
-<div id="radio_VIQTRESCKM" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_VIQTRESCKM" value=""> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_VIQTRESCKM" value=""> <span><code>2 + 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_VIQTRESCKM" value="answer"> <span>Nothing.</span></label>
+<div id="radio_BGBVIHJGYE" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BGBVIHJGYE" value=""> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_BGBVIHJGYE" value=""> <span><code>2 + 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_BGBVIHJGYE" value="answer"> <span>Nothing.</span></label>
 </div>
 <p>Consider the following code to create a matrix:</p>
 <div class="cell">
@@ -785,7 +826,7 @@ What is the output of <code># 2 + 2</code>?
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="./images/basic.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">The desired state of the General settings.</figcaption>
+<figcaption>The desired state of the General settings.</figcaption>
 </figure>
 </div>
 <p>This means that nothing will be saved between times when you open R. This, in turn, means that your script has to contain everything that is important for your analysis and you will not accidentally rely on something being carried over between programming sessions. What do I mean? Well, you might run a piece of code and then accidentally delete it from the script. The results of running the code could hang around between sessions and you would not notice your mistake. When it comes to sharing your code, the research you share it with will not be able to run it successfully and it might take a long time to discover the problem.</p>
@@ -806,7 +847,7 @@ Warning
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/appearance.png" class="img-fluid figure-img"></p>
-<figcaption class="figure-caption">The appearance pane in General Options</figcaption>
+<figcaption>The appearance pane in General Options</figcaption>
 </figure>
 </div>
 </section>
@@ -828,7 +869,7 @@ Warning
 <p>We won’t discuss these alternatives in these workshops. The most likely reason for you to use one of them is that you are already a keen programmer with strong preferences concerning your tools.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-winterStatisticsLinguistsIntroduction2019" class="csl-entry" role="listitem">
 Winter, Bodo. 2019. <em>Statistics for <span>Linguists</span>: <span>An Introduction Using R</span></em>. New York: Routledge. <a href="https://doi.org/10.4324/9781315165547">https://doi.org/10.4324/9781315165547</a>.
 </div>
@@ -837,7 +878,7 @@ Winter, Bodo. 2019. <em>Statistics for <span>Linguists</span>: <span>An Introduc
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>For alternatives which you might explore see <a href="#sec-alternatives"><span>Section&nbsp;1.7</span></a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>For alternatives which you might explore see <a href="#sec-alternatives" class="quarto-xref"><span>Section 1.7</span></a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>You will find different terminology out there. I’m following the language in the official RStudio User Guide: <a href="https://docs.posit.co/ide/user/ide/guide/ui/ui-panes.html" class="uri">https://docs.posit.co/ide/user/ide/guide/ui/ui-panes.html</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>Try this. You should find a shortcut to open R in the Start menu on Windows or the Launchpad in macOS. On Linux or macOS you can also open a terminal window, type ‘r’, and press enter.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>You might want to look at this page: <a href="https://style.tidyverse.org/" class="uri">https://style.tidyverse.org/</a>. I try to follow this style guide as much as possible.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
@@ -1137,10 +1178,27 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     // clear code selection
     e.clearSelection();
   });
-  function tippyHover(el, contentFn) {
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
-      content: contentFn,
       maxWidth: 500,
       delay: 100,
       arrow: false,
@@ -1150,8 +1208,17 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       interactive: true,
       interactiveBorder: 10,
       theme: 'quarto',
-      placement: 'bottom-start'
+      placement: 'bottom-start',
     };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
     window.tippy(el, config); 
   }
   const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
@@ -1163,7 +1230,130 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
     });
   }
       let selectedAnnoteEl;
@@ -1207,6 +1397,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
             }
             div.style.top = top - 2 + "px";
             div.style.height = height + 4 + "px";
+            div.style.left = 0;
             let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
             if (gutterDiv === null) {
               gutterDiv = window.document.createElement("div");
@@ -1232,6 +1423,32 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
         });
         selectedAnnoteEl = undefined;
       };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
       // Attach click handler to the DT
       const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
       for (const annoteDlNode of annoteDls) {
@@ -1293,17 +1510,18 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./foundations.html" class="pagination-link">
+      <a href="./foundations.html" class="pagination-link" aria-label="Foundations">
         <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Foundations</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./others.html" class="pagination-link">
+      <a href="./others.html" class="pagination-link" aria-label="Additional Topics">
         <span class="nav-page-text">Additional Topics</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
 </div> <!-- /content -->
+
 
 
 
