@@ -329,7 +329,7 @@ window.Quarto = {
 </p>
 <p>The RStudio interface has four primary ‘panes’. Only three of these will be visible when you first open RStudio. The largest pane is the <strong>console</strong> pane. It is usually on the bottom left of the RStudio window, but currently takes up the entire left side. We also see the <strong>environment</strong> pane at the top right and the <strong>output</strong> pane at the bottom right.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>The <strong>console</strong> pane should have a message telling you what version of R you are using and the platform you are on (i.e.&nbsp;your hardware and operating system). This is what you would see if you opened R by itself.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
-<p>The <strong>environment</strong> pane should be empty. You will see multiple tabs across the top of this pane. The environment tab will allow us to see the data which we are working with at a given time. At this stage, you <em>may</em> see a tab labelled ‘Tutorial’. I’ll tell you how to use this later (<a href="#sec-gs-additional" class="quarto-xref"><span>Section 1.6</span></a>).</p>
+<p>The <strong>environment</strong> pane should be empty. You will see multiple tabs across the top of this pane. The environment tab will allow us to see the data which we are working with at a given time. At this stage, you <em>may</em> see a tab labelled ‘Tutorial’. I’ll tell you how to use this later (<a href="#sec-gs-additional" class="quarto-xref"><span class="quarto-unresolved-ref">sec-gs-additional</span></a>).</p>
 <p>The <strong>output</strong> pane will start by showing you a list of files on your computer. This is useful for finding and manipulating files (just like a file browser) In future, it is also where plots and help pages will appear.</p>
 </section>
 <section id="interact-with-r-in-the-console" class="level2" data-number="1.3">
@@ -581,16 +581,16 @@ Note
 <h3 data-number="1.3.3" class="anchored" data-anchor-id="exercises"><span class="header-section-number">1.3.3</span> Exercises</h3>
 <div class="webex-check webex-box">
 What is the output of <code>5:10</code>?
-<div id="radio_FMVWLEAFNG" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_FMVWLEAFNG" value=""> <span><code>c(5, 10)</code></span></label><label><input type="radio" autocomplete="off" name="radio_FMVWLEAFNG" value="answer"> <span><code>[1]  5  6  7  8  9 10</code></span></label><label><input type="radio" autocomplete="off" name="radio_FMVWLEAFNG" value=""> <span><code>[1]  5  6  7  8  9</code></span></label>
+<div id="radio_BRNWMFQBAX" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BRNWMFQBAX" value=""> <span><code>c(5, 10)</code></span></label><label><input type="radio" autocomplete="off" name="radio_BRNWMFQBAX" value="answer"> <span><code>[1]  5  6  7  8  9 10</code></span></label><label><input type="radio" autocomplete="off" name="radio_BRNWMFQBAX" value=""> <span><code>[1]  5  6  7  8  9</code></span></label>
 </div>
 What is the output of <code>10 * c(1, 2)</code>?
-<div id="radio_LEPUYKXSQL" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_LEPUYKXSQL" value="answer"> <span><code>[1] 10 20</code></span></label><label><input type="radio" autocomplete="off" name="radio_LEPUYKXSQL" value=""> <span><code>[1]  30</code></span></label><label><input type="radio" autocomplete="off" name="radio_LEPUYKXSQL" value=""> <span><code>Error in 10 * c(1, 2) : non-numeric argument to binary operator</code></span></label>
+<div id="radio_BTGQUQWUWI" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_BTGQUQWUWI" value="answer"> <span><code>[1] 10 20</code></span></label><label><input type="radio" autocomplete="off" name="radio_BTGQUQWUWI" value=""> <span><code>[1]  30</code></span></label><label><input type="radio" autocomplete="off" name="radio_BTGQUQWUWI" value=""> <span><code>Error in 10 * c(1, 2) : non-numeric argument to binary operator</code></span></label>
 </div>
 What is the output of <code>c(3, 4, 6, 2)[2]</code>?
-<div id="radio_RFEBBMKMUU" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_RFEBBMKMUU" value="answer"> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_RFEBBMKMUU" value=""> <span><code>[1] 3 4 6 2</code></span></label>
+<div id="radio_XULJTANAQM" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XULJTANAQM" value="answer"> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_XULJTANAQM" value=""> <span><code>[1] 3 4 6 2</code></span></label>
 </div>
 <p>Look at the variable names in the following list. Some of them are very bad names for <em>stylistic</em> reasons, but will they be accepted by R? I.e., are they syntactically valid?</p>
 <ul>
@@ -685,13 +685,15 @@ Note
 <span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>my_data_frame</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>  numbers letters
-1       6       N
-2       9       Z
-3       4       I
-4       5       L
-5       2       B
-6       2       B</code></pre>
+<pre><code># A tibble: 6 × 2
+  numbers letters
+    &lt;dbl&gt; &lt;chr&gt;  
+1       6 N      
+2       9 Z      
+3       4 I      
+4       5 L      
+5       2 B      
+6       2 B      </code></pre>
 </div>
 </div>
 <p>We now have a data frame with a column of <em>numbers</em> and a column of corresponding <em>letters</em>. We have also given each of these columns a name ( ‘numbers’ for the column of numbers and ‘letters’ for the column of letters). Each row of the data frame is an observation, and each column is a variable.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> Perhaps you can figure out what the association between the two variables is.</p>
@@ -805,8 +807,8 @@ Note
 <h3 data-number="1.4.4" class="anchored" data-anchor-id="exercises-1"><span class="header-section-number">1.4.4</span> Exercises</h3>
 <div class="webex-check webex-box">
 What is the output of <code># 2 + 2</code>?
-<div id="radio_BGBVIHJGYE" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_BGBVIHJGYE" value=""> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_BGBVIHJGYE" value=""> <span><code>2 + 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_BGBVIHJGYE" value="answer"> <span>Nothing.</span></label>
+<div id="radio_OWHOKBOFFK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_OWHOKBOFFK" value=""> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_OWHOKBOFFK" value=""> <span><code>2 + 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_OWHOKBOFFK" value="answer"> <span>Nothing.</span></label>
 </div>
 <p>Consider the following code to create a matrix:</p>
 <div class="cell">
@@ -862,7 +864,7 @@ Warning
 <ul>
 <li><p>There are many good R and RStudio tutorials out there. One, which you can use from within RStudio is <code>learnr</code>. Install the package by entering <code>install.packages('learnr')</code> and you should see the tutorials in the environment pane.</p></li>
 <li><p>The material which you get in <code>learnr</code> is from the book <em>R for Data Science</em>, available here: <a href="https://r4ds.hadley.nz/" class="uri">https://r4ds.hadley.nz/</a></p></li>
-<li><p>See the first chapter of <span class="citation" data-cites="winterStatisticsLinguistsIntroduction2019">Winter (<a href="references.html#ref-winterStatisticsLinguistsIntroduction2019" role="doc-biblioref">2019</a>)</span></p></li>
+<li><p>See the first chapter of <span class="citation" data-cites="winterStatisticsLinguistsIntroduction2019">Winter (<a href="#ref-winterStatisticsLinguistsIntroduction2019" role="doc-biblioref">2019</a>)</span></p></li>
 </ul>
 </section>
 <section id="sec-alternatives" class="level2" data-number="1.7">
@@ -875,7 +877,7 @@ Warning
 <p>We won’t discuss these alternatives in these workshops. The most likely reason for you to use one of them is that you are already a keen programmer with strong preferences concerning your tools.</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-winterStatisticsLinguistsIntroduction2019" class="csl-entry" role="listitem">
 Winter, Bodo. 2019. <em>Statistics for <span>Linguists</span>: <span>An Introduction Using R</span></em>. New York: Routledge. <a href="https://doi.org/10.4324/9781315165547">https://doi.org/10.4324/9781315165547</a>.
 </div>
@@ -884,7 +886,7 @@ Winter, Bodo. 2019. <em>Statistics for <span>Linguists</span>: <span>An Introduc
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>For alternatives which you might explore see <a href="#sec-alternatives" class="quarto-xref"><span>Section 1.7</span></a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>For alternatives which you might explore see <a href="#sec-alternatives" class="quarto-xref"><span class="quarto-unresolved-ref">sec-alternatives</span></a><a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>You will find different terminology out there. I’m following the language in the official RStudio User Guide: <a href="https://docs.posit.co/ide/user/ide/guide/ui/ui-panes.html" class="uri">https://docs.posit.co/ide/user/ide/guide/ui/ui-panes.html</a>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>Try this. You should find a shortcut to open R in the Start menu on Windows or the Launchpad in macOS. On Linux or macOS you can also open a terminal window, type ‘r’, and press enter.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>You might want to look at this page: <a href="https://style.tidyverse.org/" class="uri">https://style.tidyverse.org/</a>. I try to follow this style guide as much as possible.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
