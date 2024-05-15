@@ -1,4 +1,21 @@
 # References {.unnumbered}
 
+```{r}
+#| echo: false
+
+library(here)
+
+grateful::nocite_references(
+  grateful::cite_packages(
+    output = "citekeys", 
+    out.dir = here(), 
+    errors="ignored",
+    pkgs = "All"
+  )
+)
+```
+
+
 ::: {#refs}
+
 :::

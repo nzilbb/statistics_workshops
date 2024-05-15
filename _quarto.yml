@@ -17,10 +17,13 @@ book:
     chapters: 
     - rstudio_server.qmd
     - qualtrics.qmd
+    - gamms_1.qmd
   - references.qmd
   sidebar:
     logo: images/nzilbb-logo.svg
-bibliography: references.bib
+bibliography: 
+  - references.bib
+  - grateful-refs.bib
 format:
   html:
     theme:
@@ -28,5 +31,9 @@ format:
     - theme.scss
     css: include/webex.css
     include-after-body: include/webex.js
+    code-summary: "To view the code click here"
+    df-print: tibble
+    execute:
+      warning: false
   pdf:
     documentclass: scrreprt

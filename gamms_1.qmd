@@ -1,0 +1,742 @@
+# Generalized Additive (Mixed) Models
+
+## Overview
+
+This chapter is going to grow over three initial sessions. The rough plan is:
+
+1. Introduction to the idea of GAMs and how to specify parametric and smooth terms.
+2. The second 'M': we'll add random effects, looking at random intercepts, slopes, and smooths.
+3. Handling auto-correlation. How to work out when this is an issue, and the available options for solving it.
+
+We will be using the following libraries:
+```{r}
+# The usual suspects
+library(tidyverse)
+library(here)
+
+# GAMM-specific libraries
+library(mgcv)
+library(itsadug)
+library(gratia)
+
+# NZILBB vowel package
+# If you do not have this use the following lines of code:
+# install.packages('remotes')
+# remotes::install_github('nzilbb/nzilbb_vowels')
+library(nzilbb.vowels)
+
+# Set ggplot theme
+theme_set(theme_bw())
+```
+
+This workshop is heavily indebted to the workshops put together by Márton 
+Sóskuthy and Martijn Wieling. Links to these are provided in @sec-resources.
+
+## Introduction to GAMs
+
+### Why?
+
+Straight lines have a lot of advantages. They can be completely specified by two
+numbers: how steep they are (the **slope**) and where they intersect the
+$y$-axis (the **intercept**). Fitting a straight line through a collection of
+points is just a matter of finding the optimum slope and intercept.
+
+But **sometimes straight lines aren't enough**. There are plenty of effects in
+nature which do not follow a straight line. There are plenty of examples of 
+trajectories with non-linear behaviour in the 
+study of language. For instance, consider the following is a trajectory for the
+[price]{.smallcaps} vowel from ONZE via [@soskuthyHorizontalDiphthongShift2019].
+
+```{r}
+#| label: price-plot
+#| fig-cap: "F1 and F2 of a PRICE vowel."
+#| code-fold: true
+# Source: https://osf.io/74mza
+
+# Load all data (we will use the full set later)
+price <- read_rds(here('data', 'price_full.rds'))
+
+# The dataset will be explained in full below.
+# Pull out a single trajectory.
+price <- price |> 
+  filter(id == "price_58") |> 
+  pivot_longer(
+    cols = f1:f2,
+    names_to = "formant_type",
+    values_to = "formant_value"
+  )
+
+# Plot it
+price_plot <- price |> 
+  ggplot(
+    aes(
+      x = time,
+      y = formant_value,
+      colour = formant_type
+    )
+  ) +
+  geom_point() +
+  labs(
+    colour = "Formant type",
+    y = "Frequency (Hz)",
+    x = "Time (s)"
+  )
+
+price_plot
+```
+
+If we try to fit this trajectory with straight lines, we get:
+```{r}
+#| label: price-plot-linear
+#| fig-cap: "F1 and F2 of a PRICE vowel with linear model."
+#| code-fold: true
+price_plot +
+  geom_smooth(method = "lm", se = FALSE)
+```
+
+What we want instead, is a way to fit a non-linear relationship. GA(M)Ms 
+provide one flexible way of doing this. A simple GAM for this trajectory looks
+like this:
+```{r}
+#| label: price-plot-gam
+#| fig-cap: "F1 and F2 of a PRICE vowel with GAM model."
+#| code-fold: true
+price_plot +
+  geom_smooth(method = "gam", se = FALSE)
+```
+
+The same comments apply to trajectories taken from, e.g., tongue sensors or 
+derived from video footage. They also apply at very different time scales.
+Consider GAMMs fit through full monologues [@wilsonblackOverlookedEffectAmplitude2023],
+or to formant values across the history of a dialect [@brandSystematicCovariationMonophthongs2021].
+
+### What?
+
+We'll start with a bit of mathematics. A linear model looks like this:
+
+$$ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_n x_n + \epsilon $$
+where the $\beta$'s are the model **coefficients**, the $x$'s are the model 
+predictors, and the $\epsilon$ is an error term. The $\beta_0$ term is the
+aforementioned **intercept** and the other $\beta_n$'s are **slopes**. These
+**slopes** estimate the effect of the attached predictor. For any predictor,
+all we get is a single slope and the intercept --- a straight line.
+
+GAMs replace each of the $\beta_n x_n$ terms with a **function** of $x_n$. This function
+will usually be some kind of **smooth**. We'll look at this visually in a moment. But,
+mathematically, it looks like this:
+
+$$  y = \beta_0 + f_1(x_1) + f_2(x_2) + \ldots + f_n(x_n) + \epsilon .$$
+The **parameters** have been replaces by functions. The nature of the relationship
+between a given predictor and $y$ need not be a straight line.
+
+The functions we choose attempt to balance **smoothness** and **wiggliness**. 
+Wiggliness simply means deviation from a straight line. Smoothness indicates 
+a lack of bumps. We are speaking intuitively, but this language is
+used by the mathematicians as well!.
+
+Let's consider one class of **smooth**, and how it can be used to balance 
+these two demands: splines. Here, a set of **basis functions** is summed
+together to create a smooth line through the data.
+
+The basis functions for one common set of splines looks like this (
+borrowing code from [Gavin Simpson](https://github.com/gavinsimpson/intro-gam-webinar-2020/blob/master/gam-intro.Rmd)):
+```{r}
+#| label: fig-basis-functions
+#| code-fold: true
+#| fig-cap: "Cubic regression spline basis functions with 10 knots."
+# Simulate 500 observations
+set.seed(1)
+N <- 500
+data <- tibble(
+  x = runif(N),
+  ytrue = map_dbl(
+    x, 
+    \(x) {x^11 * (10 * (1 - x))^6 + ((10 * (10 * x)^3) * (1 - x)^10)}
+  ),
+  ycent = ytrue - mean(ytrue),
+  yobs  = ycent + rnorm(N, sd = 0.5)
+)
+k <- 10
+knots <- with(data, list(x = seq(min(x), max(x), length = k)))
+sm <- smoothCon(s(x, k = k, bs = "cr"), data = data, knots = knots)[[1]]$X
+colnames(sm) <- levs <- paste0("f", seq_len(k))
+basis <- pivot_longer(cbind(sm, data), -(x:yobs), names_to = 'bf')
+
+basis |> 
+  ggplot(
+    aes(
+      x = x, 
+      y = value, 
+      colour = bf
+    )
+  ) +
+  geom_line(lwd = 2, alpha = 0.5) +
+  guides(colour = FALSE) +
+  labs(x = 'x', y = 'b(x)')
+```
+Each distinct 'basis function' is in a different colour. We fit out actual 
+data by multiplying the functions by appropriate coefficients (to change how
+**high** they are on the graph) and adding them together. 
+
+There are a number of **knots** in @fig-basis-functions. These are the points
+at which the functions a joined together (informally speaking) and at which
+we aim to ensure **smoothness**. For this set of basis functions, the knots
+are at (red points):
+```{r}
+#| label: fig-basis-functions-knots
+#| code-fold: true
+#| fig-cap: "Cubic regression spline basis functions with 10 knots (red dots)."
+# Simulate 500 observations
+set.seed(1)
+N <- 500
+data <- tibble(
+  x = runif(N),
+  ytrue = map_dbl(
+    x, 
+    \(x) {x^11 * (10 * (1 - x))^6 + ((10 * (10 * x)^3) * (1 - x)^10)}
+  ),
+  ycent = ytrue - mean(ytrue),
+  yobs  = ycent + rnorm(N, sd = 0.5)
+)
+k <- 10
+knots <- with(data, list(x = seq(min(x), max(x), length = k)))
+sm <- smoothCon(s(x, k = k, bs = "cr"), data = data, knots = knots)[[1]]$X
+colnames(sm) <- levs <- paste0("f", seq_len(k))
+basis <- pivot_longer(cbind(sm, data), -(x:yobs), names_to = 'bf')
+
+basis |> 
+  ggplot(
+    aes(
+      x = x, 
+      y = value, 
+      colour = bf
+    )
+  ) +
+  geom_line(lwd = 2, alpha = 0.5) +
+  geom_point(
+    inherit.aes = FALSE, 
+    aes(
+      x = x
+    ),
+    y = 0,
+    colour = "red",
+    data = as_tibble(knots),
+    size = 5
+  ) +
+  guides(colour = FALSE) +
+  labs(x = 'x', y = 'b(x)')
+```
+
+Again, borrowing code from Gavin Simpson, we can see what this looks like for
+our simulated data.
+```{r}
+#| label: fig-fit-spline
+#| fig-cap: "Simulated data (black dots) with the basis functions after multiplication by their weights (colourful lines) and the sum of the basis functions (black line)."
+#| code-fold: true
+beta <- coef(lm(ycent ~ sm - 1, data = data))
+wtbasis <- sweep(sm, 2L, beta, FUN = "*")
+colnames(wtbasis) <- colnames(sm) <- paste0("F", seq_len(k))
+## create stacked unweighted and weighted basis
+basis <- as_tibble(wtbasis) %>%
+  mutate(
+    x = data$x,
+    spline_fit = pmap_dbl(
+      # Yikes, bad coding here by me (JWB)
+      list(F1, F2, F3, F4, F5, F6, F7, F8, F9, F10),
+      sum
+    )
+  ) 
+
+basis_long <- basis |> 
+  pivot_longer(
+    cols = contains('F'),
+    values_to = "value",
+    names_to = "bf"
+  )
+
+
+data |> 
+  ggplot(
+    aes(
+      x = x,
+      y = yobs
+    )
+  ) +
+  geom_point(alpha = 0.4) +
+  geom_line(
+    aes(
+      x = x,
+      y = value,
+      colour = bf
+    ),
+    data = basis_long,
+    inherit.aes = FALSE,
+    linewidth = 1
+  ) +
+  geom_line(
+    aes(
+      x = x,
+      y = spline_fit
+    ),
+    inherit.aes = FALSE,
+    colour = "black",
+    linewidth = 1,
+    data = basis
+  ) + 
+  guides(colour = FALSE)
+```
+
+Spend some time looking at @fig-fit-spline. Convince yourself that if you added
+together the colourful lines you would get the black line. The easiest way to
+do this is to work one point on the $x$-axis at a time. The case where $x=0$
+is the easiest, where the only colourful line is the red one and it is at the
+same point on the $y$-axis as the black line.
+
+What about this **wiggliness** and **smoothness** trade off? We've already 
+seen one way in which wiggliness can be controlled: the number of knots sets
+an upper limit on how wiggly the resulting smooth function can be. If we only
+had 3 knots, this is what we would get:
+```{r}
+#| label: fig-fit-spline-bad
+#| fig-cap: "Simulated data (black dots) with the basis functions after multiplication by their weights (colourful lines) and the sum of the basis functions (black line)."
+#| code-fold: true
+k <- 3
+knots <- with(data, list(x = seq(min(x), max(x), length = k)))
+sm <- smoothCon(s(x, k = k, bs = "cr"), data = data, knots = knots)[[1]]$X
+colnames(sm) <- levs <- paste0("f", seq_len(k))
+beta <- coef(lm(ycent ~ sm - 1, data = data))
+wtbasis <- sweep(sm, 2L, beta, FUN = "*")
+colnames(wtbasis) <- colnames(sm) <- paste0("F", seq_len(k))
+## create stacked unweighted and weighted basis
+basis <- as_tibble(wtbasis) %>%
+  mutate(
+    x = data$x,
+    spline_fit = pmap_dbl(
+      # Yikes, bad coding here by me (JWB)
+      list(F1, F2, F3),
+      sum
+    )
+  ) 
+
+basis_long <- basis |> 
+  pivot_longer(
+    cols = contains('F'),
+    values_to = "value",
+    names_to = "bf"
+  )
+
+
+data |> 
+  ggplot(
+    aes(
+      x = x,
+      y = yobs
+    )
+  ) +
+  geom_point(alpha = 0.4) +
+  geom_line(
+    aes(
+      x = x,
+      y = value,
+      colour = bf
+    ),
+    data = basis_long,
+    inherit.aes = FALSE,
+    linewidth = 1
+  ) +
+  geom_line(
+    aes(
+      x = x,
+      y = spline_fit
+    ),
+    inherit.aes = FALSE,
+    colour = "black",
+    linewidth = 1,
+    data = basis
+  ) + 
+  guides(colour = FALSE)
+```
+The black line is our best possible fit to the data here, but it is no good.
+It needs to be wigglier.
+
+So **knots** are one determinant of wiggliness. But there is another: 
+the **smoothing parameter**. This is used in order to penalise wiggliness
+when we fit a GAM model and is handled automatically by the `mgcv` package.
+In practice, it is determined _from the data_, rather than being manually 
+specified. However, it is worth looking manually at what happens if we set 
+the smoothing parameter too low and fail to sufficiently penalise wiggliness.
+
+Here's what an excessively wiggly smooth function looks like with the New
+Zealand English [dress]{.smallcaps} vowel in ONZE:
+
+```{r}
+#| label: fig-fit-spline-lowsmooth
+#| fig-cap: "Mean normalised F1 for female speakers in ONZE by year of birth. Smoothing parameter set to 0.01."
+#| code-fold: true
+onze_vowels_full |> 
+  lobanov_2() |> 
+  filter(
+    gender == "F",
+    vowel == "DRESS"
+  ) |> 
+  group_by(speaker) |> 
+  summarise(
+    F1_lob2 = mean(F1_lob2),
+    yob = first(yob)
+  ) |> 
+  ggplot(
+    aes(
+      x = yob,
+      y = F1_lob2
+    )
+  ) +
+  geom_jitter(alpha = 0.5) +
+  geom_smooth(
+    method = "gam", 
+    formula =  y ~ s(x, bs = "cs", k = 50, sp=0.01), 
+    se=FALSE
+  )
+```
+
+On the other side, we can set the smoothing parameter too high. If we do, we'll 
+end up with a straight line.
+
+```{r}
+#| label: fig-fit-spline-highsmooth
+#| fig-cap: "Mean normalised F1 for female speakers in ONZE by year of birth. Smoothing parameter set to 10,000,000."
+#| code-fold: true
+mean_onze_full <- onze_vowels_full |> 
+  lobanov_2() |> 
+  filter(
+    vowel == "DRESS"
+  ) |> 
+  group_by(speaker) |> 
+  summarise(
+    F1_lob2 = mean(F1_lob2),
+    yob = first(yob),
+    speech_rate = mean(speech_rate),
+    gender = first(gender)
+  )
+
+mean_onze_full |> 
+  filter(gender == "F") |> 
+  ggplot(
+    aes(
+      x = yob,
+      y = F1_lob2
+    )
+  ) +
+  geom_jitter(alpha = 0.5) +
+  geom_smooth(
+    method = "gam", 
+    formula =  y ~ s(x, bs = "cs", k = 50, sp=10000000), 
+    se=FALSE
+  )
+```
+
+::: {.callout-tip}
+
+We are in the broad area of a core data science concept: the 'bias variance tradeoff'. That is, with any
+statistical learning method, we can introduce errors with the assumptions of 
+our model (_bias_) and errors due to excessively following small fluctuations
+in our data (_variance_). But the less bias we include, the more we will be 
+lead astray by noise and vice versa. It's a _tradeoff_.
+
+In the case we are looking at now, reducing the smoothing parameter is
+equivalent to decreasing bias and increasing variance.
+
+See [the Wikipedia page](https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff).
+
+:::
+
+
+### Fitting GAMs with `mgcv`
+
+How do we specify GAMs with the `mgcv` package? Let's start with model formulae.
+
+The most obvious this is the construction of smooth terms. These use the `s`
+function. Let's look at the ONZE data from @fig-fit-spline-lowsmooth and 
+@fig-fit-spline-highsmooth. Here we want normalised first formant values to 
+vary with year of birth in a non-linear way. We want a **smooth** on year of 
+birth.
+
+What are the column names here?
+```{r}
+mean_onze_full
+```
+The variable we want to _explain_ is `F1_lob2`. This contains normalised mean
+first formant values for each speaker. We want to explain it using `yob', which
+we can see from the tibble output, is an integer. We'll look at incorporating
+the other variables later.
+
+The simplest version of the formula is this: `F1_lob2 ~ s(yob)`. But this is
+usually bad practice --- we should be more explicit! As a general principle,
+relying on defaults is dangerous as they can change under you, causing your
+code to have a different outcome. 
+
+The first area to be explicit is the **knots**. The default value for many
+smoothing splines is $10$ and this is almost always fine. But we should think
+about it each time we fit a GAMM. So, an improvement: `F1_lob2 ~ s(yob, k = 10)`.
+
+The second argument to highlight is `bs`. This says what kind of basis functions
+we are using. The default, `tp`, or thin plate regression splines, are fine.
+Typically this choice won't make a big different to you. But I will add more
+detail here soon. Regardless, it is good to make this explicit. So our 
+final version of this formula: `F1_lob2 ~ s(yob, k = 10, bs = "tp")`.
+
+What do we *do* with this formula? We will use the function `bam` to fit our 
+first GAM.
+
+::: {.callout-note}
+
+We could just as easily use the `gam` function, but `bam` is optimised for 
+large datasets. 
+
+:::
+
+```{r}
+onze_fit <- bam(
+  formula = F1_lob2 ~ s(yob, k = 10, bs = "tp"),
+  data = mean_onze_full
+)
+```
+
+We obtain a summary for this model using the `summary` function:
+```{r}
+summary(onze_fit)
+```
+
+This summary has two primary sections. The `Parametric coefficients`, which
+indicate the non-smooth aspects of the model. In this case, the model fits
+an intercept term, which sets the overall height of the smooth function. The
+`Approximate significance of smooth terms` section indicates, as it says, 
+the approximate significance of our smooths. This is the GAM equivalent of
+the coefficient for a variable in a linear model. 
+
+In this model, we only have `s(yob)` to look at. We see that it has an `edf`
+or 'estimated degrees of freedom' of 3.633. This is an indication of how 
+wiggly the line is. If the esimated degrees of freedom are 1, it's pretty
+much a straight line. We also see a `p-value` entry. This indicates whether
+the shape of the smooth is statistically significantly different from a flat
+line at the intercept value. In this case, unsurprisingly, it is distinct
+from a flat line.
+
+But there are some problems here. First, we are merging male and female 
+data together here. What if we want to fit a smooth for both male and 
+female speakers? Here we can us the `by` argument to `s()` _and_ add a
+parametric term for `gender`. This results in:
+
+```{r}
+onze_fit_gender <- bam(
+  formula = F1_lob2 ~ gender + s(yob, by = gender, k = 10, bs = "tp"),
+  data = mean_onze_full
+)
+
+summary(onze_fit_gender)
+```
+
+Now we have _two_ intercept terms, one for the female speakers and one for the
+male, both of which are significant. Just as in generalised linear models, 
+the `genderM` parametric term gives a _difference_ from the female intercept.
+This indicates that the first formant value is on average higher for male
+speakers. In the smooth terms section we now see `s(yob):genderF` and 
+`s(yob):genderM`. We get independent p-values for each. What we do not get is
+a representation of the _difference_ between the smooth for the female speakers
+and the smooth for the male speakers.^[We will look at how to do this later in the series.] 
+
+Note that the smooth for the male speakers
+in effectively a straight line. We will see this in a moment when we visualise.
+
+We will add one more thing to this model before turning to diagnostics and
+plotting. What if we want _two_ smooths? We know that speech rate can affect
+formant values. We can add this as an additional smooth term as follows:
+
+```{r}
+onze_fit_rate <- bam(
+  formula = F1_lob2 ~ gender + 
+    s(yob, by = gender, k = 10, bs = "tp") +
+    s(speech_rate, k = 10, bs = "tp"),
+  data = mean_onze_full
+)
+
+summary(onze_fit_rate)
+```
+In this case we don't see a significant difference as a result of speech rate.
+This may be because we are working with mean values for the formants. Once we
+can include random effects, and thus multiple values from a single speaker,
+this will change!
+
+::: {.callout-tip}
+
+@wielingAnalyzingDynamicPhonetic2018 provides an example of building up a model 
+from the ground up, exploring many different possible structures and including
+the R code. It is a good first port of call for looking at additional possible
+structures.
+
+:::
+
+### Model diagnostics
+
+The primary port of call for model diagnostics in `mgcv` is the `gam.check()`
+function. One of the outputs is a text output to help determine if $k$ is too
+low. 
+
+```{r}
+#| fig.keep: none
+gam.check(onze_fit_rate)
+```
+
+The output above has an entry for each smooth term in the model. `k'` indicate
+the knots the smooth function has available. This, as explained above, is an
+upper limit on wiggliness. It will usually be one less than the value of `k`
+given in the model formula. The value `edf` indicates the actual wiggliness
+of the smooth. To determine if there is evidence of insufficient `k`, check
+whether the `p-value` is low _and_ the `edf` is close to `k'`. If so, 
+consider increasing `k` in the model. In this case, `k` is plenty high enough.
+
+Let's see a case where this doesn't work well.
+```{r}
+#| fig.keep: none
+sim_fit <- bam(
+  formula = yobs ~ s(x, k = 3, bs = "cr"),
+  data = data
+)
+
+gam.check(sim_fit)
+```
+Here `k'` and `edf` are the same, and the `p-value` is very low. Something
+is going wrong here. In fact, the problem here is the same problem we saw
+in @fig-fit-spline-bad.
+
+If you run `gam.check` you will also see some diagnostic plots. I have suppressed
+them in this document. 
+The `gratia` package provides a nice wrapper for the `gam.check` visualisations
+(via the `appraise` function).
+It has the advantage of being a single plot in `ggplot` format which will take
+on any global changes to you 'theme'. That is, it will produce output which
+matches your other plots. 
+
+Let's look at the bad fit to our simulated data again: 
+```{r}
+appraise(sim_fit)
+```
+
+These plots tell us something about the _residuals_. The assumption of our model
+is that these residuals will be normally distributed. That is, we assume that
+the variation which is left behind by our model looks like random observations from
+a normal distribution.
+
+These diagnostic plots are **not** like this. At the top left, we should see
+a straight line of black points following the red line. However, we see that
+at the tails, at extreme values of a predictor, we are not getting what we would
+expect from a normal distribution. The histogram tells a similar story. This 
+should look like a nice(ish) bell curve. But the most extreme warning signs are
+the two plots on the right. These show the model predictions plotted against
+the actual values. There should be no obvious (non-linear) pattern in these plots.
+
+We already know what to do in this case, we need to increase $k$! If we do,
+this is what we get:
+```{r}
+sim_fit_highk <- bam(
+  formula = yobs ~ s(x, k = 20, bs = "cr"),
+  data = data
+)
+
+appraise(sim_fit_highk)  
+```
+Much better! And the check of `k` looks OK too:
+```{r}
+#| fig.keep: none
+gam.check(sim_fit_highk)
+```
+
+Returning to our model of the ONZE data, let's use `appraise` again:
+
+```{r}
+appraise(onze_fit_rate)
+```
+
+This looks basically fine. But we can see heavier tails that we would usually
+want at either end of the QQ plot and the histogram. This is quite common
+in vocalic data. One way to handle this is to assume that the residuals follow
+a t distribution instead (these have fatter tails than normal distributions).
+We can do this with the `family` argument to `bam`. If we do this, the 
+plots look a bit better:
+
+```{r}
+onze_fit_rate <- bam(
+  formula = F1_lob2 ~ gender + 
+    s(yob, by = gender, k = 10, bs = "tp") +
+    s(speech_rate, k = 10, bs = "tp"),
+  data = mean_onze_full,
+  family = scat(link="identity")
+)
+
+appraise(onze_fit_rate)
+```
+
+We will see a case below where a t-distribution functions better than a standard normal
+distribution with formant data. It is worth checking this case-by-case though.
+
+### Plotting
+
+Plotting smooths can be done in at least three ways:
+
+1. Using a prediction function to generate predictions from the model and then
+plot them yourself. The advantage is high flexibility in your plots.
+2. Use the `plot_smooth()` and related functions from `itsadug`.
+3. Use the GAM plotting functions from `gratia`.
+
+Let's look at the `plot_smooth()` function. This has been used in a lot of 
+projects at NZILBB.
+
+```{r}
+#| eval: false
+plot_smooth(
+  x = # the model,
+  view = # the name of the variable you want to plot.
+  cond = # a named list containing the values of other terms in the model. 
+  # if not given you will get mean values.
+  plot_all = # The name of any factors which for which you want all levels to be
+  # plotted
+  rug = # display a 'rug' at the bottom of the plot to indicate where there are
+  # actual observations.
+)
+```
+
+Now, using these to plot the ONZE model, we get:
+
+```{r}
+plot_smooth(
+  x = onze_fit_rate,
+  view = "yob",
+  plot_all = "gender",
+  rug = TRUE
+)
+```
+Note that the values given for other predictors are given in console output.
+
+Now change the `view` and `cond` arguments and see what happens.
+
+## The Second 'M': Mixed Effects
+
+![](images/uc.gif)
+
+## Auto-correlation
+
+![](images/uc.gif)
+
+## Further Resources {#sec-resources}
+
+- Márton Sóskuthy's GAMM tutorial: https://arxiv.org/pdf/1703.05339.pdf
+- Márton Sóskuthy's paper compared multiple significance testing strategies for 
+error rates: https://www.sciencedirect.com/science/article/pii/S009544702030108X#s0070
+- Martijn Wieling's tutorial: https://www.sciencedirect.com/science/article/pii/S0095447017301377
+
+::: {.callout-note}
+
+Resources have also been written by non-Martins. I will add some soon!
+
+:::
+
+
