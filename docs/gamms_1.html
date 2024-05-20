@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>NZILBB R and Open Science Workshops - 4&nbsp; Generalized Additive (Mixed) Models</title>
+<title>NZILBB R and Open Science Workshops - 5&nbsp; Generalized Additive (Mixed) Models</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -165,7 +165,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="./gamms_1.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="./gamms_1.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -220,6 +220,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./data_processing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Processing</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -234,19 +240,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./rstudio_server.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">RStudio Server</span></span></a>
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">RStudio Server</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./qualtrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Loading data from Qualtrics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Loading data from Qualtrics</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./gamms_1.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -267,27 +273,27 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">4.1</span> Overview</a></li>
-  <li><a href="#introduction-to-gams" id="toc-introduction-to-gams" class="nav-link" data-scroll-target="#introduction-to-gams"><span class="header-section-number">4.2</span> Introduction to GAMs</a>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">5.1</span> Overview</a></li>
+  <li><a href="#introduction-to-gams" id="toc-introduction-to-gams" class="nav-link" data-scroll-target="#introduction-to-gams"><span class="header-section-number">5.2</span> Introduction to GAMs</a>
   <ul class="collapse">
-  <li><a href="#why" id="toc-why" class="nav-link" data-scroll-target="#why"><span class="header-section-number">4.2.1</span> Why?</a></li>
-  <li><a href="#what" id="toc-what" class="nav-link" data-scroll-target="#what"><span class="header-section-number">4.2.2</span> What?</a></li>
-  <li><a href="#fitting-gams-with-mgcv" id="toc-fitting-gams-with-mgcv" class="nav-link" data-scroll-target="#fitting-gams-with-mgcv"><span class="header-section-number">4.2.3</span> Fitting GAMs with <code>mgcv</code></a></li>
-  <li><a href="#model-diagnostics" id="toc-model-diagnostics" class="nav-link" data-scroll-target="#model-diagnostics"><span class="header-section-number">4.2.4</span> Model diagnostics</a></li>
-  <li><a href="#plotting" id="toc-plotting" class="nav-link" data-scroll-target="#plotting"><span class="header-section-number">4.2.5</span> Plotting</a></li>
+  <li><a href="#why" id="toc-why" class="nav-link" data-scroll-target="#why"><span class="header-section-number">5.2.1</span> Why?</a></li>
+  <li><a href="#what" id="toc-what" class="nav-link" data-scroll-target="#what"><span class="header-section-number">5.2.2</span> What?</a></li>
+  <li><a href="#fitting-gams-with-mgcv" id="toc-fitting-gams-with-mgcv" class="nav-link" data-scroll-target="#fitting-gams-with-mgcv"><span class="header-section-number">5.2.3</span> Fitting GAMs with <code>mgcv</code></a></li>
+  <li><a href="#model-diagnostics" id="toc-model-diagnostics" class="nav-link" data-scroll-target="#model-diagnostics"><span class="header-section-number">5.2.4</span> Model diagnostics</a></li>
+  <li><a href="#plotting" id="toc-plotting" class="nav-link" data-scroll-target="#plotting"><span class="header-section-number">5.2.5</span> Plotting</a></li>
   </ul></li>
-  <li><a href="#the-second-m-mixed-effects" id="toc-the-second-m-mixed-effects" class="nav-link" data-scroll-target="#the-second-m-mixed-effects"><span class="header-section-number">4.3</span> The Second ‘M’: Mixed Effects</a></li>
-  <li><a href="#auto-correlation" id="toc-auto-correlation" class="nav-link" data-scroll-target="#auto-correlation"><span class="header-section-number">4.4</span> Auto-correlation</a></li>
-  <li><a href="#sec-resources" id="toc-sec-resources" class="nav-link" data-scroll-target="#sec-resources"><span class="header-section-number">4.5</span> Further Resources</a></li>
+  <li><a href="#the-second-m-mixed-effects" id="toc-the-second-m-mixed-effects" class="nav-link" data-scroll-target="#the-second-m-mixed-effects"><span class="header-section-number">5.3</span> The Second ‘M’: Mixed Effects</a></li>
+  <li><a href="#auto-correlation" id="toc-auto-correlation" class="nav-link" data-scroll-target="#auto-correlation"><span class="header-section-number">5.4</span> Auto-correlation</a></li>
+  <li><a href="#sec-resources" id="toc-sec-resources" class="nav-link" data-scroll-target="#sec-resources"><span class="header-section-number">5.5</span> Further Resources</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="./gamms_1.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="./gamms_1.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></h1>
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></h1>
 </div>
 
 
@@ -304,8 +310,8 @@ window.Quarto = {
 </header>
 
 
-<section id="overview" class="level2" data-number="4.1">
-<h2 data-number="4.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">4.1</span> Overview</h2>
+<section id="overview" class="level2" data-number="5.1">
+<h2 data-number="5.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">5.1</span> Overview</h2>
 <p>This chapter is going to grow over three initial sessions. The rough plan is:</p>
 <ol type="1">
 <li>Introduction to the idea of GAMs and how to specify parametric and smooth terms.</li>
@@ -332,14 +338,14 @@ window.Quarto = {
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Set ggplot theme</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This workshop is heavily indebted to the workshops put together by Márton Sóskuthy and Martijn Wieling. Links to these are provided in <a href="#sec-resources" class="quarto-xref"><span class="quarto-unresolved-ref">sec-resources</span></a>.</p>
+<p>This workshop is heavily indebted to the workshops put together by Márton Sóskuthy and Martijn Wieling. Links to these are provided in <a href="#sec-resources" class="quarto-xref"><span>Section 5.5</span></a>.</p>
 </section>
-<section id="introduction-to-gams" class="level2" data-number="4.2">
-<h2 data-number="4.2" class="anchored" data-anchor-id="introduction-to-gams"><span class="header-section-number">4.2</span> Introduction to GAMs</h2>
-<section id="why" class="level3" data-number="4.2.1">
-<h3 data-number="4.2.1" class="anchored" data-anchor-id="why"><span class="header-section-number">4.2.1</span> Why?</h3>
+<section id="introduction-to-gams" class="level2" data-number="5.2">
+<h2 data-number="5.2" class="anchored" data-anchor-id="introduction-to-gams"><span class="header-section-number">5.2</span> Introduction to GAMs</h2>
+<section id="why" class="level3" data-number="5.2.1">
+<h3 data-number="5.2.1" class="anchored" data-anchor-id="why"><span class="header-section-number">5.2.1</span> Why?</h3>
 <p>Straight lines have a lot of advantages. They can be completely specified by two numbers: how steep they are (the <strong>slope</strong>) and where they intersect the <span class="math inline">\(y\)</span>-axis (the <strong>intercept</strong>). Fitting a straight line through a collection of points is just a matter of finding the optimum slope and intercept.</p>
-<p>But <strong>sometimes straight lines aren’t enough</strong>. There are plenty of effects in nature which do not follow a straight line. There are plenty of examples of trajectories with non-linear behaviour in the study of language. For instance, consider the following is a trajectory for the <span class="smallcaps">price</span> vowel from ONZE via <span class="citation" data-cites="soskuthyHorizontalDiphthongShift2019">(<a href="#ref-soskuthyHorizontalDiphthongShift2019" role="doc-biblioref">Sóskuthy, Hay, and Brand 2019</a>)</span>.</p>
+<p>But <strong>sometimes straight lines aren’t enough</strong>. There are plenty of effects in nature which do not follow a straight line. There are plenty of examples of trajectories with non-linear behaviour in the study of language. For instance, consider the following is a trajectory for the <span class="smallcaps">price</span> vowel from ONZE via <span class="citation" data-cites="soskuthyHorizontalDiphthongShift2019">(<a href="references.html#ref-soskuthyHorizontalDiphthongShift2019" role="doc-biblioref">Sóskuthy, Hay, and Brand 2019</a>)</span>.</p>
 <div class="cell">
 <details class="code-fold">
 <summary>To view the code click here</summary>
@@ -417,10 +423,10 @@ window.Quarto = {
 </div>
 </div>
 </div>
-<p>The same comments apply to trajectories taken from, e.g., tongue sensors or derived from video footage. They also apply at very different time scales. Consider GAMMs fit through full monologues <span class="citation" data-cites="wilsonblackOverlookedEffectAmplitude2023">(<a href="#ref-wilsonblackOverlookedEffectAmplitude2023" role="doc-biblioref">Wilson Black et al. 2023</a>)</span>, or to formant values across the history of a dialect <span class="citation" data-cites="brandSystematicCovariationMonophthongs2021">(<a href="#ref-brandSystematicCovariationMonophthongs2021" role="doc-biblioref">Brand et al. 2021</a>)</span>.</p>
+<p>The same comments apply to trajectories taken from, e.g., tongue sensors or derived from video footage. They also apply at very different time scales. Consider GAMMs fit through full monologues <span class="citation" data-cites="wilsonblackOverlookedEffectAmplitude2023">(<a href="references.html#ref-wilsonblackOverlookedEffectAmplitude2023" role="doc-biblioref">Wilson Black et al. 2023</a>)</span>, or to formant values across the history of a dialect <span class="citation" data-cites="brandSystematicCovariationMonophthongs2021">(<a href="references.html#ref-brandSystematicCovariationMonophthongs2021" role="doc-biblioref">Brand et al. 2021</a>)</span>.</p>
 </section>
-<section id="what" class="level3" data-number="4.2.2">
-<h3 data-number="4.2.2" class="anchored" data-anchor-id="what"><span class="header-section-number">4.2.2</span> What?</h3>
+<section id="what" class="level3" data-number="5.2.2">
+<h3 data-number="5.2.2" class="anchored" data-anchor-id="what"><span class="header-section-number">5.2.2</span> What?</h3>
 <p>We’ll start with a bit of mathematics. A linear model looks like this:</p>
 <p><span class="math display">\[ y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \ldots + \beta_n x_n + \epsilon \]</span> where the <span class="math inline">\(\beta\)</span>’s are the model <strong>coefficients</strong>, the <span class="math inline">\(x\)</span>’s are the model predictors, and the <span class="math inline">\(\epsilon\)</span> is an error term. The <span class="math inline">\(\beta_0\)</span> term is the aforementioned <strong>intercept</strong> and the other <span class="math inline">\(\beta_n\)</span>’s are <strong>slopes</strong>. These <strong>slopes</strong> estimate the effect of the attached predictor. For any predictor, all we get is a single slope and the intercept — a straight line.</p>
 <p>GAMs replace each of the <span class="math inline">\(\beta_n x_n\)</span> terms with a <strong>function</strong> of <span class="math inline">\(x_n\)</span>. This function will usually be some kind of <strong>smooth</strong>. We’ll look at this visually in a moment. But, mathematically, it looks like this:</p>
@@ -468,14 +474,14 @@ window.Quarto = {
 <img src="gamms_1_files/figure-html/fig-basis-functions-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-basis-functions-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.1: Cubic regression spline basis functions with 10 knots.
+Figure&nbsp;5.1: Cubic regression spline basis functions with 10 knots.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>Each distinct ‘basis function’ is in a different colour. We fit out actual data by multiplying the functions by appropriate coefficients (to change how <strong>high</strong> they are on the graph) and adding them together.</p>
-<p>There are a number of <strong>knots</strong> in <a href="#fig-basis-functions" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-basis-functions</span></a>. These are the points at which the functions a joined together (informally speaking) and at which we aim to ensure <strong>smoothness</strong>. For this set of basis functions, the knots are at (red points):</p>
+<p>There are a number of <strong>knots</strong> in <a href="#fig-basis-functions" class="quarto-xref">Figure&nbsp;<span>5.1</span></a>. These are the points at which the functions a joined together (informally speaking) and at which we aim to ensure <strong>smoothness</strong>. For this set of basis functions, the knots are at (red points):</p>
 <div class="cell">
 <details class="code-fold">
 <summary>To view the code click here</summary>
@@ -526,7 +532,7 @@ Figure&nbsp;4.1: Cubic regression spline basis functions with 10 knots.
 <img src="gamms_1_files/figure-html/fig-basis-functions-knots-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-basis-functions-knots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.2: Cubic regression spline basis functions with 10 knots (red dots).
+Figure&nbsp;5.2: Cubic regression spline basis functions with 10 knots (red dots).
 </figcaption>
 </figure>
 </div>
@@ -595,13 +601,13 @@ Figure&nbsp;4.2: Cubic regression spline basis functions with 10 knots (red dots
 <img src="gamms_1_files/figure-html/fig-fit-spline-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fit-spline-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.3: Simulated data (black dots) with the basis functions after multiplication by their weights (colourful lines) and the sum of the basis functions (black line).
+Figure&nbsp;5.3: Simulated data (black dots) with the basis functions after multiplication by their weights (colourful lines) and the sum of the basis functions (black line).
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
-<p>Spend some time looking at <a href="#fig-fit-spline" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-fit-spline</span></a>. Convince yourself that if you added together the colourful lines you would get the black line. The easiest way to do this is to work one point on the <span class="math inline">\(x\)</span>-axis at a time. The case where <span class="math inline">\(x=0\)</span> is the easiest, where the only colourful line is the red one and it is at the same point on the <span class="math inline">\(y\)</span>-axis as the black line.</p>
+<p>Spend some time looking at <a href="#fig-fit-spline" class="quarto-xref">Figure&nbsp;<span>5.3</span></a>. Convince yourself that if you added together the colourful lines you would get the black line. The easiest way to do this is to work one point on the <span class="math inline">\(x\)</span>-axis at a time. The case where <span class="math inline">\(x=0\)</span> is the easiest, where the only colourful line is the red one and it is at the same point on the <span class="math inline">\(y\)</span>-axis as the black line.</p>
 <p>What about this <strong>wiggliness</strong> and <strong>smoothness</strong> trade off? We’ve already seen one way in which wiggliness can be controlled: the number of knots sets an upper limit on how wiggly the resulting smooth function can be. If we only had 3 knots, this is what we would get:</p>
 <div class="cell">
 <details class="code-fold">
@@ -669,7 +675,7 @@ Figure&nbsp;4.3: Simulated data (black dots) with the basis functions after mult
 <img src="gamms_1_files/figure-html/fig-fit-spline-bad-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fit-spline-bad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.4: Simulated data (black dots) with the basis functions after multiplication by their weights (colourful lines) and the sum of the basis functions (black line).
+Figure&nbsp;5.4: Simulated data (black dots) with the basis functions after multiplication by their weights (colourful lines) and the sum of the basis functions (black line).
 </figcaption>
 </figure>
 </div>
@@ -712,7 +718,7 @@ Figure&nbsp;4.4: Simulated data (black dots) with the basis functions after mult
 <img src="gamms_1_files/figure-html/fig-fit-spline-lowsmooth-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fit-spline-lowsmooth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.5: Mean normalised F1 for female speakers in ONZE by year of birth. Smoothing parameter set to 0.01.
+Figure&nbsp;5.5: Mean normalised F1 for female speakers in ONZE by year of birth. Smoothing parameter set to 0.01.
 </figcaption>
 </figure>
 </div>
@@ -757,7 +763,7 @@ Figure&nbsp;4.5: Mean normalised F1 for female speakers in ONZE by year of birth
 <img src="gamms_1_files/figure-html/fig-fit-spline-highsmooth-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fit-spline-highsmooth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.6: Mean normalised F1 for female speakers in ONZE by year of birth. Smoothing parameter set to 10,000,000.
+Figure&nbsp;5.6: Mean normalised F1 for female speakers in ONZE by year of birth. Smoothing parameter set to 10,000,000.
 </figcaption>
 </figure>
 </div>
@@ -779,10 +785,10 @@ Tip
 </div>
 </div>
 </section>
-<section id="fitting-gams-with-mgcv" class="level3" data-number="4.2.3">
-<h3 data-number="4.2.3" class="anchored" data-anchor-id="fitting-gams-with-mgcv"><span class="header-section-number">4.2.3</span> Fitting GAMs with <code>mgcv</code></h3>
+<section id="fitting-gams-with-mgcv" class="level3" data-number="5.2.3">
+<h3 data-number="5.2.3" class="anchored" data-anchor-id="fitting-gams-with-mgcv"><span class="header-section-number">5.2.3</span> Fitting GAMs with <code>mgcv</code></h3>
 <p>How do we specify GAMs with the <code>mgcv</code> package? Let’s start with model formulae.</p>
-<p>The most obvious this is the construction of smooth terms. These use the <code>s</code> function. Let’s look at the ONZE data from <a href="#fig-fit-spline-lowsmooth" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-fit-spline-lowsmooth</span></a> and <a href="#fig-fit-spline-highsmooth" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-fit-spline-highsmooth</span></a>. Here we want normalised first formant values to vary with year of birth in a non-linear way. We want a <strong>smooth</strong> on year of birth.</p>
+<p>The most obvious this is the construction of smooth terms. These use the <code>s</code> function. Let’s look at the ONZE data from <a href="#fig-fit-spline-lowsmooth" class="quarto-xref">Figure&nbsp;<span>5.5</span></a> and <a href="#fig-fit-spline-highsmooth" class="quarto-xref">Figure&nbsp;<span>5.6</span></a>. Here we want normalised first formant values to vary with year of birth in a non-linear way. We want a <strong>smooth</strong> on year of birth.</p>
 <p>What are the column names here?</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>mean_onze_full</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -941,12 +947,12 @@ Tip
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p><span class="citation" data-cites="wielingAnalyzingDynamicPhonetic2018">Wieling (<a href="#ref-wielingAnalyzingDynamicPhonetic2018" role="doc-biblioref">2018</a>)</span> provides an example of building up a model from the ground up, exploring many different possible structures and including the R code. It is a good first port of call for looking at additional possible structures.</p>
+<p><span class="citation" data-cites="wielingAnalyzingDynamicPhonetic2018">Wieling (<a href="references.html#ref-wielingAnalyzingDynamicPhonetic2018" role="doc-biblioref">2018</a>)</span> provides an example of building up a model from the ground up, exploring many different possible structures and including the R code. It is a good first port of call for looking at additional possible structures.</p>
 </div>
 </div>
 </section>
-<section id="model-diagnostics" class="level3" data-number="4.2.4">
-<h3 data-number="4.2.4" class="anchored" data-anchor-id="model-diagnostics"><span class="header-section-number">4.2.4</span> Model diagnostics</h3>
+<section id="model-diagnostics" class="level3" data-number="5.2.4">
+<h3 data-number="5.2.4" class="anchored" data-anchor-id="model-diagnostics"><span class="header-section-number">5.2.4</span> Model diagnostics</h3>
 <p>The primary port of call for model diagnostics in <code>mgcv</code> is the <code>gam.check()</code> function. One of the outputs is a text output to help determine if <span class="math inline">\(k\)</span> is too low.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gam.check</span>(onze_fit_rate)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -997,7 +1003,7 @@ s(x)  2   2    0.03  &lt;2e-16 ***
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>Here <code>k'</code> and <code>edf</code> are the same, and the <code>p-value</code> is very low. Something is going wrong here. In fact, the problem here is the same problem we saw in <a href="#fig-fit-spline-bad" class="quarto-xref">Figure&nbsp;<span class="quarto-unresolved-ref">fig-fit-spline-bad</span></a>.</p>
+<p>Here <code>k'</code> and <code>edf</code> are the same, and the <code>p-value</code> is very low. Something is going wrong here. In fact, the problem here is the same problem we saw in <a href="#fig-fit-spline-bad" class="quarto-xref">Figure&nbsp;<span>5.4</span></a>.</p>
 <p>If you run <code>gam.check</code> you will also see some diagnostic plots. I have suppressed them in this document. The <code>gratia</code> package provides a nice wrapper for the <code>gam.check</code> visualisations (via the <code>appraise</code> function). It has the advantage of being a single plot in <code>ggplot</code> format which will take on any global changes to you ‘theme’. That is, it will produce output which matches your other plots.</p>
 <p>Let’s look at the bad fit to our simulated data again:</p>
 <div class="cell">
@@ -1079,8 +1085,8 @@ s(x) 19.0 17.7     1.1    0.98</code></pre>
 </div>
 <p>We will see a case below where a t-distribution functions better than a standard normal distribution with formant data. It is worth checking this case-by-case though.</p>
 </section>
-<section id="plotting" class="level3" data-number="4.2.5">
-<h3 data-number="4.2.5" class="anchored" data-anchor-id="plotting"><span class="header-section-number">4.2.5</span> Plotting</h3>
+<section id="plotting" class="level3" data-number="5.2.5">
+<h3 data-number="5.2.5" class="anchored" data-anchor-id="plotting"><span class="header-section-number">5.2.5</span> Plotting</h3>
 <p>Plotting smooths can be done in at least three ways:</p>
 <ol type="1">
 <li>Using a prediction function to generate predictions from the model and then plot them yourself. The advantage is high flexibility in your plots.</li>
@@ -1128,16 +1134,16 @@ s(x) 19.0 17.7     1.1    0.98</code></pre>
 <p>Now change the <code>view</code> and <code>cond</code> arguments and see what happens.</p>
 </section>
 </section>
-<section id="the-second-m-mixed-effects" class="level2" data-number="4.3">
-<h2 data-number="4.3" class="anchored" data-anchor-id="the-second-m-mixed-effects"><span class="header-section-number">4.3</span> The Second ‘M’: Mixed Effects</h2>
+<section id="the-second-m-mixed-effects" class="level2" data-number="5.3">
+<h2 data-number="5.3" class="anchored" data-anchor-id="the-second-m-mixed-effects"><span class="header-section-number">5.3</span> The Second ‘M’: Mixed Effects</h2>
 <p><img src="images/uc.gif" class="img-fluid"></p>
 </section>
-<section id="auto-correlation" class="level2" data-number="4.4">
-<h2 data-number="4.4" class="anchored" data-anchor-id="auto-correlation"><span class="header-section-number">4.4</span> Auto-correlation</h2>
+<section id="auto-correlation" class="level2" data-number="5.4">
+<h2 data-number="5.4" class="anchored" data-anchor-id="auto-correlation"><span class="header-section-number">5.4</span> Auto-correlation</h2>
 <p><img src="images/uc.gif" class="img-fluid"></p>
 </section>
-<section id="sec-resources" class="level2" data-number="4.5">
-<h2 data-number="4.5" class="anchored" data-anchor-id="sec-resources"><span class="header-section-number">4.5</span> Further Resources</h2>
+<section id="sec-resources" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="sec-resources"><span class="header-section-number">5.5</span> Further Resources</h2>
 <ul>
 <li>Márton Sóskuthy’s GAMM tutorial: https://arxiv.org/pdf/1703.05339.pdf</li>
 <li>Márton Sóskuthy’s paper compared multiple significance testing strategies for error rates: https://www.sciencedirect.com/science/article/pii/S009544702030108X#s0070</li>
@@ -1158,7 +1164,7 @@ Note
 </div>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-brandSystematicCovariationMonophthongs2021" class="csl-entry" role="listitem">
 Brand, James, Jen Hay, Lynn Clark, Kevin Watson, and Márton Sóskuthy. 2021. <span>“Systematic Co-Variation of Monophthongs Across Speakers of <span>New Zealand English</span>.”</span> <em>Journal of Phonetics</em> 88: 101096. <a href="https://www.sciencedirect.com/science/article/pii/S0095447021000711">https://www.sciencedirect.com/science/article/pii/S0095447021000711</a>.
 </div>
@@ -1799,7 +1805,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="./qualtrics.html" class="pagination-link" aria-label="Loading data from Qualtrics">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Loading data from Qualtrics</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Loading data from Qualtrics</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">

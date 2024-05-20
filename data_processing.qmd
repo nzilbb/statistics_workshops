@@ -1,0 +1,651 @@
+# Data Processing
+
+In this chapter, we'll look at some common things you will need to do with data.
+We will also begin to work with a series of packages called the `tidyverse`, 
+which implement a series of data processing and visualising techniques on top
+of base R. 
+
+I tend to use tidyverse functions and methods when I work with data, but there
+are many people who prefer base R methods. We will look at some base R
+approaches as these workshops progress, and especially in this chapter, but the
+majority of the code I put in front of you will use at least some tidyverse
+methods.
+
+Run the following cell. If R complains, ensure each package is
+installed. If it isn't, run `install.packages("PACKAGE NAME")` where you
+replace `PACKAGE NAME` with the name of the package. Make sure the package
+name is inside quotation marks.
+
+```{r}
+# We load two packages from the 'tidyverse' by name. `dplyr` includes functions
+# for manipulating data. `readr` includes a series of functions for reading
+# data in to R.
+library(dplyr)
+library(readr)
+
+# This package helps to manage the paths to files.
+library(here)
+```
+
+## Processing Data in Base R.
+
+### Loading in Data
+
+Usually, you will load data from an external file. It is best practice to treat
+this file as 'read only' for the purposes of your R project. That is, you 
+shouldn't be overwriting the data file in the course of your project. Usually
+this data will be either:
+
+1. a `csv` file: CSV stands for comma separated values. It is a text file in
+which values a separated by commas and each new line is a new row. It is an
+example of the more general class of 'delimited' files, where there is a special
+character separating values (another one you might come across is 'tab separated
+values' --- where the values are separated by a tab). 
+2. an Excel file (`.xlsx` or `.xls`). There is no base R function to directly
+read Excel files, but we have already loaded the `readxl` package which allows 
+this. **Be extra careful** when loading Excel files. Excel may have modified the 
+data in various ways. Famously, dates and times are difficult to manage. We 
+will consider sanity checks in the following chapter.
+
+There are other possibilities as well. Perhaps, for instance, you are
+collaborating with someone using SPSS or some other statistical software. There
+are too many cases to consider here, but [Google will be your friend](https://www.google.com/search?q=read+.bizarre_file_extension+files+in+R). 
+
+Here, we'll read a csv of reading from vowels from the QuakeBox corpus using
+the base R `read.csv` function. The most simple approach is:
+```{r}
+vowels <- read.csv('data/qb_vowels.csv')
+```
+
+I often use the `here` package to manage file paths. These can be a little
+finiky, especially when shifting between devices and operating systems.
+In an R project, the function `here()` starts from the root directory of the
+project. We then add arguments to the function containing the names of the
+directories and files that we want. The `here` version of the previous line
+of code is:
+```{r}
+vowels <- read.csv(here('data', 'qb_vowels.csv'))
+```
+
+Look in your file browser to make sure you understand where the file you are 
+loading lives and how the path you enter, either using relative paths within
+an R project and/or using the `here` package, relates to the file.
+
+We should always check a few entries to make sure the data is being read in
+correctly. The `head()` function is very useful.
+```{r}
+head(vowels)
+```
+We see a mix of numerical values and characters. 
+
+Another useful function is `summary` which provides some nice descriptive
+statistics.
+```{r}
+summary(vowels)
+```
+Look at the values for `amplitude`. Reading down the column we see that the
+minimum value for amplitude is $35.53$, the first quartile is $61.94$, and
+so on, until we read the entry `NA's`, which tells us that $31$ entries in the
+column are missing. 
+
+Many of the entries in this summary just say `Class: character`. Sometimes, we
+can get more information by turning a column into a **factor** variable. A 
+factor variable is like a **character** variable, except that it also stores
+the range of possible values for the column. So, for instance, there is a short 
+list of possible vowels in this data set. We can use the `factor()` function
+to create a factor variable and look at the resulting summary.
+
+```{r}
+# The use of `$` here will be explained in a moment.
+summary(factor(vowels$vowel))
+```
+
+Now we see how many instances of each vowel we have in the data, rather than 
+just `Class: character`.
+
+Of course, properly interpreting any of these columns requires subject knowledge
+and proper documentation of data sets! We will leave this aside for the moment
+as we work on the mechanics of data processing in R.
+
+::: {.webex-check .webex-box}
+
+As always, check the documentation for a function which is new to you. Enter
+`?read.csv` in the console.
+
+- What is the default seperator between values for `read.csv`? `r fitb(",")`
+- Which argument would you change if your csv does not have column names? `r fitb("header")`
+
+:::
+
+### Accessing Values in a Data Frame
+
+How do we see what values are in a data frame? In RStudio, we can always click
+on the name of the data frame in the environment pane (recall: the environment
+pane is at the top right of the RStudio window). This will open the data as a
+tab in the source pane. It should look like a familiar spreadsheet programme,
+with the exception that you can't _modify_ the values.
+
+You will very frequently see code that looks like this `some_name$some_other_name`.
+This allows us to access the object with the name `some_other_name` _from_ 
+an object with the name `some_name`. We've just loaded a big data frame. This
+data frame has a name (`vowels` --- which you can see in the environment
+pane) **and** it has columns which also have names (for instance, `participant_age_category`).
+We can get access to these columns using `$`:
+```{r}
+word_frequencies <- vowels$word_freq
+```
+
+Look in the environment pane in the 'Values' section and you will see a new name
+(`word_frequencies`), followed by its type ('int' for 'integer' --- numbers that
+don't need a decimal point), how many values it has ($26331$) and the first few
+values in the vector. So the `$` has taken a single column from the data frame
+we loaded earlier and we have assigned this to the variable `word_frequencies`).
+Enter the name `word_frequencies` in your console, and you will see all of the
+values from the `word_frequencies` vector.
+
+There are a few ways to access values from this vector. We can use square 
+brackets to get a vector which contains a subset of the original vector. If
+we wanted the first hundred elements from the vector, we would use 
+square brackets and a colon:
+```{r}
+word_frequencies[1:100]
+```
+The colon produces a sequence from the number on the left to the number on the
+right, and the square brackets produce a subset of `word_frequencies`. We can
+put a single number inside square brackets. The result is a vector with a single
+value in it:
+```{r}
+word_frequencies[7]
+```
+
+We can also use negative numbers to _exclude_ the numbered elements. Here we 
+exclude the values from 1 to 26231.
+```{r}
+word_frequencies[-1:-26231]
+```
+This is equivalent to:
+```{r}
+word_frequencies[26232:26331]
+```
+
+The use of the colon (`:`) creates a vector whose elements make up
+a numerical sequence. The vector we put inside the square brackets doesn't need
+to be a sequence though. If we wanted the 3rd, 6th, 10th, and 750th entries
+in the vector we would say:
+```{r}
+word_frequencies[c(3, 6, 10, 750)]
+```
+
+We are again using `c()` to create a vector. 
+
+You can't mix negative and positive numbers here:
+```{r}
+#| error: true
+word_frequencies[c(3, 6, -10, 750)]
+```
+In this case, the error message is reasonably understandable.
+
+In addition to numeric vector, we can subset with **logical vectors**. These
+are vectors which contain the values `TRUE` and `FALSE`. This is particularly
+important for **filtering** data. Let's look at a simple example. We'll 
+create a vector of imagined participant ages and then create a logical vector
+which represents whether the participants are over 18 or not.
+```{r}
+participant_ages <- c(10, 19, 44, 33, 2, 90, 4)
+participant_ages > 18
+```
+The first participant is **not** older than $18$, so their value is `FALSE`.
+
+Now, say we want the actual ages of those participants who are older than 18 we
+can combine the two lines above
+```{r}
+participant_ages[participant_ages > 18]
+```
+
+If you want a single element from a vector, then you use double square brackets
+(`[[]]`). So, for instance, the following will not work because it attempts to
+get two elements using double square brackets: 
+```{r}
+#| error: true
+participant_ages[[c(2, 3)]]
+```
+While this may seem like a very small difference, it can be a source of errors
+in practice. Some functions care about the difference between, say, a _single_
+number and a _list_ containing a single number.
+
+We can use square brackets with data frames too. The only differences comes from
+the fact that data frames are two dimensional whereas vectors are one
+dimensional. If we want the entry in the second row and the third column of 
+the `vowels` data, we do this:
+```{r}
+vowels[2, 3]
+```
+
+We can again use sequences or vectors. For instance:
+```{r}
+vowels[1:3, 4:6]
+```
+Here we get the values for the first three rows of the data frame from the
+fourth, fifth, and sixth columns. 
+
+If we want to specify *just* rows, or *just* columns, we can leave a blank 
+space inside the square brackets:
+```{r}
+# rows only:
+vowels[1:3, ]
+```
+
+``` {r}
+# columns only:
+vowels[, 1:3]
+```
+
+The filtering code we looked at above is now a little more useful. What if we
+want to explore just the data from the female participants? We can use a logical
+vector again and the names of the columns. 
+```{r}
+vowels_f <- vowels[vowels$participant_gender == "F", ]
+```
+
+We have just filtered _the entire data frame_ using the values of a single
+column. Look at the environment pain and you should now see two dat aframes:
+`vowels` and `vowels_f`. You should also see that one has many fewer rows than
+the other. 
+
+**NB:** Don't confuse `==` and `=`! The double `==` is used to 
+test whether the left side and the right side are equal. The single `=` 
+behaves like `<-`. Here's the kind of error you will see if you confused them:
+```{r}
+#| error: true
+# This code is incorrect
+vowels_f <- vowels[vowels$participant_gender = "F", ]
+```
+It says `unexpected '='`. Usually this is a good sign that you should use `==`.
+
+We can also use _names_ to filter. We know already that columns have names. 
+We can give their names inside the square brackets. For instance:
+```{r}
+vowels_formants <- vowels[, c("F1_50", "F2_50")]
+```
+The above creates a data frame called `vowels_formants` containing 
+_all rows_ of the vowel data but only the columns with the 
+names "F1_50" and "F2_50".
+
+With data frames, you can also just enter the names without the comma.
+```{r}
+vowels_formants <- vowels[c("F1_50", "F2_50")]
+```
+This code has the same effect as the previous code.
+
+To get access to a single column, you can use a name with double square brackets.
+e.g.:
+```{r}
+word_frequencies <- vowels[["word_freq"]]
+```
+
+In fact, `some_name$some_other_name` is a shorthand form of
+`some_name[["some_other_name"]]`. A single element of a list or vector returned
+by `$` and `[[]]`, whereas `[]` returns a list or vector which may contain
+multiple elements.^[There are some slight differences. If you are interested 
+see the relevant section of [Advanced R](https://adv-r.hadley.nz/subsetting.html#section-1)]
+
+::: {.webex-check .webex-box}
+
+```{r}
+#| output: asis
+#| echo: false
+opts <- c(
+   "This code will produce an error.",
+   answer = "The fifth and sixth row of the data frame",
+   "The fifth and sixth columns of the data frame"
+)
+
+cat(
+  "If `data_frame` is a data frame, what will `data_frame[5:6, ]` return?", 
+  longmcq(opts)
+)
+```
+
+```{r}
+#| output: asis
+#| echo: false
+opts <- c(
+   "This code will produce an error.",
+   "The third, sixth, and ninth row of the data frame",
+   answer = "The third, sixth, and ninth column of the data frame."
+)
+
+cat(
+  "If `data_frame` is a data frame, what will `data_frame[, c(3, 6, 9)]` return?", 
+  longmcq(opts)
+)
+```
+
+Imagine you save a vector to the variable `vector_name`, as follows:
+```{r}
+#| eval: false
+vector_name <- c(5, 2, 7, 3, 2)
+```
+
+```{r}
+#| output: asis
+#| echo: false
+opts <- c(
+   answer = "`[1]  TRUE FALSE  TRUE  TRUE FALSE`",
+   "`TRUE`",
+   "`FALSE`",
+   "`[1] TRUE TRUE TRUE TRUE TRUE`"
+)
+
+cat(
+  "What would be the output of `vector_name > 2`?", 
+  longmcq(opts)
+)
+```
+
+```{r}
+#| output: asis
+#| echo: false
+opts <- c(
+   "`[1] 7 2`",
+   "`TRUE`",
+   answer = "`Error in vector_name[3, 5] : incorrect number of dimensions`"
+)
+
+cat(
+  "What would be the output of `vector_name[3, 5]`?", 
+  longmcq(opts)
+)
+```
+
+:::
+
+### Modifying Data
+
+We've learned how to get _access_ to data. But how to we _change_ it? Usually
+this is as simple as an application of the `<-`, which we have already seen.
+
+The following block of code creates a new column in `vowels` which contains
+a log transformation of the word frequency column. Often this is a sensible
+thing to do with word frequency data.  
+```{r}
+vowels$word_freq_ln <- log(vowels$word_freq + 1)
+```
+This statement uses a few things we have already seen. Reading from the inside
+out, we see that the column with the name `word_freq` is being referenced from
+the `vowels` data frame (`vowels$word_freq`), and every element in the column is
+being increased by $1$. Why? Well the logarithm of $0$ is not defined and there
+are some $0$'s in this column. We take the log using the `log()` function (have
+a look at the documentation to see what the default behaviour of the function
+is). Finally, we use the `<-` to put this data into a new column in the `vowels`
+data frame which we call `word_freq_ln`.
+
+We can do this to individual elements as well. For instance, if we want to 
+change the third entry in the `participant_ages` vector to $65$,
+we would write `r participant_ages[3] <- 65`.
+
+If we want to change the age of all participants with ages below 18 to $0$,
+for whatever reason, we could say:
+```{r}
+participant_ages[participant_ages < 18] <- 0
+```
+
+We can also overwrite existing data in a data frame, including whole columns,
+this way.
+
+## Processing Data in the `tidyverse`
+
+There are (at least) two interacting dialects of R: the style associated with
+the `tidyverse` and the 'base R' approach. The `tidyverse` is a collection of
+packages which work well together and share a design philosophy. The most 
+famous of these packages is `ggplot`, which implements a flexible approach
+to producing plots. This package will be the subject of a future workshop.
+We will focus instead on `dplyr`, a package which implements a set of 'verbs'
+for use with data frames. For more information see [https://www.tidyverse.org/](https://www.tidyverse.org/).
+
+Many scripts and markdowns will start with `library(tidyverse)`, which loads
+_all_ of the core tidyverse packages. To emphasise the modular nature
+of the `tidyverse`, this chapter only loads `dplyr` and `readr`.
+
+For example, one verb is `rename()`. This function renames existing columns
+of a data frame. Another is `mutate()`. The `mutate()` function changes the
+data frame, typically by modifying existing columns or adding new ones. Moreover,
+these functions can be strung together in step-by-step chains of data manipulation
+using 'pipes'. Here is an example of data processing in the tidyverse style 
+using these functions:
+```{r}
+vowels <- vowels %>%
+  mutate(
+    word_freq_ln = log(word_freq + 1)
+  ) %>%
+  rename(
+    F1_midpoint = F1_50,
+    F2_midpoint = F2_50
+  )
+```
+The pipe works by taking the object on the left of the pipe and feeding it 
+to the function on the right side of the pipe as the first argument. So, e.g.
+`2 %>% log()` is the same as `log(2)`. In this case, the data frame `vowels`
+becomes the first argument to `mutate()`, the following arguments then modify
+the data frame. Notice that we only need to say `word_freq` to refer to 
+the column (rather than `vowels$word_freq`). This is because `muatate()` knows
+the names of the columns in the data frame it receives. Once the 'mutation' 
+has happened, the modified data frame is pased to the `rename` funciton, which
+renames the columns `F1_50` and `F2_50` to `F1_midpoint` and `F2_midpoint`
+respectively. To see that this has happened, double click on `vowels` in the
+environment pain.
+
+There are ongoing interactions between base R and the tidyverse. One particularly prominent instance is the inclusion of a
+'pipe' opperator in base R (`|>`) which behaves in a very similar way to 
+the tidyverse pipe (`%>%`). In now prefer to use the base R pipe (`|>`). In
+practice, I always use the shortcut `ctrl + shift + M`/`command + shift + M`
+to insert the pipe. RStudio has an option to choose whether the result of this
+is the tidyverse pipe or the base R pipe. I prefer to use the base R pipe now.
+
+![Setting to use the base R pipe (`|>`) or the `magrittr` pipe (`%>%`). These options can be set globally with `Tools > Global Options` or for a specific project with `Tools > Project Options`.](images/pipe.png)
+
+**NB: you don't need to entirely adopt either style! **
+
+### Reading in Data (again!)
+
+Before we look in more detail at the data manipulation techniques which 
+come with the `dplyr` package, we should look again at reading data. The
+`readr` package comes with modifications to the base R methods for
+reading in csv and similar files. `readr` includes the function `read_csv` 
+(note the use of an underscore rather than dots, as in the base R function).
+
+```{r}
+#| warning: true
+vowels <- read_csv(here('data', 'qb_vowels.csv'))
+```
+One great advantage of `read_csv` is that the output tells us something about
+the way R has interpreted each column of the data and the names which have been
+given to each column. We see how many rows and columns, what delimited the
+values (as we expected, `","`), we also see what type of data R thinks these
+columns contain. So, `chr` means text strings. These are
+mostly participant metadata, such as their gender or ethnic background. We
+also see `dbl` columns. These contain **numerical** data.^[A `dbl` is a double
+length floating point number... Just think a number which can have a decimal
+point. Computers are, obviously, finite systems. Numbers are not (well...
+you could become a [strict finitist](https://en.wikipedia.org/wiki/Finitism) I
+suppose). The technicalities of representing numbers on computers are very
+interesting, but we will avoid them where we can!]
+
+Another change between `read.csv()` and `read_csv()` is that the data is now a
+'tibble' rather than a base R data frame. For current purposes, you don't
+need to worry about this distinctionl All of the base R methods we introduced
+above work with tibbles and with data frames.
+
+For more information on importing data see the relevant chapter of 
+[R for Data Science](https://r4ds.hadley.nz/data-import.html).
+
+### Some `dplyr` Verbs
+
+What are the main `dplyr` verbs? 
+
+If we want to filter a data frame, we use `filter()`. The first argument
+to `filter()` is a data frame. This argument is usually filled by the 
+use of a pipe function. The remaining arguments are a series of logical 
+statements which say which rows you want to keep and which you want to remove.
+
+We can put multiple filtering statements inside the `filter()` function. Look
+at this code, which I will explain after the block:
+
+```{r}
+vowels_filtered <- vowels |> 
+  filter(
+    following_segment_category == "other",
+    !is.na(amplitude),
+    between(F1_50, 300, 1000),
+    vowel_duration > 0.01 | word_freq < 1000
+  )
+```
+There are four statements being used to filter. Each is on a new line, but
+this is a stylistic choice, rather than one required for the code to work. 
+You don't need to use `$` with column names inside `tidyverse` verbs.
+
+1. The first statement uses `==`. This says that we only want rows in the data
+frame where the `following_segment` column has the value `other`. 
+2. The second statement uses the function `is.na()` to test whether the 
+`amplitude` column is empty or not. If a row has no value for `amplitude` then
+`is.na()` produces `TRUE`. So `is.na(amplitude)` will select the rows which
+have no value for `amplitude`. We want all the values which are _not_ empty. 
+So we add a `!` to the start of the statement. This reverses the values so that
+`TRUE` becomes `FALSE` and vice versa. This statement now _removes_ all the 
+rows without amplitude information.
+3. The third statement uses a helpful function from `dplyr` called `between()`
+which allows us to test whether a column's value is between a two numbers. In
+this case, we want our values for the `F1_50` column to be between $300$ and
+$1000$. This is _inclusive_. That is, it includes $300$ and $1000$. I forget
+this kind of thing all the time. To check, enter `?between` in the console.
+4. The fourth statement is made up of two smaller ones, combined with a bar (`|`).
+The bar means 'or'. This will be `TRUE` when _either_ of the statements is `TRUE`.
+So, in this case, it selects rows which have a `vowel_duration` value greater 
+than $0.01$ and rows which have a `word_freq` value less than $1000$.^[
+This juggling of 'true' and 'false' is a bit of formal logic and make take a
+while to get your head around if you haven't come across formal logic before.
+]
+
+We have seen `mutate()` and `rename()` already. `mutate()` is used to 
+create new columns and to modify existing columns. The statements in a 
+`mutate()` function are all of the form `column_name = `, with an R statement
+defining the values which the column will take. These can be either a single
+value, if you want _every_ row of the column to have the same value (e.g.
+`version = 1` would create a column called `version` which always has the
+value $1$), _or_ a vector with a value for each row of the data frame. If you
+get this wrong it will look like this:
+```{r}
+#| error: true
+vowels |> 
+  mutate(
+    bad_column = c(1, 2, 3, 4)
+  )
+```
+
+If you want a subset of the columns, you can use `select()`. Here is an example:
+```{r}
+participant_metadata <- vowels_filtered |> 
+  select(
+    speaker,
+    contains('participant_')
+  ) |> 
+  unique()
+```
+The `select()` verb here has two arguments. The first is just the name
+`speaker`. This, unsurprisingly, selects the column `speaker`. The second,
+`contains('participant_')` uses the function `contains()` (also from `dplyr`) to
+pick out columns containing the string `'participant_'` in their names.^[
+The documentation for `select()` covers a bunch of other helper functions
+like `contains()`. As usual, just type `?select` in the console.
+] After
+selecting these columns, there are many duplicate rows, so we pass the result
+into the base R function `unique()` with a pipe. The result is a data frame with
+the meta data for each participant in the data. Look in the environment pane to
+see how many rows and columns there are in the data frame
+`participant_metadata`.
+
+The `relocate()` function is sometimes useful with the `nzilbb.vowels` package
+and other packages where the order of the columns is important. It _relocates_
+columns within a data frame. See for instance, 
+
+We have just covered:
+  - `mutate()`: the change a data frame.
+  - `rename()`: to change the names of existing columns.
+  - `filter()`: to filter the rows of a data frame.
+  - `select()`: to select a subset of columns of the data. 
+  - `relocate()`: to move selected columns within a data frame.
+
+### Grouped Data
+
+Another advantage of `dplyr` is that the same functions work for grouped data
+and ungrouped data. What is grouped data? It is data in which a group structure
+is defined by one or more of the columns. 
+
+This is most clear by example. In the data frame we have been looking at, we
+have a series of readings for a collection of speakers. There are only 77 
+speakers in the data frame, from which we get more than 20,000 rows. What if
+we want to get the mean values of these observations _for each speaker_?
+That is, we treat the data frame as one which is grouped _by speaker_. 
+
+In order to group data we use the `group_by()` function. In order to remove
+groups we use the `ungroup()` function. Let's see this in action:
+```{r}
+vowels_filtered <- vowels_filtered |> 
+  group_by(speaker) |> 
+  mutate(
+    mean_F1 = mean(F1_50),
+    mean_amplitude = mean(amplitude)
+  ) |> 
+  ungroup()
+```
+The above code groups the data, then uses `mutate()`, in the same way as we did
+above, to create two new columns. These use the `mean()` function, from base R, 
+to calculate the mean value _for each speaker_. Have a look at the data, 
+using one of the methods for accessing data we discussed above, to convince 
+yourself that each speaker is given a different mean value. The same points 
+apply to `amplitude`. Note, by the way, that the `mean()` function returns
+`NA` if there are any `NA` values in the column. This is a common issue. If you
+see `NA` when you expect a sensible mean, you can add `na.rm = TRUE` to the 
+arguments of `mean()` or filter out any rows with missing information before
+you apply `mean()`.
+
+Sometimes we want summary information for each group. In this case, it is useful
+to have a data frame with a single row for each group. To do this, we use
+`summarise` rather than `mutate`. We can combine the output of the code block
+we have just looked at with the participant metadata as follows:
+```{r}
+vowels_summary <- vowels_filtered |> 
+  group_by(speaker) |> 
+  summarise(
+    n = n(),
+    mean_F1 = mean(F1_50),
+    mean_amplitude = mean(amplitude),
+    gender = first(participant_gender),
+    age_category = first(participant_age_category)
+  )
+
+vowels_summary |> 
+  head()
+```
+The code above has two statements. We create a data frame called `vowels_summary`,
+which uses `summarise()` instead of `mutate()`. The second statement outputs
+the first six rows of `vowels_summary` using the `head()` function. Each row
+is for a different speaker and each column is defined by the grouping structure
+and `summarise()`. There is a column for each group (in this case just `speaker`),
+and then one for each argument to `summarise()`. The first, `n`, uses the
+`n()` function to count how many rows there are for each speaker. The second
+and third columns contain the mean value for the speaker for two variables. 
+We then use the function `first()` to pull out the first value for the 
+speaker for a given column. This is very useful in cases when every row for
+the speaker should have the same value. In this case, the speaker's age 
+category, for instance, does not change within a single recording so we can
+safely just take the first value for `participant_age_category` for each 
+speaker.
+
+## Further Resources
+
+- For a fuller introduction to data transformation in the tidyverse see
+[R for Data Science](https://r4ds.hadley.nz/data-transform)
+- For a discussion more focused on linguistics see the second chapter of @winterStatisticsLinguistsIntroduction2019.
+- For a discussion of the differences between base R and `dplyr` approaches
+to data processing see [this vignette from `dplyr`](https://cran.r-project.org/web/packages/dplyr/vignettes/base.html).
