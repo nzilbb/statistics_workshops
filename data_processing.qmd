@@ -248,7 +248,7 @@ vowels_f <- vowels[vowels$participant_gender == "F", ]
 ```
 
 We have just filtered _the entire data frame_ using the values of a single
-column. Look at the environment pain and you should now see two dat aframes:
+column. Look at the environment pain and you should now see two data frames:
 `vowels` and `vowels_f`. You should also see that one has many fewer rows than
 the other. 
 
@@ -382,7 +382,7 @@ data frame which we call `word_freq_ln`.
 
 We can do this to individual elements as well. For instance, if we want to 
 change the third entry in the `participant_ages` vector to $65$,
-we would write `r participant_ages[3] <- 65`.
+we would write `participant_ages[3] <- 65`.
 
 If we want to change the age of all participants with ages below 18 to $0$,
 for whatever reason, we could say:
@@ -428,16 +428,16 @@ to the function on the right side of the pipe as the first argument. So, e.g.
 `2 %>% log()` is the same as `log(2)`. In this case, the data frame `vowels`
 becomes the first argument to `mutate()`, the following arguments then modify
 the data frame. Notice that we only need to say `word_freq` to refer to 
-the column (rather than `vowels$word_freq`). This is because `muatate()` knows
+the column (rather than `vowels$word_freq`). This is because `mutate()` knows
 the names of the columns in the data frame it receives. Once the 'mutation' 
-has happened, the modified data frame is pased to the `rename` funciton, which
+has happened, the modified data frame is pased to the `rename` function, which
 renames the columns `F1_50` and `F2_50` to `F1_midpoint` and `F2_midpoint`
 respectively. To see that this has happened, double click on `vowels` in the
-environment pain.
+environment pane.
 
 There are ongoing interactions between base R and the tidyverse. One particularly prominent instance is the inclusion of a
-'pipe' opperator in base R (`|>`) which behaves in a very similar way to 
-the tidyverse pipe (`%>%`). In now prefer to use the base R pipe (`|>`). In
+'pipe' operator in base R (`|>`) which behaves in a very similar way to 
+the tidyverse pipe (`%>%`). I now prefer to use the base R pipe (`|>`). In
 practice, I always use the shortcut `ctrl + shift + M`/`command + shift + M`
 to insert the pipe. RStudio has an option to choose whether the result of this
 is the tidyverse pipe or the base R pipe. I prefer to use the base R pipe now.
@@ -473,7 +473,7 @@ interesting, but we will avoid them where we can!]
 
 Another change between `read.csv()` and `read_csv()` is that the data is now a
 'tibble' rather than a base R data frame. For current purposes, you don't
-need to worry about this distinctionl All of the base R methods we introduced
+need to worry about this distinction. All of the base R methods we introduced
 above work with tibbles and with data frames.
 
 For more information on importing data see the relevant chapter of 
@@ -569,6 +569,7 @@ and other packages where the order of the columns is important. It _relocates_
 columns within a data frame. See for instance, 
 
 We have just covered:
+
   - `mutate()`: the change a data frame.
   - `rename()`: to change the names of existing columns.
   - `filter()`: to filter the rows of a data frame.
