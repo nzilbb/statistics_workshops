@@ -726,6 +726,82 @@ Now change the `view` and `cond` arguments and see what happens.
 
 ![](images/uc.gif)
 
+## Hypothesis Testing
+
+![](images/uc.gif)
+
+### Visual methods
+
+### Model summary
+
+### `itsadug::compareML()`.
+
+
+
+## Reporting a GAMM
+
+It is important to know how to report a GAMM in a paper. 
+
+We will first look at some examples 'in the wild'. All of these are adequate
+for publication! I will then give a few opinions.
+
+::: {.panel-tabset}
+
+### Renwick et al. (2023)
+
+Renwick, Margaret E. L., Joseph A. Stanley, Jon Forrest, and Lelia Glass. 2023. “Boomer Peak or Gen X Cliff? From SVS to LBMS in Georgia English.” _Language Variation and Change_ 35(2): 175–97. https://doi.org/10.1017/S095439452300011X. 
+
+**How did you fit the GAMMs?:**
+
+> We built a separate GAMM for each combination of allophone, gender, and formant, leading to twenty-eight separate models. The dependent variable was log-means normalized formant values, from five measurement points per token. The models’ independent variables included a nonlinear, continuous smooth term for speaker year of birth (YoB), and a smooth term for measurement point (percent), ordered 20% to 80%. Smooths used four knots. The two smooths were combined into a tensor-product interaction allowing the predicted trajectory to freely vary in shape across YoB. Vowel duration was included as a parametric effect. The random effects structure comprised linear random intercepts and slopes for speaker, word, and collection. Model specifications and summaries appear in Appendix 1. Models were fitted using the mgcv::bam() function in R (Wood, 2017b). [@renwickBoomerPeakGen2023, 185]
+
+Appendix 1 contains the output of the `summary()` function for each GAMM model
+pasted in to a word document. This includes the model formulae.
+
+**How did you evaluate the GAMMs?**
+
+> We evaluate the GAMMs in two ways: first, via visualizations of predicted measurements, which were extracted from each model. Second, we tested the significance of YoB via model comparison (Renwick & Stanley, 2020; Stanley et al., 2021). For each GAMM, we constructed a model that excluded YoB but was otherwise identical. Each “dropped” model was evaluated against its “full” equivalent via itsadug:: compareML() (van Rij, Wieling, Baayen, & van Rijn, 2017), which returns a score and p-value through chi-squared testing of log-likelihood. If the “full” model including birth year is deemed to be significantly better ( p < 0.05) than the “dropped” version without birth year, we infer that the shape and/or position of that vowel’s trajectory is meaningfully predicted by speaker year of birth. [@renwickBoomerPeakGen2023, 185]
+
+**How did you report the results?**
+
+> Model comparisons confirmed that for all models save one (F2 of PRY, for women) the inclusion of YoB provided a significant improvement in fit over an identical GAMM lacking that term. For all allophones (including women’s [pry]{.smallcaps}, whose F1 model is improved by YoB), there is significant variation in trajectory shape and/or vowel space position across time. [@renwickBoomerPeakGen2023, 186]
+
+A footnote indicates that [pry]{.smallcaps} has the lowest token count and the
+prediction that increased tokens would lead to an improvement by adding their 
+year of birth term.
+
+A series of figures are then described in detail. For instance:
+
+![Figure 5 from Renwick et al. 2023, p. 189.](images/gamms/renwick_etal_fig5.png)
+
+The description is as follows:
+
+> Young Georgians’ trajectories are modeled in Figure 5, including birth years 1974 (left) and 2000 (right), representing Gen X and Gen Z. The vowel systems shown here are markedly different from older speakers’. For all groups, the /aɪ/ allophones’ offset has a lower F1 than [bat]{.smallcaps}, indicating its trajectory lengthening. [bought]{.smallcaps} remains slightly backer than [bot]{.smallcaps}, although they have similar ingliding trajectories. The lax front vowels have shifted. [bat]{.smallcaps} is ingliding and retracted, while [bet]{.smallcaps} is lower in Gen Z compared to Gen X. [bait]{.smallcaps} is very peripheral, especially in Gen Z, compared to the other front vowels, with a lower F1 and higher F2 throughout its trajectory. [bait]{.smallcaps} and [bet]{.smallcaps} are very distinct, and their trajectories do not cross; there is no [face]{.smallcaps}/[dress]{.smallcaps} swapping for these speakers. These effects are stronger for Gen Z than for Gen X. The picture shown for late twentieth century Georgians is not the SVS; instead, the Gen X speakers show a retreat from the SVS, characterized by retracting front lax vowels, which is consistent with the LBMS among younger, Gen Z speakers. [@renwickBoomerPeakGen2023, 187
+
+### Brand et al. (2021) 
+
+
+
+As in @renwickBoomerPeakGen2023, this reports _many_ GAMMs fit to readings from
+vowels. However, there is significantly more detail concerning the GAMMs in 
+supplementary material for this paper.
+
+### Derrick and Gick (2022)
+
+This is a shorter piece for _Scientific Reports_. Space is at a premium!
+
+### An example with reaction time or other more experimental data.
+
+:::
+
+- Cite the specific packages. (help: citation(), `grateful`).
+- Cite specific R functions
+- Text **in the article** can be terse, _as long as_ there is a link to the specific code.
+- The 'difference smooth' structure needs to be clear...
+- Visualisations are an important part of evaluating GAMMs (moreso than for linear models where a single coefficient is what you are testing).
+  - Your discussion section might consist of description of the specific trajectories you find visually. (as in  @renwickBoomerPeakGen2023.) TODO: add fuller list.
+- Model comparisons often used.
+
 ## Further Resources {#sec-resources}
 
 - Márton Sóskuthy's GAMM tutorial: https://arxiv.org/pdf/1703.05339.pdf
