@@ -13,6 +13,7 @@ book:
   - part: foundations.qmd
     chapters: 
     - getting_started.qmd
+    - data_processing.qmd
   - part: others.qmd
     chapters: 
     - rstudio_server.qmd
@@ -22,7 +23,7 @@ book:
   sidebar:
     logo: images/nzilbb-logo.svg
 bibliography: 
-  - references.bib
+  - stat_workshops.bib
   - grateful-refs.bib
 format:
   html:
@@ -35,5 +36,3 @@ format:
     df-print: tibble
     execute:
       warning: false
-  pdf:
-    documentclass: scrreprt
