@@ -720,7 +720,7 @@ Now change the `view` and `cond` arguments and see what happens.
 
 ## The Second 'M': Mixed Effects
 
-![](images/uc.gif)
+
 
 ## Auto-correlation
 
