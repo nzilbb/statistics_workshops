@@ -284,7 +284,14 @@ window.Quarto = {
   </ul></li>
   <li><a href="#the-second-m-mixed-effects" id="toc-the-second-m-mixed-effects" class="nav-link" data-scroll-target="#the-second-m-mixed-effects"><span class="header-section-number">5.3</span> The Second ‘M’: Mixed Effects</a></li>
   <li><a href="#auto-correlation" id="toc-auto-correlation" class="nav-link" data-scroll-target="#auto-correlation"><span class="header-section-number">5.4</span> Auto-correlation</a></li>
-  <li><a href="#sec-resources" id="toc-sec-resources" class="nav-link" data-scroll-target="#sec-resources"><span class="header-section-number">5.5</span> Further Resources</a></li>
+  <li><a href="#hypothesis-testing" id="toc-hypothesis-testing" class="nav-link" data-scroll-target="#hypothesis-testing"><span class="header-section-number">5.5</span> Hypothesis Testing</a>
+  <ul class="collapse">
+  <li><a href="#visual-methods" id="toc-visual-methods" class="nav-link" data-scroll-target="#visual-methods"><span class="header-section-number">5.5.1</span> Visual methods</a></li>
+  <li><a href="#model-summary" id="toc-model-summary" class="nav-link" data-scroll-target="#model-summary"><span class="header-section-number">5.5.2</span> Model summary</a></li>
+  <li><a href="#itsadugcompareml." id="toc-itsadugcompareml." class="nav-link" data-scroll-target="#itsadugcompareml."><span class="header-section-number">5.5.3</span> <code>itsadug::compareML()</code>.</a></li>
+  </ul></li>
+  <li><a href="#reporting-a-gamm" id="toc-reporting-a-gamm" class="nav-link" data-scroll-target="#reporting-a-gamm"><span class="header-section-number">5.6</span> Reporting a GAMM</a></li>
+  <li><a href="#sec-resources" id="toc-sec-resources" class="nav-link" data-scroll-target="#sec-resources"><span class="header-section-number">5.7</span> Further Resources</a></li>
   </ul>
 </nav>
     </div>
@@ -338,7 +345,7 @@ window.Quarto = {
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Set ggplot theme</span></span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>This workshop is heavily indebted to the workshops put together by Márton Sóskuthy and Martijn Wieling. Links to these are provided in <a href="#sec-resources" class="quarto-xref"><span>Section 5.5</span></a>.</p>
+<p>This workshop is heavily indebted to the workshops put together by Márton Sóskuthy and Martijn Wieling. Links to these are provided in <a href="#sec-resources" class="quarto-xref"><span>Section 5.7</span></a>.</p>
 </section>
 <section id="introduction-to-gams" class="level2" data-number="5.2">
 <h2 data-number="5.2" class="anchored" data-anchor-id="introduction-to-gams"><span class="header-section-number">5.2</span> Introduction to GAMs</h2>
@@ -1136,14 +1143,136 @@ s(x) 19.0 17.7     1.1    0.98</code></pre>
 </section>
 <section id="the-second-m-mixed-effects" class="level2" data-number="5.3">
 <h2 data-number="5.3" class="anchored" data-anchor-id="the-second-m-mixed-effects"><span class="header-section-number">5.3</span> The Second ‘M’: Mixed Effects</h2>
-<p><img src="images/uc.gif" class="img-fluid"></p>
 </section>
 <section id="auto-correlation" class="level2" data-number="5.4">
 <h2 data-number="5.4" class="anchored" data-anchor-id="auto-correlation"><span class="header-section-number">5.4</span> Auto-correlation</h2>
 <p><img src="images/uc.gif" class="img-fluid"></p>
 </section>
-<section id="sec-resources" class="level2" data-number="5.5">
-<h2 data-number="5.5" class="anchored" data-anchor-id="sec-resources"><span class="header-section-number">5.5</span> Further Resources</h2>
+<section id="hypothesis-testing" class="level2" data-number="5.5">
+<h2 data-number="5.5" class="anchored" data-anchor-id="hypothesis-testing"><span class="header-section-number">5.5</span> Hypothesis Testing</h2>
+<p><img src="images/uc.gif" class="img-fluid"></p>
+<section id="visual-methods" class="level3" data-number="5.5.1">
+<h3 data-number="5.5.1" class="anchored" data-anchor-id="visual-methods"><span class="header-section-number">5.5.1</span> Visual methods</h3>
+</section>
+<section id="model-summary" class="level3" data-number="5.5.2">
+<h3 data-number="5.5.2" class="anchored" data-anchor-id="model-summary"><span class="header-section-number">5.5.2</span> Model summary</h3>
+</section>
+<section id="itsadugcompareml." class="level3" data-number="5.5.3">
+<h3 data-number="5.5.3" class="anchored" data-anchor-id="itsadugcompareml."><span class="header-section-number">5.5.3</span> <code>itsadug::compareML()</code>.</h3>
+</section>
+</section>
+<section id="reporting-a-gamm" class="level2" data-number="5.6">
+<h2 data-number="5.6" class="anchored" data-anchor-id="reporting-a-gamm"><span class="header-section-number">5.6</span> Reporting a GAMM</h2>
+<p>It is important to know how to report a GAMM in a paper.</p>
+<p>This section presents some (somewhat randomly selected) examples of GAMMs ‘in the wild’. All of these are good enough for publication. I will then give a few opinions.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" aria-current="page">Renwick et al.&nbsp;(2023)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false">Brand et al.&nbsp;(2021)</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-3-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-3" role="tab" aria-controls="tabset-1-3" aria-selected="false">Derrick and Gick (2021)</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
+<p><strong>How did you fit the GAMMs?:</strong></p>
+<blockquote class="blockquote">
+<p>We built a separate GAMM for each combination of allophone, gender, and formant, leading to twenty-eight separate models. The dependent variable was log-means normalized formant values, from five measurement points per token. The models’ independent variables included a nonlinear, continuous smooth term for speaker year of birth (YoB), and a smooth term for measurement point (percent), ordered 20% to 80%. Smooths used four knots. The two smooths were combined into a tensor-product interaction allowing the predicted trajectory to freely vary in shape across YoB. Vowel duration was included as a parametric effect. The random effects structure comprised linear random intercepts and slopes for speaker, word, and collection. Model specifications and summaries appear in Appendix 1. Models were fitted using the mgcv::bam() function in R (Wood, 2017b). <span class="citation" data-cites="renwickBoomerPeakGen2023">(<a href="references.html#ref-renwickBoomerPeakGen2023" role="doc-biblioref">Renwick et al. 2023, 185</a>)</span></p>
+</blockquote>
+<p>Appendix 1 contains the output of the <code>summary()</code> function for each GAMM model pasted in to a word document. This includes the model formulae.</p>
+<p><strong>How did you evaluate the GAMMs?</strong></p>
+<blockquote class="blockquote">
+<p>We evaluate the GAMMs in two ways: first, via visualizations of predicted measurements, which were extracted from each model. Second, we tested the significance of YoB via model comparison (Renwick &amp; Stanley, 2020; Stanley et al., 2021). For each GAMM, we constructed a model that excluded YoB but was otherwise identical. Each “dropped” model was evaluated against its “full” equivalent via itsadug:: compareML() (van Rij, Wieling, Baayen, &amp; van Rijn, 2017), which returns a score and p-value through chi-squared testing of log-likelihood. If the “full” model including birth year is deemed to be significantly better ( p &lt; 0.05) than the “dropped” version without birth year, we infer that the shape and/or position of that vowel’s trajectory is meaningfully predicted by speaker year of birth. <span class="citation" data-cites="renwickBoomerPeakGen2023">(<a href="references.html#ref-renwickBoomerPeakGen2023" role="doc-biblioref">Renwick et al. 2023, 185</a>)</span></p>
+</blockquote>
+<p><strong>How did you report the results?</strong></p>
+<blockquote class="blockquote">
+<p>Model comparisons confirmed that for all models save one (F2 of PRY, for women) the inclusion of YoB provided a significant improvement in fit over an identical GAMM lacking that term. For all allophones (including women’s <span class="smallcaps">pry</span>, whose F1 model is improved by YoB), there is significant variation in trajectory shape and/or vowel space position across time. <span class="citation" data-cites="renwickBoomerPeakGen2023">(<a href="references.html#ref-renwickBoomerPeakGen2023" role="doc-biblioref">Renwick et al. 2023, 186</a>)</span></p>
+</blockquote>
+<p>A footnote indicates that <span class="smallcaps">pry</span> has the lowest token count and the prediction that increased tokens would lead to an improvement by adding their year of birth term.</p>
+<p>A series of figures are then described in detail. For instance:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/gamms/renwick_etal_fig5.png" class="img-fluid figure-img"></p>
+<figcaption>Figure 5 from Renwick et al.&nbsp;2023, p.&nbsp;189.</figcaption>
+</figure>
+</div>
+<p>The description is as follows:</p>
+<blockquote class="blockquote">
+<p>Young Georgians’ trajectories are modeled in Figure 5, including birth years 1974 (left) and 2000 (right), representing Gen X and Gen Z. The vowel systems shown here are markedly different from older speakers’. For all groups, the /aɪ/ allophones’ offset has a lower F1 than <span class="smallcaps">bat</span>, indicating its trajectory lengthening. <span class="smallcaps">bought</span> remains slightly backer than <span class="smallcaps">bot</span>, although they have similar ingliding trajectories. The lax front vowels have shifted. <span class="smallcaps">bat</span> is ingliding and retracted, while <span class="smallcaps">bet</span> is lower in Gen Z compared to Gen X. <span class="smallcaps">bait</span> is very peripheral, especially in Gen Z, compared to the other front vowels, with a lower F1 and higher F2 throughout its trajectory. <span class="smallcaps">bait</span> and <span class="smallcaps">bet</span> are very distinct, and their trajectories do not cross; there is no <span class="smallcaps">face</span>/<span class="smallcaps">dress</span> swapping for these speakers. These effects are stronger for Gen Z than for Gen X. The picture shown for late twentieth century Georgians is not the SVS; instead, the Gen X speakers show a retreat from the SVS, characterized by retracting front lax vowels, which is consistent with the LBMS among younger, Gen Z speakers. [<span class="citation" data-cites="renwickBoomerPeakGen2023">Renwick et al. (<a href="references.html#ref-renwickBoomerPeakGen2023" role="doc-biblioref">2023</a>)</span>, 187</p>
+</blockquote>
+</div>
+<div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
+<p>As in the <span class="citation" data-cites="renwickBoomerPeakGen2023">Renwick et al. (<a href="references.html#ref-renwickBoomerPeakGen2023" role="doc-biblioref">2023</a>)</span> example, <span class="citation" data-cites="brandSystematicCovariationMonophthongs2021">Brand et al. (<a href="references.html#ref-brandSystematicCovariationMonophthongs2021" role="doc-biblioref">2021</a>)</span> reports <em>many</em> GAMMs fit to readings from vowels. There is significantly more detail concerning the GAMMs in supplementary material for this paper hosted on <code>osf.io</code> and <code>github.com</code>. There is <em>less</em> detail in the paper itself, because the GAMMs are one stage in a larger method.</p>
+<p><strong>How did you fit the GAMMs?</strong></p>
+<p>In the paper the use of GAMMs is described as follows in the methodology section:</p>
+<blockquote class="blockquote">
+<p>Speaker intercepts from linear mixed effects regression models have been used to index speaker advancement in sound change (Drager &amp; Hay, 2012; Sóskuthy et al., 2017). The data we analyse here contains some non-linear effects, and thus an appropriate modelling technique to obtain the speaker intercepts from our data is generalised additive mixed modelling (GAMMs). This is because we want to model the normalised F1 and F2 of each of the 10 monophthongs separately, whilst also reliably capturing non-linear changes across time (see Winter &amp; Wieling, 2016; Sóskuthy, 2017; Wieling, 2018 &amp; Chuang et al., Chuang, Fon, &amp; Baayen, 2020 for introductory tutorials on GAMMs). We fitted separate models to normalised F1 and F2 for each of the 10 vowels in the data set, giving 20 models in total.</p>
+<p>All models were fitted using the same formula via the mgcv package in R (Wood, 2017), with fixed-effects comprising separate smooths over year of birth for each gender (using an adaptive smooth basis with 10 knots), as well as a smooth over speech rate. Speech rate is calculated as syllables per second for the transcript (where each speaker’s recording is spread across several transcripts. Individual transcripts contain on average approximately 6 min of speech). Random intercepts were included for speaker and word form. We then combined all of the speaker intercepts from the separate models, providing us with a final 481 X 20 data set, where each of the 481 speakers had a separate intercept for each of the 20 vocalic variables. <span class="citation" data-cites="brandSystematicCovariationMonophthongs2021">(<a href="references.html#ref-brandSystematicCovariationMonophthongs2021" role="doc-biblioref">Brand et al. 2021, 8</a>)</span></p>
+</blockquote>
+<p><strong>How did you report the results?</strong></p>
+<p>In the results section, the GAMMs are plotted, again in a vowel space: <img src="images/gamms/brand21.png" class="img-fluid" alt="Figure 5 from Brand et al.&nbsp;(2021)."></p>
+<p>The GAMMs are discussed as follows:</p>
+<blockquote class="blockquote">
+<p>While our primary purpose in fitting the GAMMs is to control for speaker factors such as year of birth, the major patterns revealed by the GAMMs also facilitate an understanding of sound change occurring over this time period, which is a necessary precursor to interpreting the patterns of co-variation. Fig. 5 shows the trajectories of vowel change, based on GAMM smooths over year of birth. All vowels have undergone some change, either linear or non-linear, based on the year of birth smooth effect (all p-values &lt; 0.001), see the Supplementary Materials for the model summaries. An animated and interactive version of the changes is available in the Shiny application. <span class="citation" data-cites="brandSystematicCovariationMonophthongs2021">(<a href="references.html#ref-brandSystematicCovariationMonophthongs2021" role="doc-biblioref">Brand et al. 2021, 9</a>)</span></p>
+</blockquote>
+<p>The above notes statistical significance of the year of birth smooths and points readers to mode detail if required. The next paragraphs of the results section describe the patterns in the plot in light of existing literature.</p>
+<p><strong>What is in supplementary material?</strong></p>
+<p>The supplementary material for the analysis is hosted on GitHub. It contains two relevant sections. First, a section with the code for <em>fitting</em> the models, which includes discussion of the model formula and the R code used to fit a series of models with the same formula (<a href="https://nzilbb.github.io/Covariation_monophthongs_NZE/Covariation_monophthongs_analysis.html#GAMM_modelling">here</a>). Second, there is a section containing all of the model summaries (<a href="https://nzilbb.github.io/Covariation_monophthongs_NZE/Covariation_monophthongs_analysis.html#Sound_change_GAMM_summaries">here</a>). These summaries do not contain information about random effects. We have seen above that this radically reduces the amount of time required to generate a model summary.</p>
+<p>In addition, an online interactive is provided for exploring the analysis in the paper (including the GAMMs). See <a href="https://onze.shinyapps.io/Covariation_shiny/">here</a>.</p>
+</div>
+<div id="tabset-1-3" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-3-tab">
+<p><span class="citation" data-cites="derrickGaitChangeTongue2021">Derrick and Gick (<a href="references.html#ref-derrickGaitChangeTongue2021" role="doc-biblioref">2021</a>)</span> is a shorter piece for <em>Scientific Reports</em>. Space is at a premium so a short explanation is given.</p>
+<p><strong>How did you fit the GAMMs</strong>?</p>
+<p>The discussion of the GAMMs in the methodology sections comes after an earlier set of steps have already been described. Justification is given in terms of non-linearity in the data.</p>
+<blockquote class="blockquote">
+<p>Next, and in order to make sense of this highly non-linear data, we ran a generalized additive mixed-effects model (GAMM) on the data shown in Eq. (7). GAMMs are extremely effective for the analysis of non-linear data, and are therefore highly suitable for the analysis of the critical fluctuations captured in Eq. (6).</p>
+<p>Equation (7), written in R-code, describes a generalized additive mixed-effects model, comparing Fluctuation based on tongue-front displacement (TFd) and the fluctuation time slice position (FTS), forming a 3-dimensional tensor (te) field [te(FTS, TFd)]. The random effects factor out participant variability in a 3-dimensional tensor field [s(FTS, TFd, Participant, bs = “fs”, m = 1)], as well as random-effect smooths for syllables per second [s(SPS, Participant, bs = “re”)], and token type [s(Token type, Participant, bs = “re”)]. In order to correct for autocorrelation effects, we ran the GAMM, calculated an estimate for a start value ρ from that first run, and provided that ρ to a second run of the GAMM model, along with an indicator identifying the first position of our time slices. This removes most of the autocorrelation, maximizing the accuracy of the resulting statistical model output.</p>
+<p>Equation (7) produces an output that shows the relationship between critical fluctuation, token position, and tongue-front displacement range, highlighting regions of significant difference. And with these methods, we were able to identify whether tongue-front displacement range affected speech-rate range, and whether tongue-front displacement range had any influence on the timing slice positions of critical fluctuations. <span class="citation" data-cites="derrickGaitChangeTongue2021">(<a href="references.html#ref-derrickGaitChangeTongue2021" role="doc-biblioref">Derrick and Gick 2021, 8</a>)</span></p>
+</blockquote>
+<p>Equation 7 is the following R formula:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gam</span>(Fluctuation <span class="sc">~</span> <span class="fu">te</span>(FTS, TFd) <span class="sc">+</span> </span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">s</span>(FTS, TFd, Participant, <span class="at">bs =</span> <span class="st">"fs"</span>, <span class="at">m =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">s</span>(SPS, Participant, <span class="at">bs =</span> <span class="st">"re"</span>) <span class="sc">+</span> </span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">s</span>(Tokentype, Participant, <span class="at">bs =</span> <span class="st">"re"</span>)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Note, btw, the use of all both random smooths (the second smooth term) and two smooth terms defining random slopes (the third and fourth smooth terms in the model).</p>
+<p>The methods sections describes the method used to deal with autocorrelation as well.</p>
+<p>Finally, a paragraph is given to explain the relationship between the output of the GAMMs and the actual subject matter of the research.</p>
+<p>Citations are given in footnotes to R itself, the <code>mgcv</code> package and the <code>itsadug</code> package.</p>
+<p><strong>How did you report the results?</strong></p>
+<p>There results section reports both the significance of smooth terms and discusses a plot.</p>
+<p>The main plot is Figure 7:</p>
+<p><img src="images/gamms/derrick_gick_2021.png" class="img-fluid" alt="Figure 7 from Derrick and Gick (2021)."> The discussion is as follows:</p>
+<blockquote class="blockquote">
+<p>Generalized additive mixed-effects model analysis of critical fluctuations during the time course of token production by tongue-front displacement range are shown in Fig. 7. The model shows that speakers producing tokens with the lowest tongue-front displacement ranges have relatively higher critical fluctuations in the early part of their token productions, spanning from the first vowel through the first flap into the middle of the second vowel. In contrast, they show much lower rates of critical fluctuation from the second half of the second vowel, through the second flap to the end of the third vowel. This constitutes evidence of end-state comfort effects for speakers producing token types with narrow tongue-front displacement ranges.</p>
+<p>For speakers producing token types in the middle of the group, there are no end-state comfort effects, but instead the most effort made during the second flap. For speakers with very wide tongue-front displacement ranges, there is again statistically significant evidence for end-state comfort effects, with extra beginning-state effort for the initial vowel. These are the same speakers producing token types that demonstrate two categorically different patterns of motion—one for slow speech, and one for fast speech.</p>
+<p>Figure 7 shows the regions of significance for the GAMM whose model output is shown in Table 3. These results show that all of the model parameters are significant, and most importantly that the tensor field shown in Fig. 7 accounts for a significant portion of the variance of the data. This includes the fixed-effect tensor relating tongue-front displacement range and critical fluctuation along time slices, as well as the random-effects for participant, token type, and reiterant speech rate. The entire GAMM accounts for an adjusted r2 of 0.452, explaining 47% of the deviance in critical fluctuations in this dataset. <span class="citation" data-cites="derrickGaitChangeTongue2021">(<a href="references.html#ref-derrickGaitChangeTongue2021" role="doc-biblioref">Derrick and Gick 2021, 10–11</a>)</span></p>
+</blockquote>
+<p>Significance information is given as Table 3.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="images/gamms/derrick_gick_2021_t3.png" class="img-fluid figure-img"></p>
+<figcaption>Table 3 from Derrick and Gick (2021).</figcaption>
+</figure>
+</div>
+<p><strong>What is in supplementary materials?</strong></p>
+<p>There is a repository on OSF (<a href="https://osf.io/7k4ja/?view_only=83ab3adeb363481795ba97e2b481cd9e">here</a>). Code is available as an Rmarkdown or as an HTML file to be downloaded and read in the browser.</p>
+<p>The analysis shows that the p-values in Table 3 are generated by using <code>itsadug::compareML()</code> and fitting the models with maximum likelihood estimation. With more space, this might have been discussed in the paper. But there is not always more space!</p>
+</div>
+</div>
+</div>
+<p>What can we take from the above examples? Here are some reflections:</p>
+<ul>
+<li>You don’t need to say <em>everything</em> in the paper. You can use supplementary material. This should include, at a minimum, the specific code you used to fit the model and generate any reported p-values (not <em>just</em> the summary).
+<ul>
+<li>This can be important for seeing, e.g., whether the ‘difference smooth’ structure was used (see discussion above).</li>
+</ul></li>
+<li>Cite the specific packages you used. The function <code>citation()</code> in R can be very helpful for this (e.g.&nbsp;look at the results of <code>citation('mgcv')</code>). I often use the package <code>grateful</code> to generate a bibliography of all of the packages I use within an analysis project.</li>
+<li>Visualisations are an important part of evaluating GAMMs (moreso than for linear models where a single coefficient is what you are testing).
+<ul>
+<li>Your discussion section might consist of description of the specific trajectories you find visually.</li>
+</ul></li>
+<li>Supplementary material opens up many windows (including e.g., the interactive application in <span class="citation" data-cites="brandSystematicCovariationMonophthongs2021">Brand et al. (<a href="references.html#ref-brandSystematicCovariationMonophthongs2021" role="doc-biblioref">2021</a>)</span>). This is also, however, a potential time sync. Try to balance the costs and benefits when you go beyond the requirements of open science and into the realm of web development!</li>
+</ul>
+</section>
+<section id="sec-resources" class="level2" data-number="5.7">
+<h2 data-number="5.7" class="anchored" data-anchor-id="sec-resources"><span class="header-section-number">5.7</span> Further Resources</h2>
 <ul>
 <li>Márton Sóskuthy’s GAMM tutorial: https://arxiv.org/pdf/1703.05339.pdf</li>
 <li>Márton Sóskuthy’s paper compared multiple significance testing strategies for error rates: https://www.sciencedirect.com/science/article/pii/S009544702030108X#s0070</li>
@@ -1167,6 +1296,12 @@ Note
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
 <div id="ref-brandSystematicCovariationMonophthongs2021" class="csl-entry" role="listitem">
 Brand, James, Jen Hay, Lynn Clark, Kevin Watson, and Márton Sóskuthy. 2021. <span>“Systematic Co-Variation of Monophthongs Across Speakers of <span>New Zealand English</span>.”</span> <em>Journal of Phonetics</em> 88: 101096. <a href="https://www.sciencedirect.com/science/article/pii/S0095447021000711">https://www.sciencedirect.com/science/article/pii/S0095447021000711</a>.
+</div>
+<div id="ref-derrickGaitChangeTongue2021" class="csl-entry" role="listitem">
+Derrick, Donald, and Bryan Gick. 2021. <span>“Gait Change in Tongue Movement.”</span> <em>Scientific Reports</em> 11 (1): 16565. <a href="https://doi.org/10.1038/s41598-021-96139-4">https://doi.org/10.1038/s41598-021-96139-4</a>.
+</div>
+<div id="ref-renwickBoomerPeakGen2023" class="csl-entry" role="listitem">
+Renwick, Margaret E. L., Joseph A. Stanley, Jon Forrest, and Lelia Glass. 2023. <span>“Boomer <span>Peak</span> or <span>Gen X Cliff</span>? <span>From SVS</span> to <span>LBMS</span> in <span>Georgia English</span>.”</span> <em>Language Variation and Change</em> 35 (2): 175–97. <a href="https://doi.org/10.1017/S095439452300011X">https://doi.org/10.1017/S095439452300011X</a>.
 </div>
 <div id="ref-soskuthyHorizontalDiphthongShift2019" class="csl-entry" role="listitem">
 Sóskuthy, Márton, J. Hay, and James Brand. 2019. <span>“Horizontal Diphthong Shift in <span>New Zealand English</span>.”</span> In. <a href="https://www.semanticscholar.org/paper/HORIZONTAL-DIPHTHONG-SHIFT-IN-NEW-ZEALAND-ENGLISH-S%C3%B3skuthy-Hay/cd1bd700686b3d1270be5536e5881e8946ba57ab">https://www.semanticscholar.org/paper/HORIZONTAL-DIPHTHONG-SHIFT-IN-NEW-ZEALAND-ENGLISH-S%C3%B3skuthy-Hay/cd1bd700686b3d1270be5536e5881e8946ba57ab</a>.
