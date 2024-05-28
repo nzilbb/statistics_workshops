@@ -742,14 +742,13 @@ Now change the `view` and `cond` arguments and see what happens.
 
 It is important to know how to report a GAMM in a paper. 
 
-We will first look at some examples 'in the wild'. All of these are adequate
-for publication! I will then give a few opinions.
+This section presents some (somewhat randomly selected) examples of GAMMs 'in
+the wild'. All of these are good enough for publication. I will then give a few
+opinions.
 
 ::: {.panel-tabset}
 
 ### Renwick et al. (2023)
-
-Renwick, Margaret E. L., Joseph A. Stanley, Jon Forrest, and Lelia Glass. 2023. “Boomer Peak or Gen X Cliff? From SVS to LBMS in Georgia English.” _Language Variation and Change_ 35(2): 175–97. https://doi.org/10.1017/S095439452300011X. 
 
 **How did you fit the GAMMs?:**
 
@@ -780,27 +779,135 @@ The description is as follows:
 
 ### Brand et al. (2021) 
 
+As in the @renwickBoomerPeakGen2023 example, @brandSystematicCovariationMonophthongs2021 reports _many_ GAMMs fit
+to readings from vowels. There is significantly more detail concerning
+the GAMMs in supplementary material for this paper hosted on 
+`osf.io` and `github.com`. There is _less_ detail in the paper itself, because
+the GAMMs are one stage in a larger method.
 
+**How did you fit the GAMMs?**
 
-As in @renwickBoomerPeakGen2023, this reports _many_ GAMMs fit to readings from
-vowels. However, there is significantly more detail concerning the GAMMs in 
-supplementary material for this paper.
+In the paper the use of GAMMs is described as follows in the methodology section:
 
-### Derrick and Gick (2022)
+> Speaker intercepts from linear mixed effects regression models have been used to index speaker advancement in sound change (Drager & Hay, 2012; Sóskuthy et al., 2017). The data we analyse here contains some non-linear effects, and thus an appropriate modelling technique to obtain the speaker intercepts from our data is generalised additive mixed modelling (GAMMs). This is because we want to model the normalised F1 and F2 of each of the 10 monophthongs separately, whilst also reliably capturing non-linear changes across time (see Winter & Wieling, 2016; Sóskuthy, 2017; Wieling, 2018 & Chuang et al., Chuang, Fon, & Baayen, 2020 for introductory tutorials on GAMMs). We fitted separate models to normalised F1 and F2 for each of the 10 vowels in the data set, giving 20 models in total. 
+>
+> All models were fitted using the same formula via the mgcv package in R (Wood, 2017), with fixed-effects comprising separate smooths over year of birth for each gender (using an adaptive smooth basis with 10 knots), as well as a smooth over speech rate. Speech rate is calculated as syllables per second for the transcript (where each speaker’s recording is spread across several transcripts. Individual transcripts contain on average approximately 6 min of speech). Random intercepts were included for speaker and word form. We then combined all of the speaker intercepts from the separate models, providing us with a final 481 X 20 data set, where each of the 481 speakers had a separate intercept for each of the 20 vocalic variables. [@brandSystematicCovariationMonophthongs2021, 8]
 
-This is a shorter piece for _Scientific Reports_. Space is at a premium!
+**How did you report the results?**
 
-### An example with reaction time or other more experimental data.
+In the results section, the GAMMs are plotted, again in a vowel space:
+![Figure 5 from Brand et al. (2021).](images/gamms/brand21.png)
+
+The GAMMs are discussed as follows:
+
+> While our primary purpose in fitting the GAMMs is to control for speaker factors such as year of birth, the major patterns revealed by the GAMMs also facilitate an understanding of sound change occurring over this time period, which is a necessary precursor to interpreting the patterns of co-variation. Fig. 5 shows the trajectories of vowel change, based on GAMM smooths over year of birth. All vowels have undergone some change, either linear or non-linear, based on the year of birth smooth effect (all p-values < 0.001), see the Supplementary Materials for the model summaries. An animated and interactive version of the changes is available in the Shiny application. [@brandSystematicCovariationMonophthongs2021, 9]
+
+The above notes statistical significance of the year of birth smooths and points
+readers to mode detail if required. The next paragraphs of the results section
+describe the patterns in the plot in light of existing literature. 
+
+**What is in supplementary material?**
+
+The supplementary material for the analysis is hosted on GitHub. It contains two 
+relevant sections. First, a section with the code for _fitting_ the models, 
+which includes discussion of the model formula and the R code used to fit a
+series of models with the same formula ([here](https://nzilbb.github.io/Covariation_monophthongs_NZE/Covariation_monophthongs_analysis.html#GAMM_modelling)).
+Second, there is a section containing all of the model summaries ([here](https://nzilbb.github.io/Covariation_monophthongs_NZE/Covariation_monophthongs_analysis.html#Sound_change_GAMM_summaries)).
+These summaries do not contain information about random effects. We have seen
+above that this radically reduces the amount of time required to generate
+a model summary.
+
+In addition, an online interactive is provided for exploring the analysis in 
+the paper (including the GAMMs). See [here](https://onze.shinyapps.io/Covariation_shiny/).
+
+### Derrick and Gick (2021)
+
+@derrickGaitChangeTongue2021 is a shorter piece for _Scientific Reports_. Space
+is at a premium so a short explanation is given.
+
+**How did you fit the GAMMs**?
+
+The discussion of the GAMMs in the methodology sections comes after an earlier
+set of steps have already been described. Justification is 
+given in terms of non-linearity in the data.
+
+> Next, and in order to make sense of this highly non-linear data, we ran a generalized additive mixed-effects model (GAMM) on the data shown in Eq. (7). GAMMs are extremely effective for the analysis of non-linear data, and are therefore highly suitable for the analysis of the critical fluctuations captured in Eq. (6).  
+>
+> Equation (7), written in R-code, describes a generalized additive mixed-effects model, comparing Fluctuation based on tongue-front displacement (TFd) and the fluctuation time slice position (FTS), forming a 3-dimensional tensor (te) field [te(FTS, TFd)]. The random effects factor out participant variability in a 3-dimensional tensor field [s(FTS, TFd, Participant, bs = “fs”, m = 1)], as well as random-effect smooths for syllables per second [s(SPS, Participant, bs = “re”)], and token type [s(Token type, Participant, bs = “re”)]. In order to correct for autocorrelation effects, we ran the GAMM, calculated an estimate for a start value ρ from that first run, and provided that ρ to a second run of the GAMM model, along with an indicator identifying the first position of our time slices. This removes most of the autocorrelation, maximizing the accuracy of the resulting statistical model output. 
+>
+> Equation (7) produces an output that shows the relationship between critical fluctuation, token position, and tongue-front displacement range, highlighting regions of significant difference. And with these methods, we were able to identify whether tongue-front displacement range affected speech-rate range, and whether tongue-front displacement range had any influence on the timing slice positions of critical fluctuations. [@derrickGaitChangeTongue2021, 8]
+
+Equation 7 is the following R formula:
+```{r}
+#| eval: false
+gam(Fluctuation ~ te(FTS, TFd) + 
+      s(FTS, TFd, Participant, bs = "fs", m = 1) + 
+      s(SPS, Participant, bs = "re") + 
+      s(Tokentype, Participant, bs = "re")
+)
+```
+Note, btw, the use of all both random smooths (the second smooth term) and 
+two smooth terms defining random slopes (the third and fourth smooth terms in the
+model).
+
+The methods sections describes the method used to deal with autocorrelation as
+well.
+
+Finally, a paragraph is given to explain the relationship between the output
+of the GAMMs and the actual subject matter of the research.
+
+Citations are given in footnotes to R itself, the `mgcv` package and the
+`itsadug` package.
+
+**How did you report the results?**
+
+There results section reports both the significance of smooth terms and discusses
+a plot.
+
+The main plot is Figure 7:
+
+![Figure 7 from Derrick and Gick (2021).](images/gamms/derrick_gick_2021.png)
+The discussion is as follows:
+
+> Generalized additive mixed-effects model analysis of critical fluctuations during the time course of token production by tongue-front displacement range are shown in Fig. 7. The model shows that speakers producing tokens with the lowest tongue-front displacement ranges have relatively higher critical fluctuations in the early part of their token productions, spanning from the first vowel through the first flap into the middle of the second vowel. In contrast, they show much lower rates of critical fluctuation from the second half of the second vowel, through the second flap to the end of the third vowel. This constitutes evidence of end-state comfort effects for speakers producing token types with narrow tongue-front displacement ranges. 
+>
+> For speakers producing token types in the middle of the group, there are no end-state comfort effects, but instead the most effort made during the second flap. For speakers with very wide tongue-front displacement ranges, there is again statistically significant evidence for end-state comfort effects, with extra beginning-state effort for the initial vowel. These are the same speakers producing token types that demonstrate two categorically different patterns of motion—one for slow speech, and one for fast speech. 
+>
+> Figure 7 shows the regions of significance for the GAMM whose model output is shown in Table 3. These results show that all of the model parameters are significant, and most importantly that the tensor field shown in Fig. 7 accounts for a significant portion of the variance of the data. This includes the fixed-effect tensor relating tongue-front displacement range and critical fluctuation along time slices, as well as the random-effects for participant, token type, and reiterant speech rate. The entire GAMM accounts for an adjusted r2 of 0.452, explaining 47% of the deviance in critical fluctuations in this dataset. [@derrickGaitChangeTongue2021, 10--11]
+
+Significance information is given as Table 3.
+
+![Table 3 from Derrick and Gick (2021).](images/gamms/derrick_gick_2021_t3.png)
+
+**What is in supplementary materials?**
+
+There is a repository on OSF ([here](https://osf.io/7k4ja/?view_only=83ab3adeb363481795ba97e2b481cd9e)).
+Code is available as an Rmarkdown or as an HTML file to be downloaded and 
+read in the browser.
+
+The analysis shows that the p-values in Table 3 are generated by using `itsadug::compareML()`
+and fitting the models with maximum likelihood estimation. With more space, this
+might have been discussed in the paper. But there is not always more space!
 
 :::
 
-- Cite the specific packages. (help: citation(), `grateful`).
-- Cite specific R functions
-- Text **in the article** can be terse, _as long as_ there is a link to the specific code.
-- The 'difference smooth' structure needs to be clear...
+What can we take from the above examples? Here are some reflections:
+
+- You don't need to say _everything_ in the paper. You can use supplementary
+material. This should include, at a minimum, the specific code you used to 
+fit the model and generate any reported p-values (not _just_ the summary).
+  - This can be important for seeing, e.g., whether the 'difference smooth' 
+  structure was used (see discussion above).
+- Cite the specific packages you used. The function `citation()` in R can 
+be very helpful for this (e.g. look at the results of `citation('mgcv')`).
+I often use the package `grateful` to generate a bibliography of all of the
+packages I use within an analysis project.
 - Visualisations are an important part of evaluating GAMMs (moreso than for linear models where a single coefficient is what you are testing).
-  - Your discussion section might consist of description of the specific trajectories you find visually. (as in  @renwickBoomerPeakGen2023.) TODO: add fuller list.
-- Model comparisons often used.
+  - Your discussion section might consist of description of the specific trajectories you find visually.
+- Supplementary material opens up many windows (including e.g., the interactive
+application in @brandSystematicCovariationMonophthongs2021). This is also, 
+however, a potential time sync. Try to balance the costs and benefits when you
+go beyond the requirements of open science and into the realm of web development!
 
 ## Further Resources {#sec-resources}
 
