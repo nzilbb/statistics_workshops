@@ -19,6 +19,9 @@ library(mgcv)
 library(itsadug)
 library(gratia)
 
+# Non-essential. Used in my `bam` to determine how many CPU cores to use.
+library(parallel)
+
 # NZILBB vowel package
 # If you do not have this use the following lines of code:
 # install.packages('remotes')
@@ -44,8 +47,14 @@ points is just a matter of finding the optimum slope and intercept.
 But **sometimes straight lines aren't enough**. There are plenty of effects in
 nature which do not follow a straight line. There are plenty of examples of 
 trajectories with non-linear behaviour in the 
-study of language. For instance, consider the following is a trajectory for the
-[price]{.smallcaps} vowel from ONZE via [@soskuthyHorizontalDiphthongShift2019].
+study of language. For instance, consider the following trajectory for the
+[price]{.smallcaps} vowel from ONZE via [@soskuthyHorizontalDiphthongShift2019].^[
+If you are not familiar with this bit of linguistics, just think of this a set
+of readings derived from a single action. It could just as easily be a set of
+readings from a brain scan, or a moving slider, or whatever you like. The 
+only restriction is that we have a set of measurements across time of the same
+event or action.
+]
 
 ```{r}
 #| label: price-plot
@@ -54,7 +63,7 @@ study of language. For instance, consider the following is a trajectory for the
 # Source: https://osf.io/74mza
 
 # Load all data (we will use the full set later)
-price <- read_rds(here('data', 'price_full.rds'))
+price <- read_rds(here('data', 'price_anon.rds'))
 
 # The dataset will be explained in full below.
 # Pull out a single trajectory.
@@ -110,6 +119,28 @@ derived from video footage. They also apply at very different time scales.
 Consider GAMMs fit through full monologues [@wilsonblackOverlookedEffectAmplitude2023],
 or to formant values across the history of a dialect [@brandSystematicCovariationMonophthongs2021].
 
+::: {.callout-note}
+
+You may have used polynomial models in the past. These models add terms such as $x^2$ and
+$x^3$ to models (where previously, only $x$ was included). You can do a lot with
+polynomial models, but they have some negative properties. For a brief and
+accessible explanation of the shortcomings of polynomial models compared to
+GAMMs see the motivating example section from the following
+Gavin Simpson video: <https://youtu.be/Ukfvd8akfco?si=COncckzAvpqvfIfj&t=107>.
+A key issue with polynomial models, especially when the $n$ in $x^n$ 
+gets very large, is called [Runge's Phenomenon](https://en.wikipedia.org/wiki/Runge%27s_phenomenon).
+At the edges of the range of the data, high order polynomials become very 
+unstable.
+
+@soskuthyGeneralisedAdditiveMixed2017 introduces polynomial models as, in
+effect, a simple kind of GAMM. This is different from thinking
+of GAMMs as an _alternative_ to polynomial models. Both are
+defensible views, but you may get confused if you try to think them both
+at the same time!
+
+:::
+
+
 ### What?
 
 We'll start with a bit of mathematics. A linear model looks like this:
@@ -123,10 +154,10 @@ all we get is a single slope and the intercept --- a straight line.
 
 GAMs replace each of the $\beta_n x_n$ terms with a **function** of $x_n$. This function
 will usually be some kind of **smooth**. We'll look at this visually in a moment. But,
-mathematically, it looks like this:
+mathematically, the overall GAM model looks like this:
 
 $$  y = \beta_0 + f_1(x_1) + f_2(x_2) + \ldots + f_n(x_n) + \epsilon .$$
-The **parameters** have been replaces by functions. The nature of the relationship
+The **parameters** have been replaces by functions. Now, the nature of the relationship
 between a given predictor and $y$ need not be a straight line.
 
 The functions we choose attempt to balance **smoothness** and **wiggliness**. 
@@ -720,7 +751,23 @@ Now change the `view` and `cond` arguments and see what happens.
 
 ## The Second 'M': Mixed Effects
 
+::: callout-warning
 
+The `mgcv` package requires the `openmp` library to take advantage of the
+parallel processing available through `bam()`. This is
+typically not a problem for Windows and Linux installations of R. On macos,
+it can be a problem. 
+
+If you get a warning about `openmp` not being available on macos. I suggest 
+you install the mandatory tools listed here: <https://mac.r-project.org/tools/> 
+and then follow the instructions at <https://mac.r-project.org/openmp/>.
+
+This is not likely to be a pleasant experience, especially if you don't like
+battling with the command line. UC and NZILBB researchers and students, feel free to 
+message me on Rocket.Chat or via <joshua.black@canterbury.ac.nz> and I may
+be able to help. 
+
+:::
 
 ## Auto-correlation
 

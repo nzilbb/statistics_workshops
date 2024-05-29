@@ -644,8 +644,8 @@ of these datasets.
 ```{r}
 data(warpbreaks)
 
-# This will open up an RStudio window to view that data
-View(warpbreaks)
+# To view the data in RStudio, use `View` instead of `head`.
+head(warpbreaks)
 ```
 
 There datasets also have help pages (see `?warpbreaks`). What does this

@@ -583,7 +583,7 @@ window.Quarto = {
 <div class="cell">
 <div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>vowels_f <span class="ot">&lt;-</span> vowels[vowels<span class="sc">$</span>participant_gender <span class="sc">==</span> <span class="st">"F"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>We have just filtered <em>the entire data frame</em> using the values of a single column. Look at the environment pain and you should now see two dat aframes: <code>vowels</code> and <code>vowels_f</code>. You should also see that one has many fewer rows than the other.</p>
+<p>We have just filtered <em>the entire data frame</em> using the values of a single column. Look at the environment pain and you should now see two data frames: <code>vowels</code> and <code>vowels_f</code>. You should also see that one has many fewer rows than the other.</p>
 <p><strong>NB:</strong> Don’t confuse <code>==</code> and <code>=</code>! The double <code>==</code> is used to test whether the left side and the right side are equal. The single <code>=</code> behaves like <code>&lt;-</code>. Here’s the kind of error you will see if you confused them:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This code is incorrect</span></span>
@@ -613,24 +613,24 @@ window.Quarto = {
 <p>In fact, <code>some_name$some_other_name</code> is a shorthand form of <code>some_name[["some_other_name"]]</code>. A single element of a list or vector returned by <code>$</code> and <code>[[]]</code>, whereas <code>[]</code> returns a list or vector which may contain multiple elements.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div class="webex-check webex-box">
 If <code>data_frame</code> is a data frame, what will <code>data_frame[5:6, ]</code> return?
-<div id="radio_KWYLYORFKB" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_KWYLYORFKB" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_KWYLYORFKB" value="answer"> <span>The fifth and sixth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_KWYLYORFKB" value=""> <span>The fifth and sixth columns of the data frame</span></label>
+<div id="radio_MWOVOIUQNK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MWOVOIUQNK" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_MWOVOIUQNK" value="answer"> <span>The fifth and sixth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_MWOVOIUQNK" value=""> <span>The fifth and sixth columns of the data frame</span></label>
 </div>
 If <code>data_frame</code> is a data frame, what will <code>data_frame[, c(3, 6, 9)]</code> return?
-<div id="radio_AXRVDHNBNX" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_AXRVDHNBNX" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_AXRVDHNBNX" value=""> <span>The third, sixth, and ninth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_AXRVDHNBNX" value="answer"> <span>The third, sixth, and ninth column of the data frame.</span></label>
+<div id="radio_TEJEEKWSJY" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_TEJEEKWSJY" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_TEJEEKWSJY" value=""> <span>The third, sixth, and ninth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_TEJEEKWSJY" value="answer"> <span>The third, sixth, and ninth column of the data frame.</span></label>
 </div>
 <p>Imagine you save a vector to the variable <code>vector_name</code>, as follows:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>vector_name <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 What would be the output of <code>vector_name &gt; 2</code>?
-<div id="radio_RZFETNYDVG" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_RZFETNYDVG" value="answer"> <span><code>[1]  TRUE FALSE  TRUE  TRUE FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_RZFETNYDVG" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_RZFETNYDVG" value=""> <span><code>FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_RZFETNYDVG" value=""> <span><code>[1] TRUE TRUE TRUE TRUE TRUE</code></span></label>
+<div id="radio_FNHDDMRUYH" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_FNHDDMRUYH" value="answer"> <span><code>[1]  TRUE FALSE  TRUE  TRUE FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_FNHDDMRUYH" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_FNHDDMRUYH" value=""> <span><code>FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_FNHDDMRUYH" value=""> <span><code>[1] TRUE TRUE TRUE TRUE TRUE</code></span></label>
 </div>
 What would be the output of <code>vector_name[3, 5]</code>?
-<div id="radio_GXSPRQXNPQ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_GXSPRQXNPQ" value=""> <span><code>[1] 7 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_GXSPRQXNPQ" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_GXSPRQXNPQ" value="answer"> <span><code>Error in vector_name[3, 5] : incorrect number of dimensions</code></span></label>
+<div id="radio_XWIPLZTXXU" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_XWIPLZTXXU" value=""> <span><code>[1] 7 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_XWIPLZTXXU" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_XWIPLZTXXU" value="answer"> <span><code>Error in vector_name[3, 5] : incorrect number of dimensions</code></span></label>
 </div>
 </div>
 </section>
@@ -642,7 +642,7 @@ What would be the output of <code>vector_name[3, 5]</code>?
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>vowels<span class="sc">$</span>word_freq_ln <span class="ot">&lt;-</span> <span class="fu">log</span>(vowels<span class="sc">$</span>word_freq <span class="sc">+</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This statement uses a few things we have already seen. Reading from the inside out, we see that the column with the name <code>word_freq</code> is being referenced from the <code>vowels</code> data frame (<code>vowels$word_freq</code>), and every element in the column is being increased by <span class="math inline">\(1\)</span>. Why? Well the logarithm of <span class="math inline">\(0\)</span> is not defined and there are some <span class="math inline">\(0\)</span>’s in this column. We take the log using the <code>log()</code> function (have a look at the documentation to see what the default behaviour of the function is). Finally, we use the <code>&lt;-</code> to put this data into a new column in the <code>vowels</code> data frame which we call <code>word_freq_ln</code>.</p>
-<p>We can do this to individual elements as well. For instance, if we want to change the third entry in the <code>participant_ages</code> vector to <span class="math inline">\(65\)</span>, we would write .</p>
+<p>We can do this to individual elements as well. For instance, if we want to change the third entry in the <code>participant_ages</code> vector to <span class="math inline">\(65\)</span>, we would write <code>participant_ages[3] &lt;- 65</code>.</p>
 <p>If we want to change the age of all participants with ages below 18 to <span class="math inline">\(0\)</span>, for whatever reason, we could say:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>participant_ages[participant_ages <span class="sc">&lt;</span> <span class="dv">18</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -665,8 +665,8 @@ What would be the output of <code>vector_name[3, 5]</code>?
 <span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">F2_midpoint =</span> F2_50</span>
 <span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>The pipe works by taking the object on the left of the pipe and feeding it to the function on the right side of the pipe as the first argument. So, e.g. <code>2 %&gt;% log()</code> is the same as <code>log(2)</code>. In this case, the data frame <code>vowels</code> becomes the first argument to <code>mutate()</code>, the following arguments then modify the data frame. Notice that we only need to say <code>word_freq</code> to refer to the column (rather than <code>vowels$word_freq</code>). This is because <code>muatate()</code> knows the names of the columns in the data frame it receives. Once the ‘mutation’ has happened, the modified data frame is pased to the <code>rename</code> funciton, which renames the columns <code>F1_50</code> and <code>F2_50</code> to <code>F1_midpoint</code> and <code>F2_midpoint</code> respectively. To see that this has happened, double click on <code>vowels</code> in the environment pain.</p>
-<p>There are ongoing interactions between base R and the tidyverse. One particularly prominent instance is the inclusion of a ‘pipe’ opperator in base R (<code>|&gt;</code>) which behaves in a very similar way to the tidyverse pipe (<code>%&gt;%</code>). In now prefer to use the base R pipe (<code>|&gt;</code>). In practice, I always use the shortcut <code>ctrl + shift + M</code>/<code>command + shift + M</code> to insert the pipe. RStudio has an option to choose whether the result of this is the tidyverse pipe or the base R pipe. I prefer to use the base R pipe now.</p>
+<p>The pipe works by taking the object on the left of the pipe and feeding it to the function on the right side of the pipe as the first argument. So, e.g. <code>2 %&gt;% log()</code> is the same as <code>log(2)</code>. In this case, the data frame <code>vowels</code> becomes the first argument to <code>mutate()</code>, the following arguments then modify the data frame. Notice that we only need to say <code>word_freq</code> to refer to the column (rather than <code>vowels$word_freq</code>). This is because <code>mutate()</code> knows the names of the columns in the data frame it receives. Once the ‘mutation’ has happened, the modified data frame is pased to the <code>rename</code> function, which renames the columns <code>F1_50</code> and <code>F2_50</code> to <code>F1_midpoint</code> and <code>F2_midpoint</code> respectively. To see that this has happened, double click on <code>vowels</code> in the environment pane.</p>
+<p>There are ongoing interactions between base R and the tidyverse. One particularly prominent instance is the inclusion of a ‘pipe’ operator in base R (<code>|&gt;</code>) which behaves in a very similar way to the tidyverse pipe (<code>%&gt;%</code>). I now prefer to use the base R pipe (<code>|&gt;</code>). In practice, I always use the shortcut <code>ctrl + shift + M</code>/<code>command + shift + M</code> to insert the pipe. RStudio has an option to choose whether the result of this is the tidyverse pipe or the base R pipe. I prefer to use the base R pipe now.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><img src="images/pipe.png" class="img-fluid figure-img"></p>
@@ -691,7 +691,7 @@ dbl (7): F1_50, F2_50, word_freq, time, vowel_duration, articulation_rate, a...
 </div>
 </div>
 <p>One great advantage of <code>read_csv</code> is that the output tells us something about the way R has interpreted each column of the data and the names which have been given to each column. We see how many rows and columns, what delimited the values (as we expected, <code>","</code>), we also see what type of data R thinks these columns contain. So, <code>chr</code> means text strings. These are mostly participant metadata, such as their gender or ethnic background. We also see <code>dbl</code> columns. These contain <strong>numerical</strong> data.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
-<p>Another change between <code>read.csv()</code> and <code>read_csv()</code> is that the data is now a ‘tibble’ rather than a base R data frame. For current purposes, you don’t need to worry about this distinctionl All of the base R methods we introduced above work with tibbles and with data frames.</p>
+<p>Another change between <code>read.csv()</code> and <code>read_csv()</code> is that the data is now a ‘tibble’ rather than a base R data frame. For current purposes, you don’t need to worry about this distinction. All of the base R methods we introduced above work with tibbles and with data frames.</p>
 <p>For more information on importing data see the relevant chapter of <a href="https://r4ds.hadley.nz/data-import.html">R for Data Science</a>.</p>
 </section>
 <section id="some-dplyr-verbs" class="level3" data-number="2.2.2">
@@ -739,7 +739,14 @@ Caused by error:
 </div>
 <p>The <code>select()</code> verb here has two arguments. The first is just the name <code>speaker</code>. This, unsurprisingly, selects the column <code>speaker</code>. The second, <code>contains('participant_')</code> uses the function <code>contains()</code> (also from <code>dplyr</code>) to pick out columns containing the string <code>'participant_'</code> in their names.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> After selecting these columns, there are many duplicate rows, so we pass the result into the base R function <code>unique()</code> with a pipe. The result is a data frame with the meta data for each participant in the data. Look in the environment pane to see how many rows and columns there are in the data frame <code>participant_metadata</code>.</p>
 <p>The <code>relocate()</code> function is sometimes useful with the <code>nzilbb.vowels</code> package and other packages where the order of the columns is important. It <em>relocates</em> columns within a data frame. See for instance,</p>
-<p>We have just covered: - <code>mutate()</code>: the change a data frame. - <code>rename()</code>: to change the names of existing columns. - <code>filter()</code>: to filter the rows of a data frame. - <code>select()</code>: to select a subset of columns of the data. - <code>relocate()</code>: to move selected columns within a data frame.</p>
+<p>We have just covered:</p>
+<ul>
+<li><code>mutate()</code>: the change a data frame.</li>
+<li><code>rename()</code>: to change the names of existing columns.</li>
+<li><code>filter()</code>: to filter the rows of a data frame.</li>
+<li><code>select()</code>: to select a subset of columns of the data.</li>
+<li><code>relocate()</code>: to move selected columns within a data frame.</li>
+</ul>
 </section>
 <section id="grouped-data" class="level3" data-number="2.2.3">
 <h3 data-number="2.2.3" class="anchored" data-anchor-id="grouped-data"><span class="header-section-number">2.2.3</span> Grouped Data</h3>
