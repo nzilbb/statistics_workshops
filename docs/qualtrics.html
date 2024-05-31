@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>NZILBB R and Open Science Workshops - 4&nbsp; Loading data from Qualtrics</title>
+<title>NZILBB R and Open Science Workshops - 4&nbsp; Loading Data from Qualtrics</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -19,6 +19,40 @@ ul.task-list li input[type="checkbox"] {
   width: 0.8em;
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 </style>
 
@@ -69,6 +103,35 @@ ul.task-list li input[type="checkbox"] {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="include/webex.css">
 </head>
@@ -82,7 +145,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="./qualtrics.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Loading data from Qualtrics</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="./qualtrics.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -163,7 +226,7 @@ ul.task-list li input[type="checkbox"] {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./qualtrics.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Loading data from Qualtrics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
@@ -186,14 +249,27 @@ ul.task-list li input[type="checkbox"] {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#set-up-an-r-project" id="toc-set-up-an-r-project" class="nav-link active" data-scroll-target="#set-up-an-r-project"><span class="header-section-number">4.1</span> Set up an R Project</a></li>
+  <li><a href="#load-useful-libraries" id="toc-load-useful-libraries" class="nav-link" data-scroll-target="#load-useful-libraries"><span class="header-section-number">4.2</span> Load Useful Libraries</a></li>
+  <li><a href="#load-data-exported-from-qualtrics-with-read_survey" id="toc-load-data-exported-from-qualtrics-with-read_survey" class="nav-link" data-scroll-target="#load-data-exported-from-qualtrics-with-read_survey"><span class="header-section-number">4.3</span> Load Data Exported from Qualtrics with <code>read_survey()</code></a></li>
+  <li><a href="#a-bar-chart" id="toc-a-bar-chart" class="nav-link" data-scroll-target="#a-bar-chart"><span class="header-section-number">4.4</span> A Bar Chart</a></li>
+  <li><a href="#factor-associations" id="toc-factor-associations" class="nav-link" data-scroll-target="#factor-associations"><span class="header-section-number">4.5</span> Factor Associations</a></li>
+  <li><a href="#wide-and-long-data" id="toc-wide-and-long-data" class="nav-link" data-scroll-target="#wide-and-long-data"><span class="header-section-number">4.6</span> Wide and Long Data</a></li>
+  <li><a href="#another-plot" id="toc-another-plot" class="nav-link" data-scroll-target="#another-plot"><span class="header-section-number">4.7</span> Another Plot</a></li>
+  <li><a href="#continuous-associations" id="toc-continuous-associations" class="nav-link" data-scroll-target="#continuous-associations"><span class="header-section-number">4.8</span> Continuous Associations</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="./qualtrics.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Loading data from Qualtrics</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="./qualtrics.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Loading data from Qualtrics</span></h1>
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></h1>
 </div>
 
 
@@ -210,8 +286,567 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This section has been written to feed in to LING615 - World Englishes and takes advantage of some material prepared for LING310.</p>
+<p>It is not a full introduction to analysis of survey data in Qualtrics nor is it an adequate introduction to statistical testing!</p>
+</div>
+</div>
+<p>To interact with data from <a href="https://www.qualtrics.com/">Qualtrics</a>, we will use the package <code>qualtRics</code>.</p>
+<p>If you haven’t installed the package, run <code>install.packages('qualtRics')</code> in the R console.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This book will have details about creating an R project soon. For now, follow the check list below and if you want more detail see https://r4ds.had.co.nz/workflow-projects.html.</p>
+</div>
+</div>
+<section id="set-up-an-r-project" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="set-up-an-r-project"><span class="header-section-number">4.1</span> Set up an R Project</h2>
+<p>To set up a new R project:</p>
+<ol type="1">
+<li>Go to <code>File &gt; New Project</code></li>
+<li>Select ‘New Directory’ and then ‘New Project’</li>
+<li>Use the <code>browse</code> choose a directory for the project (you might have to create a new one). For instance, <code>Documents/linguistics_projects/</code> then enter a name for the project directory in the <code>Directory name</code> box.</li>
+<li>Press <code>Create Project</code>.</li>
+<li>Create two directories in the project directory:
+<ol type="1">
+<li><code>data</code></li>
+<li><code>scripts</code></li>
+</ol></li>
+</ol>
+<p>We will look at how to load data from <code>.csv</code> files generated by Qualtrics.</p>
+<p>Place the <code>.csv</code> file you want to use in the <code>data</code> directory. For this exercise we will use <a href="./data/Ling310-Week1-2022.csv">this csv</a>.</p>
+<p>Create an R script and save it in the <code>scripts</code> directory.</p>
+</section>
+<section id="load-useful-libraries" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="load-useful-libraries"><span class="header-section-number">4.2</span> Load Useful Libraries</h2>
+<p>Start the script with the following lines:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggcorrplot)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># The following code changes the ggplot theme. You may like to explore</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># alternative themes.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">theme_set</span>(<span class="fu">theme_bw</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If R says that a package is not found, install it using <code>install.packages()</code>. Simply enter the name of the package inside quotation marks inside the brackets. For instant, if you don’t have the <code>ggcorrplot</code> package, enter the following in the R console (the bottom pane in RStudio): <code>install.packages('ggcorrplot')</code></p>
+</section>
+<section id="load-data-exported-from-qualtrics-with-read_survey" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="load-data-exported-from-qualtrics-with-read_survey"><span class="header-section-number">4.3</span> Load Data Exported from Qualtrics with <code>read_survey()</code></h2>
+<p>We can now use the <code>read_survey</code> function from the <code>qualtRics</code> package to read in the data.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the qualtRics package</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(qualtRics)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in the data</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">&lt;-</span> <span class="fu">read_survey</span>(<span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'Ling310-Week1-2022.csv'</span>)) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Running the above line of code will both read in the data (giving it the name <code>survey</code> in R) and provide output which tells us how the columns have been interpreted. The output shows that the default is to assume that each column has text in it rather than numbers (see <code>.default = col_character()</code> in the output). We also see that the <code>Progress</code>, <code>Duration (in seconds)</code>, and latitude and longitude columns contain numbers (see <code>col_double()</code> in the output — ‘double’ refers to a way in which computer represent numbers which can contain a decimal point). Finally, there are a set of columns with the type <code>col_logical()</code>. These columns are ‘logical’ in the sense that they contain only <code>TRUE</code> or <code>FALSE</code>. Any of these columns can have <code>NA</code>, which indicates that data is missing or unavailable.</p>
+<p>You may be confused now! Why would a column called <code>RecipientLastName</code>, for instance, only have the values <code>TRUE</code> or <code>FALSE</code>? Shouldn’t it have… the last names of recipients? There must be something wrong here. Let’s figure it out.</p>
+<p>It is worth having a look at some rows from the columns we are worried about. There are only 17 rows in the data frame so we can easily look at all of the values in the confusing columns.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> Here is some <code>tidyverse</code> style code to do that:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>survey <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select the 'logical' columns which are confusing.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>    RecipientLastName, </span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    RecipientFirstName, </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    RecipientEmail, </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    ExternalReference</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 17 × 4
+   RecipientLastName RecipientFirstName RecipientEmail ExternalReference
+   &lt;lgl&gt;             &lt;lgl&gt;              &lt;lgl&gt;          &lt;lgl&gt;            
+ 1 NA                NA                 NA             NA               
+ 2 NA                NA                 NA             NA               
+ 3 NA                NA                 NA             NA               
+ 4 NA                NA                 NA             NA               
+ 5 NA                NA                 NA             NA               
+ 6 NA                NA                 NA             NA               
+ 7 NA                NA                 NA             NA               
+ 8 NA                NA                 NA             NA               
+ 9 NA                NA                 NA             NA               
+10 NA                NA                 NA             NA               
+11 NA                NA                 NA             NA               
+12 NA                NA                 NA             NA               
+13 NA                NA                 NA             NA               
+14 NA                NA                 NA             NA               
+15 NA                NA                 NA             NA               
+16 NA                NA                 NA             NA               
+17 NA                NA                 NA             NA               </code></pre>
+</div>
+</div>
+<p>All 17 rows have <code>NA</code> values. That is, there is no data in these columns. We could just ignore these columns or we can get rid of them. Either option is fine. Here’s one way to get rid of them, using <code>select()</code> again, but this time with a minus sign (<code>-</code>) to indicate that we <em>don’t</em> want the named columns.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>survey <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>RecipientLastName, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>RecipientFirstName, </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>RecipientEmail, </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    <span class="sc">-</span>ExternalReference</span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>What is actually <em>in</em> this data? Let’s look at the first few entries. If you simply enter <code>survey</code> we see the following:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>survey</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 17 × 36
+   StartDate       EndDate Progress Duration (in seconds…¹ Finished RecordedDate
+   &lt;chr&gt;           &lt;chr&gt;      &lt;dbl&gt;                  &lt;dbl&gt; &lt;lgl&gt;    &lt;chr&gt;       
+ 1 18/07/2022 1:27 18/07/…      100                    339 TRUE     18/07/2022 …
+ 2 19/07/2022 0:13 19/07/…      100                    570 TRUE     19/07/2022 …
+ 3 19/07/2022 0:35 19/07/…      100                    251 TRUE     19/07/2022 …
+ 4 19/07/2022 20:… 19/07/…      100                    277 TRUE     19/07/2022 …
+ 5 19/07/2022 21:… 19/07/…      100                    265 TRUE     19/07/2022 …
+ 6 20/07/2022 20:… 20/07/…      100                    343 TRUE     20/07/2022 …
+ 7 20/07/2022 21:… 20/07/…      100                    390 TRUE     20/07/2022 …
+ 8 20/07/2022 21:… 20/07/…      100                    328 TRUE     20/07/2022 …
+ 9 21/07/2022 1:58 21/07/…      100                    213 TRUE     21/07/2022 …
+10 21/07/2022 17:… 21/07/…      100                    177 TRUE     21/07/2022 …
+11 21/07/2022 19:… 21/07/…      100                    497 TRUE     21/07/2022 …
+12 21/07/2022 19:… 21/07/…      100                    213 TRUE     21/07/2022 …
+13 21/07/2022 20:… 21/07/…      100                    203 TRUE     21/07/2022 …
+14 22/07/2022 22:… 22/07/…      100                    280 TRUE     22/07/2022 …
+15 24/07/2022 21:… 24/07/…      100                    639 TRUE     24/07/2022 …
+16 25/07/2022 19:… 25/07/…      100                     91 TRUE     25/07/2022 …
+17 28/07/2022 20:… 28/07/…      100                    159 TRUE     28/07/2022 …
+# ℹ abbreviated name: ¹​`Duration (in seconds)`
+# ℹ 30 more variables: ResponseId &lt;chr&gt;, LocationLatitude &lt;dbl&gt;,
+#   LocationLongitude &lt;dbl&gt;, DistributionChannel &lt;chr&gt;, UserLanguage &lt;chr&gt;,
+#   Q3 &lt;chr&gt;, Q4 &lt;chr&gt;, Q5 &lt;chr&gt;, Q6 &lt;chr&gt;, Q8 &lt;chr&gt;, Q9 &lt;chr&gt;, Q10 &lt;chr&gt;,
+#   Q11 &lt;chr&gt;, Q12 &lt;chr&gt;, Q13 &lt;chr&gt;, Q14 &lt;chr&gt;, Q15 &lt;chr&gt;, Q16 &lt;chr&gt;,
+#   Q17 &lt;chr&gt;, Q18 &lt;chr&gt;, Q19 &lt;chr&gt;, Q20 &lt;chr&gt;, Q21 &lt;chr&gt;, Q22 &lt;chr&gt;,
+#   Q23 &lt;chr&gt;, Q24 &lt;chr&gt;, Q25 &lt;chr&gt;, Q26 &lt;chr&gt;, Q27 &lt;chr&gt;, Q28 &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>This doesn’t tell us much, because there are so many columns. How many? Look at the top left of the output: there are 17 rows and 40 columns (<code>17 x 40</code>). We see when the participant started and ended the survey, how far through they got (<code>Progress</code>), how long it took (<code>`Duration (in seconds)`</code>), and whether the participant finished (<code>Finished</code>).</p>
+<p>Have a look at the full data set in RStudio’s viewer by either clicking on the name <code>survey</code> in the environment pane (top right) or entering <code>View(survey)</code> in the console. There are a series of columns, one for each question. When we view in the RStudio viewer we see the text of survey question as ‘labels’ underneath the variable names (e.g.&nbsp;the variable named <code>Q23</code> has the label ‘Does “pool” rhyme with “food”?’).</p>
+<p>The other way to get at these labels is to use the function <code>sjlabelled::get_label()</code>. This will output the text label for each variable. The bit of code <code>[15:20]</code> tells R just to print the 30th label through to the 35th. You can change these numbers to see more labels or remove them entirely to see all of the labels.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>sjlabelled<span class="sc">::</span><span class="fu">get_label</span>(survey)[<span class="dv">30</span><span class="sc">:</span><span class="dv">35</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                                                                                      Q22 
+                                                        "Does 'pear' rhyme with 'share'?" 
+                                                                                      Q23 
+                                                     "Does \"pool\" rhyme with \"food\"?" 
+                                                                                      Q24 
+                                             "Are 'doll' and 'dole' pronounced the same?" 
+                                                                                      Q25 
+                "Do you think Aucklanders sound different from people from Christchurch?" 
+                                                                                      Q26 
+"Do you think you could guess whether someone is Māori or Pākeha from listening to them?" 
+                                                                                      Q27 
+              "Would it be easier to guess someone's age or job from the way they sound?" </code></pre>
+</div>
+</div>
+<p>You may need to scroll right to see the full question and the variable names in the output.</p>
+<p>The bit of code <code>sjlabelled::</code> means that we are looking for a name which exists within the package <code>sjlabelled</code>. You can avoid having to enter this in by loading the library <code>sjlabelled</code> at the start of your script. This is entirely up to you.</p>
+<div class="webex-check webex-box">
+What is the label of the variable named <code>Q25</code>?
+<div id="radio_OIMWPWFWFQ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_OIMWPWFWFQ" value=""> <span>Does 'pear' rhyme with 'share'?</span></label><label><input type="radio" autocomplete="off" name="radio_OIMWPWFWFQ" value="answer"> <span>Do you think Aucklanders sound different from people from Christchurch?</span></label><label><input type="radio" autocomplete="off" name="radio_OIMWPWFWFQ" value=""> <span>It doesn't have a label.</span></label>
+</div>
+</div>
+<p>Let’s have a look at the actual answers for <code>Q24</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>survey<span class="sc">$</span>Q24</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "No"  "Yes" "No"  "No"  "Yes" "Yes" "Yes" "Yes" "No"  "Yes" "Yes" "No" 
+[13] "No"  "Yes" "No"  "Yes" "Yes"
+attr(,"label")
+                                         Q24 
+"Are 'doll' and 'dole' pronounced the same?" </code></pre>
+</div>
+</div>
+<p>The responses are stored as character strings. Most respondents seem to think that ‘doll’ and ‘dole’ are pronounced the same.</p>
+<p>We don’t have to count these manually. Use the following code to see the counts of each answer:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">factor</span>(survey<span class="sc">$</span>Q24))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> No Yes 
+  7  10 </code></pre>
+</div>
+</div>
+<p>There are ten respondents who think ‘Aucklanders and people from Christchurch sound the same and four who don’t ’doll’ and ‘dole’ are pronounced the same.</p>
+<div class="webex-box">
+<p>What do you think the function <code>factor</code> is doing here? See what happens if you remove it and have a look here to understand what is going on in more detail: <a href="https://r4ds.hadley.nz/factors.html" class="uri">https://r4ds.hadley.nz/factors.html</a></p>
+</div>
+</section>
+<section id="a-bar-chart" class="level2" data-number="4.4">
+<h2 data-number="4.4" class="anchored" data-anchor-id="a-bar-chart"><span class="header-section-number">4.4</span> A Bar Chart</h2>
+<p>Let’s create some plots in <code>ggplot</code> using the data we have loaded from Qualtrics.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>survey <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> Q28</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>() <span class="sc">+</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Q28"</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">subtitle =</span> <span class="st">"What does the word 'worry' rhyme with?"</span></span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="qualtrics_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="factor-associations" class="level2" data-number="4.5">
+<h2 data-number="4.5" class="anchored" data-anchor-id="factor-associations"><span class="header-section-number">4.5</span> Factor Associations</h2>
+<p>We are often interested in associations between answers to distinct questions. The <code>table</code> function can be very useful as an initial was of seeing differences. Table is not a <code>tidyverse</code> function, and so we have to use the <code>$</code> to indicate column names.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  survey<span class="sc">$</span>Q8,</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  survey<span class="sc">$</span>Q10</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                
+                 No Yes
+  Definitely      5   2
+  Definitely not  0   3
+  Maybe?          3   4</code></pre>
+</div>
+</div>
+<div class="webex-box">
+<p>Figure out what the questions associated with the columns <code>Q8</code> and <code>Q10</code> are. Enough information has been given above to work this out.</p>
+</div>
+<p>Are we surprised by the absence of ‘no’ answers in the ‘definitely not’ group? We can do a simple test to check this using a Chi-square test.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>survey_test <span class="ot">&lt;-</span> <span class="fu">chisq.test</span>(</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  survey<span class="sc">$</span>Q8,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  survey<span class="sc">$</span>Q10</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>survey_test</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test
+
+data:  survey$Q8 and survey$Q10
+X-squared = 4.3849, df = 2, p-value = 0.1116</code></pre>
+</div>
+</div>
+<p>Here, a value is calculated which compares the counts in the table above that we would <em>expect</em> given no association between the answers to the two questions, and what we actually <em>observe</em>. This value is called the <span class="math inline">\(\chi^2\)</span> value (or ‘Chi-square’). The consistency of our data with the assumption that there is no relationship is captured by the <span class="math inline">\(\chi^2\)</span> value (and the degrees of freedom, but you can ignore this for now). If the <em>p-value</em> is below a pre-established limit, typically <span class="math inline">\(0.05\)</span>, we say that the association between the two questions is ‘statistically significant’. In this case, the association is <em>not</em> statistically significant.</p>
+<p>The assumption that there is no association between the questions is called the ‘null hypothesis’.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It takes some effort to fully understand the meaning of p-values, and of the phrase ‘statistically significant’.</p>
+<p>For one thing, ‘statistical significance’ does <em>not</em> mean significant in the sense of ‘big’. Some ‘statistically significant’ effects are so small that they have no practical importance.</p>
+<p>This is a bigger topic which we will not cover here!</p>
+</div>
+</div>
+<p>We can see what values were <em>expected</em> given no association between the questions here:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>survey_test<span class="sc">$</span>expected</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                survey$Q10
+survey$Q8              No      Yes
+  Definitely     3.294118 3.705882
+  Definitely not 1.411765 1.588235
+  Maybe?         3.294118 3.705882</code></pre>
+</div>
+</div>
+<p>Failure to find a statistically significant effect does not mean that there is no effect. For instance, even if there <em>is</em> an effect we may not have enough data points to detect it.</p>
+<p>It is also important to note that an association between two questions can appear as statistically significant <em>even if</em> it does not exist. The p-value indicates the probability that we would see a <span class="math inline">\(\chi^2\)</span> value this big (or bigger) in the absence of a genuine association between the answers to the two questions. <em>Any</em> data is <em>consistent</em> with the absence of an association. Perhaps we were just unlucky in our observations.</p>
+<p>To report a <span class="math inline">\(\chi^2\)</span> test, you can say something like: &gt; We carried out a Chi-square test on questions 8 and 10 and failed to reject the null hypothesis (Chi = 4.4, df = 2, p = 0.1).</p>
+<p>Or, if the association were statistically significant: &gt; We found a statistically significant association between questions x and y (Chi = ???, df = ???, p = ???).</p>
+<p>With the appropriate values inserted.</p>
+</section>
+<section id="wide-and-long-data" class="level2" data-number="4.6">
+<h2 data-number="4.6" class="anchored" data-anchor-id="wide-and-long-data"><span class="header-section-number">4.6</span> Wide and Long Data</h2>
+<p>One of the most common things to do with survey data is to convert from our current situation, where we have <strong>a column for each question</strong> to one in which we use <strong>two columns:</strong> one to identify questions and one to store responses.</p>
+<p>That is, we want to move from a <strong>wider</strong> data frame to a <strong>longer</strong> data frame. A longer data frame as fewer columns and more rows.</p>
+<p>We achieve this using the <code>pivot_longer()</code> function. It is often useful to assign the longer version of the data frame to a new variable.</p>
+<p>Let’s import another Qualtrics survey for which this is necessary:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>skills <span class="ot">&lt;-</span> <span class="fu">read_survey</span>(<span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'ARTS102-S2-2022.csv'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="webex-box">
+<p>Have a look at this survey using the skills you have picked up above.</p>
+</div>
+<p>Here is a long, but easier to explain, version of the code which makes this data frame longer:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>skills_longer <span class="ot">&lt;-</span> skills <span class="sc">|&gt;</span> </span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="co"># First we name the columns we want to convert into longer formant.</span></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>      Q18_1, Q18_2, Q18_3, Q18_4, Q18_5, Q18_6, Q18_7, Q18_8, Q18_9, </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>      Q18_10, Q18_11, Q18_12, Q18_13, Q18_14</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Where do we want the column names to go? This will be the name of our new</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># column to identify the question.</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"question"</span>,</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Where do we want the responses to go?</span></span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"response"</span></span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Let’s look at some ways to make this code a little more convenient to write. There are lots of ways to specify the columns we are interested in rather than writing them all in by hand.</p>
+<ol type="1">
+<li>We can use a colon (<code>:</code>) to indicate a range of columns. This will use the order in which the columns appear in the data frame (the same as the order in the RStudio viewer or the order you get if you enter <code>names(skills)</code> into the console). So, in this case, we can use <code>Q18_1:Q18_14</code>:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>skills_longer <span class="ot">&lt;-</span> skills <span class="sc">|&gt;</span> </span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> Q18_1<span class="sc">:</span>Q18_14,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"question"</span>,</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"response"</span></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="2" type="1">
+<li>You can select columns using <code>starts_with()</code> or <code>ends_with()</code>, if all the columns you want have names starting with or ending with a given character. All the columns we want start with <code>Q</code> and none of the other columns start with <code>Q</code>, we we can use:</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>survey_longer <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span> </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">starts_with</span>(<span class="st">'Q'</span>),</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"question"</span>,</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"response"</span></span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<ol start="3" type="1">
+<li>We can use <code>contains()</code> if we have a specific string which each column contains (in this case <code>contains('Q')</code> would work).</li>
+</ol>
+<p>There are some other column selection options. If you want more detail, enter <code>?tidyselect::language</code> into the console and look at the help file which appears.</p>
+</section>
+<section id="another-plot" class="level2" data-number="4.7">
+<h2 data-number="4.7" class="anchored" data-anchor-id="another-plot"><span class="header-section-number">4.7</span> Another Plot</h2>
+<p>Let’s produce a nice violin plot, which will show the distribution of scores across multiple questions:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>skills_v_plot <span class="ot">&lt;-</span> skills_longer <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> question, </span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> response</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">draw_quantiles =</span> <span class="fu">c</span>(<span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Response to skills questions in LING310 Survey"</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>skills_v_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="qualtrics_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>In the above plot, the bars give the median value for the question. So, for instance, for the first question, the median value is somewhere between <span class="math inline">\(37.5\)</span> and <span class="math inline">\(50\)</span>, whereas the median for the fourteenth question is somewhere between <span class="math inline">\(12.5\)</span> and <span class="math inline">\(25\)</span>.</p>
+<p>The labels on the <span class="math inline">\(x\)</span>-axis are not very clear. Let’s fix this! There’s no low-labour way to do this. The names are taken from the column names which we got when we read in the data. So we can modify the <code>skills</code> data frame and then pivot it into longer form again. I get the names by looking at the output of the <code>sjlabelled::get_label()</code> function again.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a> We will change the names of the columns using the <code>rename()</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>skills <span class="ot">&lt;-</span> skills <span class="sc">|&gt;</span> </span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">maths =</span> Q18_1,</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">skipping =</span> Q18_2,</span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">knitting =</span> Q18_3,</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">minecraft =</span> Q18_4,</span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">driving =</span> Q18_5,</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">conversation =</span> Q18_6,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">handwriting =</span> Q18_7,</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">maps =</span> Q18_8,</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">programming =</span> Q18_9,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">drawing =</span> Q18_10,</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">lego =</span> Q18_11,</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">threading_needle =</span> Q18_12,</span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">cooking =</span> Q18_13,</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">te_reo =</span> Q18_14,</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We pivot again:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>skills_longer <span class="ot">&lt;-</span> skills <span class="sc">|&gt;</span> </span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> maths<span class="sc">:</span>te_reo,</span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"question"</span>,</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"response"</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>And plot again. We add some lines to rotate the labels so they are readable:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>skills_v_plot <span class="ot">&lt;-</span> skills_longer <span class="sc">|&gt;</span> </span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> question, </span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> response</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(<span class="at">draw_quantiles =</span> <span class="fu">c</span>(<span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Response to skills questions in LING310 Survey"</span></span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle=</span><span class="dv">90</span>, <span class="at">vjust =</span> <span class="fl">0.8</span>)</span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb28-15"><a href="#cb28-15" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb28-16"><a href="#cb28-16" aria-hidden="true" tabindex="-1"></a>skills_v_plot</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="qualtrics_files/figure-html/unnamed-chunk-21-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>There are many ways this could be improved. Have a look for some <code>ggplot2</code> tutorials online.</p>
+</section>
+<section id="continuous-associations" class="level2" data-number="4.8">
+<h2 data-number="4.8" class="anchored" data-anchor-id="continuous-associations"><span class="header-section-number">4.8</span> Continuous Associations</h2>
+<p>Can we look at how these skills are related to one another? Yes!</p>
+<p>First, let’s look at a correlation plot:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggcorrplot</span>(</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cor</span>(skills <span class="sc">|&gt;</span> <span class="fu">select</span>(maths<span class="sc">:</span>te_reo))</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="qualtrics_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The red blocks indicate positive associations (when one goes up, the other does as well). There is only one negative correlation here, between Minecraft and handwriting. This suggests (weakly!) that increased Minecraft skill comes with weakened handwriting.</p>
+<p>On the stronger end, it looks like there is a strong positive correlation between knitting skill and the ability to thread a needle and between reading maps and driving.</p>
+<p>We can test all three associations using the <code>cor.test()</code> function. First: between Minecraft and handwriting:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  skills<span class="sc">$</span>minecraft,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  skills<span class="sc">$</span>handwriting</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  skills$minecraft and skills$handwriting
+t = -1.9122, df = 293, p-value = 0.05683
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ -0.222396789  0.003220217
+sample estimates:
+       cor 
+-0.1110185 </code></pre>
+</div>
+</div>
+<p>The <code>p-value</code> here is <em>just above</em> 0.05. This is below the cutoff, so we do not say that the association is ‘statistically significant’.</p>
+<p>Let’s look at the association between threading a needle and knitting:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>  skills<span class="sc">$</span>knitting,</span>
+<span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>  skills<span class="sc">$</span>threading_needle</span>
+<span id="cb32-4"><a href="#cb32-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  skills$knitting and skills$threading_needle
+t = 7.1109, df = 293, p-value = 8.847e-12
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.2817856 0.4769410
+sample estimates:
+      cor 
+0.3836382 </code></pre>
+</div>
+</div>
+<p>This is a much stronger correlation (<span class="math inline">\(0.383...\)</span>) and has a much lower p-value. It is below <span class="math inline">\(0.05\)</span>, so we can say that the association between the questions is statistically significant. For instance, by saying “the correlation between the skill of threading a needle and knitting is statistically significant at the 0.05 level (Pearson’s cor = <span class="math inline">\(0.38\)</span>, p-value &lt; <span class="math inline">\(0.001\)</span>).”<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>What about the association between driving a car and reading maps:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">cor.test</span>(</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>  skills<span class="sc">$</span>driving,</span>
+<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>  skills<span class="sc">$</span>maps</span>
+<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's product-moment correlation
+
+data:  skills$driving and skills$maps
+t = 6.1072, df = 293, p-value = 3.216e-09
+alternative hypothesis: true correlation is not equal to 0
+95 percent confidence interval:
+ 0.2306929 0.4335966
+sample estimates:
+      cor 
+0.3360379 </code></pre>
+</div>
+</div>
+<p>The story here is very similar.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>There is much more to be said about statistical testing. In particular, in actual research it is very bad practice to start with a plot of the strength of a series of correlations, pick the strongest ones, and then do a statistical test on them. This can result in many false associations. Rather, you should have a hypothesis about what associations will be significant <em>before</em> you look at the data.</p>
+</div>
+</div>
+<p>Let’s have a look at what the association between threading a needle and knitting looks like with one final plot:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>skills <span class="sc">|&gt;</span> </span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> threading_needle,</span>
+<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> knitting</span>
+<span id="cb36-6"><a href="#cb36-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb36-7"><a href="#cb36-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb36-8"><a href="#cb36-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb36-9"><a href="#cb36-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="qualtrics_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Because our values have to be between <span class="math inline">\(0\)</span> and <span class="math inline">\(100\)</span>, there are ‘floor’ and ‘ceiling’ effects here. That is, many of our values sit at either 0 or 100. Nonetheless, the correlation coefficient gives us a tool for expressing the association between these variables.</p>
+<p>There is much more to say about how to analyse data of this sort. However, this is enough to get started with.</p>
 
 
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>You can see how many rows there are in a data frame by looking at the ‘environment’ pane at the top right of the R Studio window. You can also use the function <code>nrow()</code>. In this case, you could enter <code>nrow(survey)</code> into your script or the console pane in RStudio.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>You could use any method you like to do this, including looking at the original spreadsheet in Excel.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Here, because the p-value is so small, we simply report that it is less than a very small number <span class="math inline">\(0.0001\)</span>. It is good practice not to just say <span class="math inline">\(&lt; 0.05\)</span>.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
 
 </main> <!-- /main -->
 <script>
