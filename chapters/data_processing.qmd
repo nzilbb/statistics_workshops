@@ -54,11 +54,12 @@ are too many cases to consider here, but [Google will be your friend](https://ww
 Here, we'll read a csv of reading from vowels from the QuakeBox corpus using
 the base R `read.csv` function. The most simple approach is:
 ```{r}
+#| eval: false
 vowels <- read.csv('data/qb_vowels.csv')
 ```
 
 I often use the `here` package to manage file paths. These can be a little
-finiky, especially when shifting between devices and operating systems.
+finicky, especially when shifting between devices and operating systems.
 In an R project, the function `here()` starts from the root directory of the
 project. We then add arguments to the function containing the names of the
 directories and files that we want. The `here` version of the previous line

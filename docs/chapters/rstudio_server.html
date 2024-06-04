@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>NZILBB R and Open Science Workshops - Introduction</title>
+<title>NZILBB R and Open Science Workshops - 3&nbsp; RStudio Server</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -20,47 +20,27 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<link href="./foundations.html" rel="next">
-<link href="./index.html" rel="prev">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/qualtrics.html" rel="next">
+<link href="../chapters/others.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -90,7 +70,7 @@ div.csl-indent {
 }</script>
 
 
-<link rel="stylesheet" href="include/webex.css">
+<link rel="stylesheet" href="../include/webex.css">
 </head>
 
 <body class="nav-sidebar floating">
@@ -102,7 +82,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./intro.html">Introduction</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="../chapters/rstudio_server.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">RStudio Server</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -116,11 +96,11 @@ div.csl-indent {
 <!-- sidebar -->
   <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
     <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
-      <a href="./index.html" class="sidebar-logo-link">
-      <img src="./images/nzilbb-logo.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../images/nzilbb-logo.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="./">NZILBB R and Open Science Workshops</a> 
+      <a href="../">NZILBB R and Open Science Workshops</a> 
     </div>
       </div>
         <div class="mt-2 flex-shrink-0 align-items-center">
@@ -132,19 +112,19 @@ div.csl-indent {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link">
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Preface</span></a>
   </div>
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./intro.html" class="sidebar-item-text sidebar-link active">
+  <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Introduction</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./foundations.html" class="sidebar-item-text sidebar-link">
+            <a href="../chapters/foundations.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Foundations</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -153,13 +133,13 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./getting_started.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/getting_started.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./data_processing.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/data_processing.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Processing</span></span></a>
   </div>
 </li>
@@ -167,7 +147,7 @@ div.csl-indent {
   </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a href="./others.html" class="sidebar-item-text sidebar-link">
+            <a href="../chapters/others.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Additional Topics</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
@@ -176,19 +156,19 @@ div.csl-indent {
       <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./rstudio_server.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/rstudio_server.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">RStudio Server</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./qualtrics.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/qualtrics.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./gamms_1.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/gamms_1.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></span></a>
   </div>
 </li>
@@ -196,7 +176,7 @@ div.csl-indent {
   </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./references.html" class="sidebar-item-text sidebar-link">
+  <a href="../chapters/references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
 </li>
@@ -206,20 +186,14 @@ div.csl-indent {
 <div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        <nav id="TOC" role="doc-toc" class="toc-active">
-    <h2 id="toc-title">Table of contents</h2>
-   
-  <ul>
-  <li><a href="#other-resources" id="toc-other-resources" class="nav-link active" data-scroll-target="#other-resources">Other resources</a></li>
-  </ul>
-</nav>
+        
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="../chapters/rstudio_server.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">RStudio Server</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">Introduction</h1>
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">RStudio Server</span></h1>
 </div>
 
 
@@ -236,31 +210,11 @@ div.csl-indent {
 </header>
 
 
-<p>From the first semester of 2024, we will be running a series of workshops on R at NZILBB. This document will contain materials for the introductory sessions, with another collection for the more advanced sessions.</p>
-<p>The focus of the workshops is on R and Open Science. The aim is to get you up to speed with the use of R and associated Open Science infrastructure so that your research is maximally reproducible, replicable, and helpful to the wider scientific community. This requires us to learn some programming!</p>
-<p>This resource will gradually grow as I write up workshops. The ideal is that it will allow people to follow the material at their own pace and/or to catch up to wherever we are at in our tutorial sessions.</p>
-<p>For UC students and staff, I am happy to talk over any issues you have with this material. Please get in touch with me at <a href="mailto:joshua.black@canterbury.ac.nz" class="email">joshua.black@canterbury.ac.nz</a>.</p>
-<p>If you have found your way to this material by some other means, you can also email me!</p>
-<section id="other-resources" class="level1">
-<h1>Other resources</h1>
-<p>At this stage, this is a somewhat disorganised list of texts and video which you may find interesting.</p>
-<ul>
-<li>The alternative to data analysis with a programming language is usually some kind of spreadsheet. Here are some spreadsheet horror stories: <a href="https://eusprig.org/research-info/horror-stories/" class="uri">https://eusprig.org/research-info/horror-stories/</a>.</li>
-<li>Why do we have to learn how to program? Why is science ‘amateur software development’? This is a good lecture on the topic: <a href="https://www.youtube.com/watch?v=8qzVV7eEiaI" class="uri">https://www.youtube.com/watch?v=8qzVV7eEiaI</a>.
-<ul>
-<li>Usually these techniques aren’t explicitly taught. These workshops are our attempt to respond to this problem!</li>
-</ul></li>
-<li>Why can’t you do data science with a spreadsheet? <a href="https://www.youtube.com/watch?v=cpbtcsGE0OA" class="uri">https://www.youtube.com/watch?v=cpbtcsGE0OA</a></li>
-<li>These workshops have been heavily influenced by <span class="citation" data-cites="winterStatisticsLinguistsIntroduction2019">Winter (<a href="references.html#ref-winterStatisticsLinguistsIntroduction2019" role="doc-biblioref">2019</a>)</span></li>
-</ul>
+<p>Academics at the University of Canterbury can use the RStudio Server.</p>
+<p>As of this writing writing… [details]</p>
+<p>Current details</p>
 
 
-<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
-<div id="ref-winterStatisticsLinguistsIntroduction2019" class="csl-entry" role="listitem">
-Winter, Bodo. 2019. <em>Statistics for <span>Linguists</span>: <span>An Introduction Using R</span></em>. New York: Routledge. <a href="https://doi.org/10.4324/9781315165547">https://doi.org/10.4324/9781315165547</a>.
-</div>
-</div>
-</section>
 
 </main> <!-- /main -->
 <script>
@@ -880,13 +834,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="./index.html" class="pagination-link" aria-label="Preface">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      <a href="../chapters/others.html" class="pagination-link" aria-label="Additional Topics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Additional Topics</span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./foundations.html" class="pagination-link" aria-label="Foundations">
-        <span class="nav-page-text">Foundations</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/qualtrics.html" class="pagination-link" aria-label="Loading Data from Qualtrics">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

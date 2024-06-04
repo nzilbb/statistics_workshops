@@ -9,17 +9,17 @@ book:
   date: today
   chapters:
   - index.qmd
-  - intro.qmd
-  - part: foundations.qmd
+  - chapters/intro.qmd
+  - part: chapters/foundations.qmd
     chapters: 
-    - getting_started.qmd
-    - data_processing.qmd
-  - part: others.qmd
+    - chapters/getting_started.qmd
+    - chapters/data_processing.qmd
+  - part: chapters/others.qmd
     chapters: 
-    - rstudio_server.qmd
-    - qualtrics.qmd
-    - gamms_1.qmd
-  - references.qmd
+    - chapters/rstudio_server.qmd
+    - chapters/qualtrics.qmd
+    - chapters/gamms_1.qmd
+  - chapters/references.qmd
   sidebar:
     logo: images/nzilbb-logo.svg
 bibliography: 
