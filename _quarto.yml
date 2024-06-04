@@ -14,6 +14,7 @@ book:
     chapters: 
     - chapters/getting_started.qmd
     - chapters/data_processing.qmd
+    - chapters/exploratory_data_vis.qmd
   - part: chapters/others.qmd
     chapters: 
     - chapters/rstudio_server.qmd
@@ -21,7 +22,7 @@ book:
     - chapters/gamms_1.qmd
   - chapters/references.qmd
   sidebar:
-    logo: images/nzilbb-logo.svg
+    logo: global_images/nzilbb-logo.svg
 bibliography: 
   - stat_workshops.bib
   - grateful-refs.bib

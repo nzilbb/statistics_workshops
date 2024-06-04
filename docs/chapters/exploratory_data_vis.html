@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.553">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>NZILBB R and Open Science Workshops - 3&nbsp; Exploratory Data Visualisation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../chapters/others.html" rel="next">
+<link href="../chapters/data_processing.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../include/webex.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/foundations.html">Foundations</a></li><li class="breadcrumb-item"><a href="../chapters/exploratory_data_vis.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Exploratory Data Visualisation</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="../index.html" class="sidebar-logo-link">
+      <img src="../global_images/nzilbb-logo.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">NZILBB R and Open Science Workshops</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../chapters/foundations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Foundations</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/getting_started.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Getting Started</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/data_processing.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Processing</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/exploratory_data_vis.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Exploratory Data Visualisation</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../chapters/others.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Additional Topics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/rstudio_server.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">RStudio Server</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/qualtrics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/gamms_1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#overview" id="toc-overview" class="nav-link active" data-scroll-target="#overview"><span class="header-section-number">3.1</span> Overview</a></li>
+  <li><a href="#start-a-new-rstudio-project" id="toc-start-a-new-rstudio-project" class="nav-link" data-scroll-target="#start-a-new-rstudio-project"><span class="header-section-number">3.2</span> Start a New RStudio Project</a>
+  <ul class="collapse">
+  <li><a href="#create-a-quarto-markdown-document" id="toc-create-a-quarto-markdown-document" class="nav-link" data-scroll-target="#create-a-quarto-markdown-document"><span class="header-section-number">3.2.1</span> Create a Quarto Markdown Document</a></li>
+  </ul></li>
+  <li><a href="#word-duration-and-usage-factors" id="toc-word-duration-and-usage-factors" class="nav-link" data-scroll-target="#word-duration-and-usage-factors"><span class="header-section-number">3.3</span> Word Duration and Usage Factors</a></li>
+  <li><a href="#getting-started-with-ggplot2" id="toc-getting-started-with-ggplot2" class="nav-link" data-scroll-target="#getting-started-with-ggplot2"><span class="header-section-number">3.4</span> Getting Started with <code>ggplot2</code></a>
+  <ul class="collapse">
+  <li><a href="#load-libraries-and-data" id="toc-load-libraries-and-data" class="nav-link" data-scroll-target="#load-libraries-and-data"><span class="header-section-number">3.4.1</span> Load libraries and data</a></li>
+  <li><a href="#the-grammar-of-graphics" id="toc-the-grammar-of-graphics" class="nav-link" data-scroll-target="#the-grammar-of-graphics"><span class="header-section-number">3.4.2</span> The ‘grammar of graphics’</a></li>
+  <li><a href="#one-dimensional-plots" id="toc-one-dimensional-plots" class="nav-link" data-scroll-target="#one-dimensional-plots"><span class="header-section-number">3.4.3</span> One-Dimensional Plots</a></li>
+  <li><a href="#two-dimensional-plots" id="toc-two-dimensional-plots" class="nav-link" data-scroll-target="#two-dimensional-plots"><span class="header-section-number">3.4.4</span> Two-Dimensional Plots</a></li>
+  <li><a href="#themes-and-saving-plots" id="toc-themes-and-saving-plots" class="nav-link" data-scroll-target="#themes-and-saving-plots"><span class="header-section-number">3.4.5</span> Themes and Saving Plots</a></li>
+  <li><a href="#plots-in-markdown-documents" id="toc-plots-in-markdown-documents" class="nav-link" data-scroll-target="#plots-in-markdown-documents"><span class="header-section-number">3.4.6</span> Plots in Markdown Documents</a></li>
+  <li><a href="#final-thoughts-on-exploratory-data-visualisation" id="toc-final-thoughts-on-exploratory-data-visualisation" class="nav-link" data-scroll-target="#final-thoughts-on-exploratory-data-visualisation"><span class="header-section-number">3.4.7</span> Final Thoughts on Exploratory Data Visualisation</a></li>
+  <li><a href="#useful-resources" id="toc-useful-resources" class="nav-link" data-scroll-target="#useful-resources"><span class="header-section-number">3.4.8</span> Useful Resources</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/foundations.html">Foundations</a></li><li class="breadcrumb-item"><a href="../chapters/exploratory_data_vis.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Exploratory Data Visualisation</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Exploratory Data Visualisation</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="overview" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">3.1</span> Overview</h2>
+<p>So far, the approach taken in these workshops has been detached from the actual work of data analysis in linguistics and allied fields.</p>
+<p>We have learnt enough now that we can start to approach more ‘real world’ data analysis examples. From here on out, new material will be illustrated with actual problems.</p>
+<p>The <strong>primary aim</strong> of this session is what it says on the tin, namely, to introduce exploratory data visualisation. This is one of the most important skills for data analysis. We will particularly focus on the <code>ggplot2</code> package from the <code>tidyverse</code>.</p>
+<p>The <strong>secondary aim</strong> of this session is to introduce some basic R and open science infrastructure, and a particular research area, which will follow us through this and future sessions. We will be exploring the effect on word duration of ‘word usage factors’, such as word frequency, where in a sentence the word typically appears, how likely the word is in a context.</p>
+<p>Before we turn to <code>ggplot2</code>, we will need to orient ourselves with respect to this secondary aim.</p>
+</section>
+<section id="start-a-new-rstudio-project" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="start-a-new-rstudio-project"><span class="header-section-number">3.2</span> Start a New RStudio Project</h2>
+<p>RStudio projects are one of the primary ways to organise a data analysis project in the R ecosystem. They enable the integration of data files, R scripts, and supplementary materials. Ideally, you can share the entire project online along with any publications.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
+<p>To create a new RStudio project in RStudio:</p>
+<ol type="1">
+<li>Go to <code>File &gt; New Project</code></li>
+<li>Select ‘New Directory’ and then ‘New Project’</li>
+<li>Use the <code>Browse...</code> button to choose a directory for the project (you might have to create a new one). For instance, <code>Documents/research_projects/</code> then enter a name for the project directory in the <code>Directory name</code> box (<a href="#fig-new-proj" class="quarto-xref">Figure&nbsp;<span>3.1</span></a>).</li>
+<li>Press <code>Create Project</code>.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></li>
+</ol>
+<div id="fig-new-proj" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-new-proj-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/new_project.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-new-proj-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.1: New project wizard.
+</figcaption>
+</figure>
+</div>
+<p>We will look at the use of <code>git</code> and <code>renv</code> in the future.</p>
+<p>For now, we need to populate our project with a sensible collection of folders/directories. You will have your own ideas about the best way to do this. For our current purposes, I’ll insist on three: <code>data</code>, <code>plots</code>, and <code>markdown</code>.</p>
+<p>How do you create these? You can do it using the file browser which comes with your operating system or from inside the RStudio window in the <strong>output pane</strong> (recall: at the bottom right of your RStudio window). There is a <code>New Folder</code> bottom at the top of the <code>Files</code> tab.</p>
+<div id="fig-new-fold" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-new-fold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/new_folder.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-new-fold-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.2: Files tab of Output pane with ‘New Folder’ button highlighted.
+</figcaption>
+</figure>
+</div>
+<section id="create-a-quarto-markdown-document" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="create-a-quarto-markdown-document"><span class="header-section-number">3.2.1</span> Create a Quarto Markdown Document</h3>
+<p>We want a sharable record of our data analysis journey. The ideal format for this is one which enables us to both set out the code we used <em>and</em> explain the project to our fellow researchers. <strong>Markdown</strong> is an ideal format for this.</p>
+<p><a href="https://en.wikipedia.org/w/index.php?title=Markdown">Markdown</a> is a markup language, like HTML or LaTeX, which aims at human readability. <a href="https://quarto.org/">Quarto</a> is a publishing platform for converting markdown documents into html files (which can be viewed in a web browser and/or hosted online for anyone to view), pdf files (<em>via</em> LaTeX), or even Word files. The materials you are reading now were produced in RStudio using Quarto Markdown.</p>
+<p>You are likely to head about RMarkdown. Quarto is a successor to RMarkdown which is less tied to R. It can be used just as easily with Python or Julia (other programming languages used for data analysis). With very few exceptions, RMarkdown files work with Quarto. One difference you are likely to notice is that the names of RMarkdown files end in <code>.Rmd</code> and the names of Quarto files end in <code>.qmd</code>.</p>
+<p>Create a new Quarto Document using <code>File &gt; New File &gt; Quarto Document...</code>. This will open another box where you can enter the name of the file and your author details.</p>
+<div id="fig-new-quarto" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-new-quarto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/new_quarto.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-new-quarto-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.3: The New Quarto Document window.
+</figcaption>
+</figure>
+</div>
+<p>You should enter some variant of “Data Exploration” into the <code>Title:</code> field and, if you like, add your name in <code>Author:</code>. Select <code>HTML</code> from the options available and leave everything else as it is. Press <code>Create</code>.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>The default Quarto document will appear in front of you in the source pane. Save this file (<code>Ctrl + S</code> or <code>Cmd + S</code>), placing it in the <code>markdown</code> directory. Give it a sensible name like <code>data_exploration.qmd</code>.</p>
+<p>Quarto documents have two main sections. At the top, you get the YAML header. This sets global options for the document. The YAML header for the default quarto document is very small:</p>
+<pre><code>---
+title: "data_exploration"
+format: html
+---</code></pre>
+<p>Quarto is installed with RStudio now. Check that your Quarto installation is working properly by pressing <code>Render</code> on the tool bar at the top of the source pane (or <code>Ctrl/Cmd + Shift + k</code>).</p>
+<p>If successful, your web browser should open with a fairly boring looking document.</p>
+<p>Here are the YAML header settings I tend to use (assuming you already have <code>title</code> and <code>author</code> specified):</p>
+<pre><code>date: today
+format: 
+  html:
+    theme: flatly
+    toc: true
+    toc-depth: 6
+    toc-expand: true
+    toc-location: right
+    code-summary: "To view code click here"
+    anchor-sections: true
+    number-sections: true
+    cap-location: margin
+    title-block-banner: true
+    fig-responsive: true
+    lang: 'en-GB'
+    execute:
+      warning: false
+    embed-resources: false</code></pre>
+<p>The actual content appears in the body of the Quarto document. In Markdown we use <code>#</code> signs for section headings. Usually, the sections in an html document will start with <code>##</code>. If you want a subsection (i.e., a section <em>within</em> a section) use <code>###</code>, if you want a subsubsection use <code>####</code> etc etc. You will also see code blocks. These start and end with three backticks (<code>```</code>). The language used inside the block is given inside curly brackets (e.g.&nbsp;<code>{r}</code>).</p>
+<p>Options to control the block appear as special comments (e.g.&nbsp;<code>#| echo: false</code>) in the second code block, which means the block will be hidden in the rendered document (but will run in the background). It is often useful to use <code>#| eval: false</code>, which prevents a block from being run when the document is rendered. This is helpful in situations where there is a code block which takes a long time to run.</p>
+<p>There are many good tutorials on Quarto and Markdown available online. If you like videos, I recommend:</p>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=_f3latmOhew" class="uri">https://www.youtube.com/watch?v=_f3latmOhew</a> (this one introduces the visual editor.)</li>
+<li><a href="https://www.youtube.com/watch?v=yvi5uXQMvu4" class="uri">https://www.youtube.com/watch?v=yvi5uXQMvu4</a></li>
+</ul>
+<p>For a text tutorial, you can’t go past <a href="https://r4ds.hadley.nz/quarto" class="uri">https://r4ds.hadley.nz/quarto</a>.</p>
+</section>
+</section>
+<section id="word-duration-and-usage-factors" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="word-duration-and-usage-factors"><span class="header-section-number">3.3</span> Word Duration and Usage Factors</h2>
+<p>We need some data to explore. There is no shortage of data from previous studies for us to look at thanks to the increased takeup of open science practices.</p>
+<p>We’re going to explore data from <span class="citation" data-cites="soskuthyChangingWordUsage2017">Sóskuthy and Hay (<a href="references.html#ref-soskuthyChangingWordUsage2017" role="doc-biblioref">2017</a>)</span>. Sóskuthy and Hay investigate variation in the duration of words. That is, the time, in seconds, that it takes to pronounce a word. They replicate a series of effects already reported in the literature in which ‘usage factors’, such as how frequent the word is, how often it is at the end of an utterance, and how predictable it is from the surrounding words, affect word duration. For instance, the more predictable a word is from its context, the shorter it is likely to be.</p>
+<p>Sóskuthy and Hay then go on to find evidence that <em>changes</em> in these word usage factors affect word duration over the course of the 100+ years represented in the Origins of New Zealand English (ONZE) corpus. The explanation of this requires some kind of feedback between the production of words and the perception of words and this has significant consequences for how changes in language over time are understood.</p>
+<p>In this chapter, we will use <code>ggplot2</code>, and some of the skills learned in previous chapters, to explore the data used in this paper. We will go on, in later chapters, to pre-register an analysis on the basis of this paper but applied to a different data set.</p>
+<p>We need the data from <span class="citation" data-cites="soskuthyChangingWordUsage2017">Sóskuthy and Hay (<a href="references.html#ref-soskuthyChangingWordUsage2017" role="doc-biblioref">2017</a>)</span>. We can get it from the <code>osf.io</code> repository for the paper, here: <a href="https://osf.io/q5wgh/" class="uri">https://osf.io/q5wgh/</a>.</p>
+<div class="webex-box">
+<p>Have a look around the &lt;osf.io&gt; page. There are four files in the “Files” section of the page. What are they?</p>
+</div>
+<p>Download the <code>big_dia.csv</code> file and put it in the <code>data</code> directory in your R project. The download button is a little hard to spot. The big download icon on the right is to download the file’s metadata. Instead, you should select the small ‘hamburger menu’ button and then <code>Download file</code> (<a href="#fig-osf-download" class="quarto-xref">Figure&nbsp;<span>3.4</span></a>).</p>
+<div id="fig-osf-download" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-osf-download-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="images/osf_download.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-osf-download-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.4: Hamburger menu and download button on osf.io.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="getting-started-with-ggplot2" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="getting-started-with-ggplot2"><span class="header-section-number">3.4</span> Getting Started with <code>ggplot2</code></h2>
+<section id="load-libraries-and-data" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="load-libraries-and-data"><span class="header-section-number">3.4.1</span> Load libraries and data</h3>
+<p>At the top of your Quarto Document, add a code block which loads the required libraries.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
+✔ dplyr     1.1.4     ✔ readr     2.1.5
+✔ forcats   1.0.0     ✔ stringr   1.5.1
+✔ ggplot2   3.5.1     ✔ tibble    3.2.1
+✔ lubridate 1.9.3     ✔ tidyr     1.3.1
+✔ purrr     1.0.2     
+── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()
+ℹ Use the conflicted package (&lt;http://conflicted.r-lib.org/&gt;) to force all conflicts to become errors</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>here() starts at /Users/jbl91/Dropbox (UC Enterprise)/teaching/intro_workshops/statistics_workshops</code></pre>
+</div>
+</div>
+<p>Have a look at the output of this code block. It tells you which packages are included in the ‘core tidyverse packages’ and which version you are loading. Note that <code>ggplot2</code> is included among them. A set of ‘conflicts’ follow: these are all of the form <code>x</code> masks <code>y</code>. The first of these is <code>✖ dplyr::filter() masks stats::filter()</code>. This means that the name <code>filter()</code> previously referred to a function in the <code>stats</code> package called <code>filter()</code>, but <em>now</em> refers to the function of the same name from <code>dplyr</code>. Keep an eye out for clashes between packages in terms of function names.</p>
+<p>The package <code>here</code> then tells you <em>where</em> ‘here’ is. This should be the directory in which your R project is stored.</p>
+<p>Then load the data from your <code>data</code> directory.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'big_dia.csv'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>New names:
+Rows: 271764 Columns: 30
+── Column specification
+──────────────────────────────────────────────────────── Delimiter: "," chr
+(7): TargetOrthography, foll_wf, prev_wf, Speaker, Corpus, TargetPhonem... dbl
+(20): ...1, YOB, WordDuration, dur.context, dur.context.avg, prev_pred_w... lgl
+(3): repeated.20, initial, final
+ℹ Use `spec()` to retrieve the full column specification for this data. ℹ
+Specify the column types or set `show_col_types = FALSE` to quiet this message.
+• `` -&gt; `...1`</code></pre>
+</div>
+</div>
+<p>The output of this function tells us how <code>read_csv()</code> has interpreted the columns in the data file, how many rows there are, and any names which it has created for the columns: <code>chr</code> means the column contains text strings, <code>dbl</code> means it carries numbers, and <code>lgl</code> means it carries <code>TRUE</code> or <code>FALSE</code> values.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
+<p>It is a good idea to have a look in this data by using the RStudio viewer (Recall: <code>View(big_dia)</code> or double click <code>big_dia</code> in the environment pane.)</p>
+</section>
+<section id="the-grammar-of-graphics" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="the-grammar-of-graphics"><span class="header-section-number">3.4.2</span> The ‘grammar of graphics’</h3>
+<p>We’re <em>almost</em> at some actual code. The package <code>ggplot2</code> is the kind of package where it is helpful to know something about the underlying design principles.</p>
+<p>The <code>gg</code> in <code>ggplot2</code> stands for “Grammar of Graphics”. It is an implementation, by Hadley Wickham, of the philosophy of data visualisation developed in <span class="citation" data-cites="wilkinsonGrammarGraphics1999">(<a href="references.html#ref-wilkinsonGrammarGraphics1999" role="doc-biblioref">Wilkinson 1999</a>)</span>.</p>
+<p>What is the ‘grammar’?</p>
+<blockquote class="blockquote">
+<p>…a statistical graphic is a <strong>mapping</strong> from data to aesthetic attributes (colour, shape, size) of <strong>geometric objects</strong> (points, lines, bars). The plot may also contain <strong>statistical transformations</strong> of the data and is drawn on a specific <strong>coordinate system</strong>{.red}. <span class="citation" data-cites="wickham2016ggplot2">(<a href="references.html#ref-wickham2016ggplot2" role="doc-biblioref">Wickham 2016, 4</a>, emphasis mine)</span></p>
+</blockquote>
+<p>In order, a plot is made up of:</p>
+<ol type="1">
+<li>Data
+<ul>
+<li>each observation has a row,</li>
+<li>each variable has a column.</li>
+</ul></li>
+<li>‘Aesthetic mappings’
+<ul>
+<li>From columns to a visual property.
+<ul>
+<li>e.g.&nbsp;age category will be represented by colour,</li>
+<li>e.g.&nbsp;height will be represented by position on the x axis.</li>
+</ul></li>
+</ul></li>
+<li>Layers
+<ul>
+<li>The elements of the plot you actually see.</li>
+<li>Geometrical objects (<em>geoms</em>) display the data.</li>
+<li>Statistical transformations (<em>stats</em>), provide a visual summary.</li>
+</ul></li>
+<li>Scales and coordinates
+<ul>
+<li>Scales specify the aesthetic mapping.
+<ul>
+<li>e.g.&nbsp;use <em>this</em> shade of blue to represent the age category “25–34”.</li>
+</ul></li>
+<li>Coordinates determine the axes of the plot.</li>
+</ul></li>
+<li>Facets
+<ul>
+<li>Facets allow us to divide the data into groups and plot them separately.
+<ul>
+<li>e.g.&nbsp;we plot participants from Christchurch and from Otago in different ‘facets’.</li>
+</ul></li>
+</ul></li>
+<li>Theme
+<ul>
+<li>The theme determines additional visual details of the plot, e.g., font size and background colour.</li>
+</ul></li>
+</ol>
+<p>The code for a <code>ggplot2</code> plot builds up a graphic, layer by layer, ideally following the above order.</p>
+<p>Let’s illustrate this with some actual examples.</p>
+</section>
+<section id="one-dimensional-plots" class="level3" data-number="3.4.3">
+<h3 data-number="3.4.3" class="anchored" data-anchor-id="one-dimensional-plots"><span class="header-section-number">3.4.3</span> One-Dimensional Plots</h3>
+<p>Often, we want to understand the <em>distribution</em> of a particular variable. Often errors in the data are picked up when we notice something strange in the distribution of values that a variable takes. Usually, these plots will not appear in a paper, but are important for ensuring that our data is what we think it is.</p>
+<p>So, let’s look at some ways to visualise this. Starting with <em>continuous variables</em>. This is what a <em>histogram</em> looks like in <code>ggplot2</code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> WordDuration</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-base-histogram" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-base-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="exploratory_data_vis_files/figure-html/fig-base-histogram-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-base-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.5: Basic histogram.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>A histogram divides a continuous variable up into a series of ‘bins’, then counts the number of rows where the value of the variable falls within the bin.</p>
+<p>We can change the bin very simply by adding the <code>bin</code> argument to <code>geom_histogram()</code>. The default number of bins is 30. The appropriate number of bins depends on the specifics of the data. Play around a bit.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> WordDuration</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">200</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-more-bins" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-more-bins-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="exploratory_data_vis_files/figure-html/fig-more-bins-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-more-bins-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.6: Basic histogram (200 bins).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If you increase the number of bins, you can start to see influence of rounding (the gaps between values here).</p>
+<p>Let’s zoom out and think a bit more about the ‘grammar’ of graphics introduced in the previous section. The code starts with the data frame. This is then ‘piped’ in to the <code>ggplot()</code> function. The <code>mapping</code> argument to <code>ggplot()</code> is used to specify the <strong>aesthetic mapping</strong> between the data and any geometrical objects in the plot. In this case, the only mapping we specify is that position on the <span class="math inline">\(x\)</span>-axis is mapped to the value of the variable named <code>WordDuration</code>. Finally, we add a ‘<strong>geom</strong>’, that is, a geometrical object, which will appear on the plot. There are many geoms available, in this case we use <code>geom_histogram()</code>.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> The other features of the ‘grammar’ are dealt with by sensible defaults.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Functions in <code>ggplot2</code> are connected with the <code>+</code> sign rather than a pipe (<code>|&gt;</code> or <code>%&gt;%</code>). This is a common source of errors.</p>
+</div>
+</div>
+<div class="webex-box">
+<p>Plot some histograms of other continuous variables in the data.</p>
+</div>
+<p>What other ‘aesthetic features’ do these histograms have? Two are worth mentioning here: <code>colour</code> (<code>color</code> if you prefer) and <code>fill</code>. <code>colour</code> controls the colour of the <em>lines</em> on the plot, whereas <code>fill</code> determines the colour which fills the bars. We add aesthetic mappings within the <code>aes()</code> function. Colours are often useful for adding a factor variable to a plot. In this case, we could add <code>fill = Corpus</code> as an argument to the <code>aes()</code> function. This adds a mapping between the <code>Corpus</code> variable in the data (one of three corpora which this data is taken from) and the fill of the bars. To make this more visible, we will reduce the number of bins.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> WordDuration,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> Corpus</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-fill-histogram" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fill-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="exploratory_data_vis_files/figure-html/fig-fill-histogram-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fill-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.7: Histogram with 30 bins and fill for corpus.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The <code>aes()</code> function establishes the mapping between the colour of the bars in this histogram, but it does not specify <em>which</em> colours are mapped to which values in the data frame. For this we need a <em>scale</em>. Here, we will use <code>scale_fill_manual()</code> and some HTML colour codes.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> WordDuration,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> Corpus</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"MU"</span> <span class="ot">=</span> <span class="st">"#b120cf"</span>, <span class="st">"IA"</span> <span class="ot">=</span> <span class="st">"#cfb120"</span>, <span class="st">"CC"</span> <span class="ot">=</span> <span class="st">"#20cfb1"</span>)</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-fill-scaled-histogram" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fill-scaled-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="exploratory_data_vis_files/figure-html/fig-fill-scaled-histogram-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fill-scaled-histogram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.8: Histogram with 30 bins and fill for corpus. Colour has been specified with a scale function.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>We can use the same code, but swap out the geom. What if we want to know the <em>density</em> rather than the raw counts. That is, what if we don’t care about exactly how many rows appear between the durations 0.1 and 0.2 (for instance), but instead care what <em>proportion</em> of the rows appear in that area. In this case, we have corpora with different raw sizes. Their difference in height in the histogram might not be particularly interesting to us. In this case, the <code>geom_density()</code> function is useful.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">mapping =</span> <span class="fu">aes</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> WordDuration,</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> Corpus,</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">colour =</span> Corpus</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.2</span>) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_manual</span>(</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"MU"</span> <span class="ot">=</span> <span class="st">"#b120cf"</span>, <span class="st">"IA"</span> <span class="ot">=</span> <span class="st">"#cfb120"</span>, <span class="st">"CC"</span> <span class="ot">=</span> <span class="st">"#20cfb1"</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_colour_manual</span>(</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"MU"</span> <span class="ot">=</span> <span class="st">"#b120cf"</span>, <span class="st">"IA"</span> <span class="ot">=</span> <span class="st">"#cfb120"</span>, <span class="st">"CC"</span> <span class="ot">=</span> <span class="st">"#20cfb1"</span>)</span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-fill-scaled-density" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fill-scaled-density-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="exploratory_data_vis_files/figure-html/fig-fill-scaled-density-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fill-scaled-density-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.9: Density plot with colour and fill for corpus. Both fill and colour specified with a scale function. Transparency increased.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Now the difference in size between the (sub)corpora is gone. We can see that the modal duration value for the <code>CC</code> corpus (which happens to be the most recent one), is lower than for the older corpora. Visually, it looks like the reduction in mode probably something like 0.05 lower for the CC corpus.</p>
+<p>At the <code>ggplot2</code> code level, note that inclusion of a new aesthetic mapping: the <code>Corpus</code> variable is now also mapped to <code>colour</code>. Note that this requires the addition of an additional <code>scale_...</code> function. Finally, note that I control an aesthetic feature of the density geom <em>without</em> mapping it to some feature of the data. Sometimes it is useful to control the aesthetic features of a plot without mapping them to data. In this case, I add <code>alpha = 0.2</code> to the <code>geom_density()</code> function. The <code>alpha</code> argument controls how transparent a geom is. Finally, note that I’ve stopped explicitly writing <code>mapping =</code> before <code>aes()</code>.</p>
+<p>What if we want to look at the distribution of a factor variable? Here, a close relative of <code>geom_histogram()</code> is useful: <code>geom_bar()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> wclass</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-bar" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="exploratory_data_vis_files/figure-html/fig-bar-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bar-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.10: Simple bar plot.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="webex-box">
+<p>Add an aesthetic mapping using <code>colour</code> or <code>fill</code> to the previous plot. This should work is exactly the same way as worked for <code>geom_histogram()</code> above.</p>
+</div>
+</section>
+<section id="two-dimensional-plots" class="level3" data-number="3.4.4">
+<h3 data-number="3.4.4" class="anchored" data-anchor-id="two-dimensional-plots"><span class="header-section-number">3.4.4</span> Two-Dimensional Plots</h3>
+<p>We have already started adding multiple variables in the plots above (by using colour in addition to position on the <span class="math inline">\(x\)</span>-axis). Now, we go into the two dimensional situation in more detail. Here we want to see relationships between two variables.</p>
+<p>The most obvious example is the <strong>scatter plot</strong>. Let’s look at change in word duration given word frequency by mapping one variable to the <span class="math inline">\(x\)</span>-axis and another to the <span class="math inline">\(y\)</span>-axis. I’ll use a few other tricks which we have already discussed as well.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> unigram.google.gb,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.01</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-scatted-wf" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scatted-wf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="exploratory_data_vis_files/figure-html/fig-scatted-wf-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatted-wf-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.11: Scatter plot of word frequency and length.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Yikes, this looks like a bit of a sad slug. This is often the case in the social sciences, where effects sizes are quite small. Note also the vertical lines, these are likely all of the instances of a given word in the data frame (i.e., a series of readings for which the unigram frequency is the same but, because they are different instances of the same word, the duration is different).</p>
+<p>Often R functions are demonstrated using an inbuilt function with measurements from various cars called <code>mtcars</code>. Here is a plot of the fuel economy of a set of cars (on the <span class="math inline">\(y\)</span>-axis) with their horsepower() along the <span class="math inline">\(x\)</span>-axis). The more power a car has, the less likely it is to be very fuel efficient.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>mtcars <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> hp,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> mpg</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-scatter-mt" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scatter-mt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="exploratory_data_vis_files/figure-html/fig-scatter-mt-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-mt-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.12: Scatter plot of horsepower and miles per gallon from built-in <code>mtcars</code> data frame.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>With a handful of plots and a clear physical relationship, things look a bit more understandable. I mention this just to note that not every scatter plot is a hairy slug.</p>
+<p>With scatter plots, it is often useful to plot a trend line of some sort. This can be done with <code>geom_smooth()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> unigram.google.gb,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>`geom_smooth()` using method = 'gam' and formula = 'y ~ s(x, bs = "cs")'</code></pre>
+</div>
+<div class="cell-output-display">
+<div id="fig-scatter-smooth" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scatter-smooth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="exploratory_data_vis_files/figure-html/fig-scatter-smooth-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scatter-smooth-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.13: Scatter plot of word frequency (x-axis) and word duration (y-axis) with GAM smooth.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The <code>geom_smooth()</code> function, by default, fits a GAM model or a LOESS smooth (depending on the number of data points). A message is output with the plot which tells you what the smooth is. You can insist on a straight trend line by using the argument <code>method = "lm"</code>.</p>
+<p>It looks like, as predicted by previous literature, increased word frequency comes along with reduced word duration. Actually demonstrating this requires modelling which controls for other sources in variation. We might also think a bit about where this big thick line around <span class="math inline">\(-10\)</span> on the <span class="math inline">\(x\)</span>-axis comes from! It creates a ‘notch’ in the smooth line.</p>
+<p>The final plot type we will look at is the violin plot (with <code>geom_violin()</code>). This is useful when we have a continuous variable and a factor variable. The following plot uses <code>geom_violin()</code> to plot the word duration of words at the end of an utterance vs.&nbsp;not at the end of an utterance.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> final,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">draw_quantiles =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="fl">0.95</span>),</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.3</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-violin" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-violin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="exploratory_data_vis_files/figure-html/fig-violin-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-violin-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.14: Violin plot of word duration divided by utterance finality. Bars indicate the 0.05, 0.5, and 0.95 quantiles of the word duration distribution.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The <span class="math inline">\(x\)</span>-axis is now divided between <code>TRUE</code> and <code>FALSE</code>, i.e., whether a word is at the end of an utterance or not. We see that this distribution of word duration has a higher centre when the word is at the end of an utterance. This is brought our more strongly by adding lines at the 0.5 quantile (that is, the median, the middle value), and the identifying the extreme tails of the distribution by drawing a line at the 0.05 quantile (i.e.&nbsp;the value which divides the bottom 5% of the distribution from the rest) and the 0.95 quantile. The pattern here is also one which we would expect given the literature on word duration.</p>
+</section>
+<section id="themes-and-saving-plots" class="level3" data-number="3.4.5">
+<h3 data-number="3.4.5" class="anchored" data-anchor-id="themes-and-saving-plots"><span class="header-section-number">3.4.5</span> Themes and Saving Plots</h3>
+<p>The current plots are not ‘production ready’. This is not a big deal as we are primarily interested in plots for our own purposes during data analysis. However, it is worth talking a bit about themes and labelling.</p>
+<p>Look at the following code:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> final,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">draw_quantiles =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="fl">0.95</span>),</span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.3</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Word duration by utterance finality"</span>,</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Word is utterance final"</span>,</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Word duration (seconds)"</span></span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-violin-themed" class="quarto-figure quarto-figure-center quarto-float anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-violin-themed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="exploratory_data_vis_files/figure-html/fig-violin-themed-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-violin-themed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3.15: Violin plot of word duration divided by utterance finality. Bars indicate the 0.05, 0.5, and 0.95 quantiles of the word duration distribution. Labels and theme modified.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Here I have changed the theme using a <code>theme_...</code> function.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> Many visual details can be controlled by theming functions and these are highly customisable. Often little features like, for instance, rotating labels on the axes, are dealt with by theming functions.</p>
+<p>I have also added a series of more informative axis labels using the <code>labs()</code> function. In addition to setting a title (with <code>title =</code>), I use the names of the aesthetic features used inside the <code>aes</code> function to control the labels.</p>
+<p>The <code>theme_set()</code> function can be used to change the theme of <em>all</em> <code>ggplot2</code> plots in an R sessions. I almost always add <code>theme_set(theme_bw())</code> to the first block of my markdown files (along with the loading of libraries and data). Try this, and see what happens when you run the markdown from the start. All plots, apart from those which have had the theme manually specified, should have changed.</p>
+<div class="webex-box">
+<p>Look up the <code>prismatic</code> library and its tools for controlling colour. There is a particularly useful function called <code>check_color_blindness()</code> which helps to determine if a collection of colours you have chosen works for different forms of colour blindness.</p>
+</div>
+<p>How do we get plots out of our Markdown? The best approach is to use <code>ggsave()</code>. <code>ggsave()</code> lets us specify a location to save our plot and various details of format and image quality which may be specified by a journal or other publisher. Using <code>ggsave()</code> is easiest if we save our plot to a variable. The following code saves a plot to a variable, outputs it to our <code>plots</code> directory.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>violin_plot <span class="ot">&lt;-</span> big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> final,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_violin</span>(</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">draw_quantiles =</span> <span class="fu">c</span>(<span class="fl">0.05</span>, <span class="fl">0.5</span>, <span class="fl">0.95</span>),</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.3</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Word duration by utterance finality"</span>,</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Word is utterance final"</span>,</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Word duration (seconds)"</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="fu">here</span>(<span class="st">"plots"</span>, <span class="st">"violin_plot.png"</span>), <span class="co"># format is controlled by the file name.</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">plot =</span> violin_plot,</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">units =</span> <span class="st">"mm"</span>, <span class="co"># unit determines what `width` and `height` mean</span></span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">80</span>,</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">height =</span> <span class="dv">100</span>,</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>  <span class="at">dpi =</span> <span class="dv">300</span> <span class="co"># 'dots per inch', i.e., resolution.</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>If you want the plot to <em>also</em> appear in the markdown document, as the previous plots have, then simply write the variable name as the last line in the code block.</p>
+</section>
+<section id="plots-in-markdown-documents" class="level3" data-number="3.4.6">
+<h3 data-number="3.4.6" class="anchored" data-anchor-id="plots-in-markdown-documents"><span class="header-section-number">3.4.6</span> Plots in Markdown Documents</h3>
+<p>You will notice in the above that there are figure numbers and figure captions under the plots. These are created with code block options. In Quarto, these looks like the following, and appear as the first lines of a code block:</p>
+<pre><code>#| label: fig-violin-plot
+#| fig.cap: An informative figure caption.</code></pre>
+<p>You can make figure captions appear across multiple lines in your code as follows:</p>
+<pre><code>#| label: fig-violin-plot
+#| fig.cap: |
+#|    An even longer and more informative figure caption which
+#|    has to appear across multiple lines.</code></pre>
+<p>The label is a label used to refer to the code block and any output. You can use these labels to generate references to plots in the text of your document using the <code>@</code> sign. So, for instance, the scatter plot above has the label <code>fig-scatter-smooth</code>. If I write <code>@fig-scatter-smooth</code>, the following will appear in the markdown text: <a href="#fig-scatter-smooth" class="quarto-xref">Figure&nbsp;<span>3.13</span></a>. <strong>Figure labels must start with <code>fig-</code> for this to work.</strong></p>
+<p>To see other options which affect the output of code blocks, go here: <a href="https://quarto.org/docs/computations/execution-options.html#figure-options" class="uri">https://quarto.org/docs/computations/execution-options.html#figure-options</a>.</p>
+<p>In RMarkdown, these options appear in the curly brackets, separated by commas. That is, they look like this: <code>{r fig-violin-plot, fig.cap = "my caption..."}</code>.</p>
+</section>
+<section id="final-thoughts-on-exploratory-data-visualisation" class="level3" data-number="3.4.7">
+<h3 data-number="3.4.7" class="anchored" data-anchor-id="final-thoughts-on-exploratory-data-visualisation"><span class="header-section-number">3.4.7</span> Final Thoughts on Exploratory Data Visualisation</h3>
+<p><strong>Always plot your data.</strong> You have an incredible capacity to see problems in data when it is appropriately plotted. Visualisation can help you to see all sorts of errors which might arise.</p>
+<p>In particular, if you know enough to formulate an interesting research question, you know enough to identify if your data is way outside of the range in which it should be.</p>
+<p>This is what ‘exploratory data visualisation’ is all about.</p>
+<p>One potential trap is worth mentioning: it is important to avoid loading in an unfamiliar data set, hunting for an interesting looking relationship between the variables in the data, and then proceeding as though this relationship was what you were looking for in the first place! If you found the relationship by poking around with some visualisation methods, then you are engaged in exploratory rather than confirmatory research.</p>
+</section>
+<section id="useful-resources" class="level3" data-number="3.4.8">
+<h3 data-number="3.4.8" class="anchored" data-anchor-id="useful-resources"><span class="header-section-number">3.4.8</span> Useful Resources</h3>
+<ul>
+<li>See the <code>ggplot2</code> cheat sheet. This can be useful to print and put somewhere visible while you write plot code: <a href="https://rstudio.github.io/cheatsheets/html/data-visualization.html" class="uri">https://rstudio.github.io/cheatsheets/html/data-visualization.html</a></li>
+<li>The ggplot2 book may be useful if you want to get more deeply into the package: <a href="https://ggplot2-book.org/" class="uri">https://ggplot2-book.org/</a>
+<ul>
+<li>The book includes some great material on putting multiple plots together and on more complex combinations of geoms.</li>
+</ul></li>
+<li>I wrote a tutorial on plotting complex model outputs in vowel space plots here: <a href="https://lingmethodshub.github.io/content/R/animated_vowel_plots_tutorial/" class="uri">https://lingmethodshub.github.io/content/R/animated_vowel_plots_tutorial/</a></li>
+<li>Here is a tutorial by Joey Stanley on vowel space plots: <a href="https://lingmethodshub.github.io/content/R/vowel-plots-tutorial/" class="uri">https://lingmethodshub.github.io/content/R/vowel-plots-tutorial/</a></li>
+</ul>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-soskuthyChangingWordUsage2017" class="csl-entry" role="listitem">
+Sóskuthy, Márton, and Jennifer Hay. 2017. <span>“Changing Word Usage Predicts Changing Word Durations in <span>New Zealand English</span>.”</span> <em>Cognition</em> 166 (September): 298–313. <a href="https://doi.org/10.1016/j.cognition.2017.05.032">https://doi.org/10.1016/j.cognition.2017.05.032</a>.
+</div>
+<div id="ref-wickham2016ggplot2" class="csl-entry" role="listitem">
+Wickham, H. 2016. <em>Ggplot2: <span>Elegant</span> Graphics for Data Analysis</em>. Use <span>R</span>! Springer International Publishing. <a href="https://books.google.co.nz/books?id=RTMFswEACAAJ">https://books.google.co.nz/books?id=RTMFswEACAAJ</a>.
+</div>
+<div id="ref-wilkinsonGrammarGraphics1999" class="csl-entry" role="listitem">
+Wilkinson, Leland. 1999. <em>The Grammar of Graphics</em>. Statistics and Computing. New York: Springer. <a href="http://digitool.hbz-nrw.de:1801/webclient/DeliveryManager?pid=2966363">http://digitool.hbz-nrw.de:1801/webclient/DeliveryManager?pid=2966363</a>.
+</div>
+</div>
+</section>
+</section>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr>
+<ol>
+<li id="fn1"><p>Often, in practice, one shares a tidied version of a project without a full history. Perhaps, for instance, your ‘in-house’ data analysis uses the names of participants whereas your public release of data and code has to be anonyimised. There are advantages to getting to the ‘fit for public consumption’ phase as soon as possible and sharing <em>as much</em> of the history of the project as is feasible. I have, so far, failed to live up to this advice myself.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p><strong>If</strong> you want to keep your current work in RStudio open, then tick the small box in the bottom left (<code>Open in new session</code>). This will open the project in a new RStudio window.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p> You may want to experiment with the ‘visual markdown editor’. I always use the <code>source</code> editor, but you may find the visual editor more user friendly. You can always switch between the two later.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p> The strings <code>chr</code>, <code>dbl</code>, and <code>lgl</code> will be more clear in the output if you run this code in RStudio.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>For a full list of geoms see the reference to <code>ggplot2</code>: <a href="https://ggplot2.tidyverse.org/reference" class="uri">https://ggplot2.tidyverse.org/reference</a>. The <code>ggplot2</code> cheat sheet is also worth looking at: <a href="https://rstudio.github.io/cheatsheets/html/data-visualization.html" class="uri">https://rstudio.github.io/cheatsheets/html/data-visualization.html</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>There are plenty of tools for generating HTML colours, for instance: <a href="https://htmlcolorcodes.com/color-picker/" class="uri">https://htmlcolorcodes.com/color-picker/</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>See details of predefined themes here: <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="uri">https://ggplot2.tidyverse.org/reference/ggtheme.html</a><a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+
+</main> <!-- /main -->
+<script>
+
+/* update total correct if #webex-total_correct exists */
+update_total_correct = function() {
+  console.log("webex: update total_correct");
+
+  var t = document.getElementsByClassName("webex-total_correct");
+  for (var i = 0; i < t.length; i++) {
+    p = t[i].parentElement;
+    var correct = p.getElementsByClassName("webex-correct").length;
+    var solvemes = p.getElementsByClassName("webex-solveme").length;
+    var radiogroups = p.getElementsByClassName("webex-radiogroup").length;
+    var selects = p.getElementsByClassName("webex-select").length;
+
+    t[i].innerHTML = correct + " of " + (solvemes + radiogroups + selects) + " correct";
+  }
+}
+
+/* webex-solution button toggling function */
+b_func = function() {
+  console.log("webex: toggle hide");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('open')) {
+    cl.remove("open");
+  } else {
+    cl.add("open");
+  }
+}
+
+/* check answers */
+check_func = function() {
+  console.log("webex: check answers");
+
+  var cl = this.parentElement.classList;
+  if (cl.contains('unchecked')) {
+    cl.remove("unchecked");
+    this.innerHTML = "Hide Answers";
+  } else {
+    cl.add("unchecked");
+    this.innerHTML = "Show Answers";
+  }
+}
+
+/* function for checking solveme answers */
+solveme_func = function(e) {
+  console.log("webex: check solveme");
+
+  var real_answers = JSON.parse(this.dataset.answer);
+  var my_answer = this.value;
+  var cl = this.classList;
+  if (cl.contains("ignorecase")) {
+    my_answer = my_answer.toLowerCase();
+  }
+  if (cl.contains("nospaces")) {
+    my_answer = my_answer.replace(/ /g, "")
+  }
+
+  if (my_answer == "") {
+    cl.remove("webex-correct");
+    cl.remove("webex-incorrect");
+  } else if (real_answers.includes(my_answer)) {
+    cl.add("webex-correct");
+    cl.remove("webex-incorrect");
+  } else {
+    cl.add("webex-incorrect");
+    cl.remove("webex-correct");
+  }
+
+  // match numeric answers within a specified tolerance
+  if(this.dataset.tol > 0){
+    var tol = JSON.parse(this.dataset.tol);
+    var matches = real_answers.map(x => Math.abs(x - my_answer) < tol)
+    if (matches.reduce((a, b) => a + b, 0) > 0) {
+      cl.add("webex-correct");
+    } else {
+      cl.remove("webex-correct");
+    }
+  }
+
+  // added regex bit
+  if (cl.contains("regex")){
+    answer_regex = RegExp(real_answers.join("|"))
+    if (answer_regex.test(my_answer)) {
+      cl.add("webex-correct");
+    }
+  }
+
+  update_total_correct();
+}
+
+/* function for checking select answers */
+select_func = function(e) {
+  console.log("webex: check select");
+
+  var cl = this.classList
+
+  /* add style */
+  cl.remove("webex-incorrect");
+  cl.remove("webex-correct");
+  if (this.value == "answer") {
+    cl.add("webex-correct");
+  } else if (this.value != "blank") {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+/* function for checking radiogroups answers */
+radiogroups_func = function(e) {
+  console.log("webex: check radiogroups");
+
+  var checked_button = document.querySelector('input[name=' + this.id + ']:checked');
+  var cl = checked_button.parentElement.classList;
+  var labels = checked_button.parentElement.parentElement.children;
+
+  /* get rid of styles */
+  for (i = 0; i < labels.length; i++) {
+    labels[i].classList.remove("webex-incorrect");
+    labels[i].classList.remove("webex-correct");
+  }
+
+  /* add style */
+  if (checked_button.value == "answer") {
+    cl.add("webex-correct");
+  } else {
+    cl.add("webex-incorrect");
+  }
+
+  update_total_correct();
+}
+
+window.onload = function() {
+  console.log("webex onload");
+  /* set up solution buttons */
+  var buttons = document.getElementsByTagName("button");
+
+  for (var i = 0; i < buttons.length; i++) {
+    if (buttons[i].parentElement.classList.contains('webex-solution')) {
+      buttons[i].onclick = b_func;
+    }
+  }
+
+  var check_sections = document.getElementsByClassName("webex-check");
+  console.log("check:", check_sections.length);
+  for (var i = 0; i < check_sections.length; i++) {
+    check_sections[i].classList.add("unchecked");
+
+    let btn = document.createElement("button");
+    btn.innerHTML = "Show Answers";
+    btn.classList.add("webex-check-button");
+    btn.onclick = check_func;
+    check_sections[i].appendChild(btn);
+
+    let spn = document.createElement("span");
+    spn.classList.add("webex-total_correct");
+    check_sections[i].appendChild(spn);
+  }
+
+  /* set up webex-solveme inputs */
+  var solveme = document.getElementsByClassName("webex-solveme");
+
+  for (var i = 0; i < solveme.length; i++) {
+    /* make sure input boxes don't auto-anything */
+    solveme[i].setAttribute("autocomplete","off");
+    solveme[i].setAttribute("autocorrect", "off");
+    solveme[i].setAttribute("autocapitalize", "off");
+    solveme[i].setAttribute("spellcheck", "false");
+    solveme[i].value = "";
+
+    /* adjust answer for ignorecase or nospaces */
+    var cl = solveme[i].classList;
+    var real_answer = solveme[i].dataset.answer;
+    if (cl.contains("ignorecase")) {
+      real_answer = real_answer.toLowerCase();
+    }
+    if (cl.contains("nospaces")) {
+      real_answer = real_answer.replace(/ /g, "");
+    }
+    solveme[i].dataset.answer = real_answer;
+
+    /* attach checking function */
+    solveme[i].onkeyup = solveme_func;
+    solveme[i].onchange = solveme_func;
+
+    solveme[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  /* set up radiogroups */
+  var radiogroups = document.getElementsByClassName("webex-radiogroup");
+  for (var i = 0; i < radiogroups.length; i++) {
+    radiogroups[i].onchange = radiogroups_func;
+  }
+
+  /* set up selects */
+  var selects = document.getElementsByClassName("webex-select");
+  for (var i = 0; i < selects.length; i++) {
+    selects[i].onchange = select_func;
+    selects[i].insertAdjacentHTML("afterend", " <span class='webex-icon'></span>")
+  }
+
+  update_total_correct();
+}
+
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../chapters/data_processing.html" class="pagination-link" aria-label="Data Processing">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Data Processing</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../chapters/others.html" class="pagination-link" aria-label="Additional Topics">
+        <span class="nav-page-text">Additional Topics</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
