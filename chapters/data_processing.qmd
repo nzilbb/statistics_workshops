@@ -5,16 +5,25 @@ We will also begin to work with a series of packages called the `tidyverse`,
 which implement a series of data processing and visualising techniques on top
 of base R. 
 
-I tend to use tidyverse functions and methods when I work with data, but there
+I tend to use `tidyverse` functions and methods when I work with data, but there
 are many people who prefer base R methods. We will look at some base R
 approaches as these workshops progress, and especially in this chapter, but the
 majority of the code I put in front of you will use at least some tidyverse
 methods.
 
-Run the following cell. If R complains, ensure each package is
-installed. If it isn't, run `install.packages("PACKAGE NAME")` where you
-replace `PACKAGE NAME` with the name of the package. Make sure the package
-name is inside quotation marks.
+The easiest way to follow the code in this chapter is to run the following code
+in the R console: `usethis::use_course('nzilbb/getting_started_sessions')`.
+This will download a file from GitHub and use it to generate a new RStudio 
+session along with the necessary data. It also contains the beginning of a 
+script for this chapter (in `scripts/session_2.R`). If this line doesn't work,
+the most likely problem is that you need to install the `usethis` package first
+(`install.packages('usethis')`).
+
+Start a script (or open `scripts/session_2.R`) with the code in the following
+cell. Try to run the code. If R complains, ensure each package is installed. If
+it isn't, run `install.packages("PACKAGE NAME")` where you replace `PACKAGE
+NAME` with the name of the package. Make sure the package name is inside
+quotation marks.
 
 ```{r}
 # We load two packages from the 'tidyverse' by name. `dplyr` includes functions
