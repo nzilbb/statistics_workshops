@@ -716,7 +716,7 @@ For the rationale see: <https://r4ds.hadley.nz/workflow-scripts.html>.
 ]
 Make it so that your settings match the following image:
 
-![The desired state of the General settings.](/images/basic.png)
+![The desired state of the General settings.](images/basic.png)
 
 This means that nothing will be saved between times when you open R. This, in 
 turn, means that your script has to contain everything that is important for 
@@ -739,6 +739,15 @@ You should also modify the appearance of RStudio to your liking using the
 `Appearance` options.
 
 ![The appearance pane in General Options](images/appearance.png)
+
+Another thing which it is worth doing now and then forgetting about is to set
+the 'Line ending conversion' setting to 'Posix (LF)' (`Tools > Global Options`, `Code` in the menu on the left of the pop-up, then go to the `Savind` tab). You may be surprised to
+learn [there is no such this as 'plain text'](https://www.youtube.com/watch?v=gd5uJ7Nlvvo). The ending of lines are
+represented differently in Windows and in other operating systems. This setting
+insists on the non-Windows line ending and will make your life easier when you
+work with others using GitHub.
+
+![Desired state of the 'Line ending conversion' setting (highlighted red).](images/line_ending.png)
 
 ## Additional Resources {#sec-gs-additional}
 
