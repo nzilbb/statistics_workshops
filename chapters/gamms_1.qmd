@@ -1,3 +1,5 @@
+<!-- Switch from bam to gam for the small models. This is more defensible.-->
+
 # Generalized Additive (Mixed) Models
 
 ## Overview
@@ -525,6 +527,24 @@ large datasets.
 
 :::
 
+::: callout-warning
+
+The `mgcv` package requires the `openmp` library to take advantage of the
+parallel processing available through `bam()`. This is
+typically not a problem for Windows and Linux installations of R. On macos,
+it can be a problem. 
+
+If you get a warning about `openmp` not being available on macos. I suggest 
+you install the mandatory tools listed here: <https://mac.r-project.org/tools/> 
+and then follow the instructions at <https://mac.r-project.org/openmp/>.
+
+This is not likely to be a pleasant experience, especially if you don't like
+battling with the command line. UC and NZILBB researchers and students, feel free to 
+message me on Rocket.Chat or via <joshua.black@canterbury.ac.nz> and I may
+be able to help. 
+
+:::
+
 ```{r}
 onze_fit <- bam(
   formula = F1_lob2 ~ s(yob, k = 10, bs = "tp"),
@@ -749,31 +769,150 @@ Note that the values given for other predictors are given in console output.
 
 Now change the `view` and `cond` arguments and see what happens.
 
+The `draw()` function from `gratia` is very useful for plotting the 'partial
+effects' of each smooth term. Let's look at an example and then consider what
+this means in more detail.
+
+```{r}
+draw(onze_fit_rate)
+```
+
+The difference between 'summed effects', which you get in `plot_smooth()`, and
+the 'partial effects' produced by `draw()`, is that summer effects include
+intercept terms and values for other predictors. We've seen above that 
+`plot_smooth()` produces an output message which states what the level of the
+other predictors has been set to. The `draw()` function, and the `mgcv` function
+`plot.gam()`, instead show the effect of the smooth terms _individually_. These
+will be centred around $0$.
+
+### Interactions
+
+Often we are interested in how two predictors interact to generate a response.
+We have already seen one version of this: _continuous by factor_ interactions
+created using the `by` argument to `s()`. We determined the change over time
+in ONZE _independently for male and female_ speakers.
+
+There are also methods for including _continuous by continuous_ interactions
+in GAMMs. The two main functions to consider are `ti()` and `te()`. 
+
+The `ti()` function produces a 'tensor product interaction'. With the example
+data from ONZE we have been using there are only two predictors which can 
+be naturally treated as continuous: year of birth and speech rate. In order
+to interact these predictors, we could add a `ti()` term. This is done by
+the following code block. For the purposes of this example we remove 
+gender from the model, but we will add it in again in a moment. The use
+of `k=5` just makes the default behaviour for this kind of smooth 
+explicit.
+
+```{r}
+onze_fit_int <- bam(
+  formula = F1_lob2 ~ 
+    s(yob, k = 10, bs = "tp") +
+    s(speech_rate, k = 10, bs = "tp") +
+    ti(yob, speech_rate, k=5, bs = "tp"),
+  data = mean_onze_full,
+  family = scat(link="identity")
+)
+
+draw(onze_fit_int)
+```
+
+We now get a heat map, which represents the interaction. In order to read 
+the heat map, find the values of the predictors on the $x$ and $y$ axis and
+then use the colour guide to determine what to add to the partial effects
+of the predictors. For instance, if we look in the bottom left of the heatmap
+we see a patch of blue. This indicates that early speakers who are slow tend 
+to have lower F1 values for [dress]{.smallcaps}. This is to say, they 
+start from a higher position in the vowel space (although still low relative
+to contemporary New Zealand English speakers). The heatmap helpfully greys out
+areas in which there are no datapoints.
+
+What does this look like in a model summary? Here is the relevant table:
+```{r}
+summary(onze_fit_int)$s.table
+```
+There is a new line for the `ti()` term. We see that it does not achieve 
+statistical significance at the $0.05$ level.^[Hypothesis testing will be
+covered in more detail in @sec-hyp.]
+
+The function `te()` specifies a 'tensor product smooth'. This includes the
+individual effects of any included predictors _and_ their interaction. This
+means the formula for the model no longer has individual terms for year of
+birth and speech rate. This looks very simple:
+
+```{r}
+onze_fit_te <- gam(
+  formula = F1_lob2 ~ 
+    te(yob, speech_rate, k=5, bs = "tp"),
+  data = mean_onze_full,
+  family = scat(link="identity")
+)
+
+draw(onze_fit_te)
+```
+
+Now there's only one smooth term, carrying all of the relationship between 
+speech rate, year of birth, their interaction, and the normalised F1 of the
+[dress]{.smallcaps} vowel. This is, as one might imagine, less useful for 
+testing specific hypotheses about the role of, say, speech rate, or year of
+birth. Indeed, if we look in the model summary, we will see one term:
+
+```{r}
+summary(onze_fit_te)
+```
+
+There is no obvious way to unpack this information.
+
+One final thing to note is that we can add `by` arguments to `ti()` and `te()`
+just as we did for `s()`. So, for instance, we might fit a model which has an
+interaction for speech rate, year of birth, _and_ gender, as follows:
+
+```{r}
+onze_fit_gen_int <- gam(
+  formula = F1_lob2 ~ 
+    s(yob, k = 10, by=gender, bs = "tp") +
+    s(speech_rate, k = 10, bs = "tp") +
+    ti(yob, speech_rate, by=gender, k=5, bs = "tp"),
+  data = mean_onze_full,
+  family = scat(link="identity")
+)
+
+draw(onze_fit_gen_int)
+```
+
+Now we have, in effect, a three way interaction. We get two distinct heatmaps,
+one for the interaction between year of birth and speech rate in the men, and
+one for the same interaction in the women. 
+
+Let's look at the heat maps by themselves, as they are a little bit small.
+```{r}
+draw(onze_fit_gen_int, select=c(4, 5))
+```
+
+Note the very different colour scales for male and female speakers.
+
+And look at the smooths section of the model summary:
+```{r}
+summary(onze_fit_gen_int)$s.table
+```
+This version of the model claims a statistically significant interaction between
+year of birth and speech rate _for the female speakers_. The rough story, 
+from the heatmap, when combined with the smooth for year of birth for the 
+female speakers, is that the change over time is more extreme for faster 
+speakers and less extreme for slower speakers.^[
+You may have noticed that there is a correlation between speech rate and 
+year of birth. This should be kept in mind when interpreting the model.
+]
+
 ## The Second 'M': Mixed Effects
 
-::: callout-warning
-
-The `mgcv` package requires the `openmp` library to take advantage of the
-parallel processing available through `bam()`. This is
-typically not a problem for Windows and Linux installations of R. On macos,
-it can be a problem. 
-
-If you get a warning about `openmp` not being available on macos. I suggest 
-you install the mandatory tools listed here: <https://mac.r-project.org/tools/> 
-and then follow the instructions at <https://mac.r-project.org/openmp/>.
-
-This is not likely to be a pleasant experience, especially if you don't like
-battling with the command line. UC and NZILBB researchers and students, feel free to 
-message me on Rocket.Chat or via <joshua.black@canterbury.ac.nz> and I may
-be able to help. 
-
-:::
+![](images/uc.gif)
 
 ## Auto-correlation
 
 ![](images/uc.gif)
 
-## Hypothesis Testing
+## Hypothesis Testing {#sec-hyp}
 
 ![](images/uc.gif)
 

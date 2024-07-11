@@ -7,6 +7,8 @@ book:
   - name: Joshua Wilson Black
     orcid: 0000-0002-8272-5763
   date: today
+  repo-url: https://github.com/nzilbb/statistics_workshops
+  repo-actions: [edit, issue]
   chapters:
   - index.qmd
   - chapters/intro.qmd
