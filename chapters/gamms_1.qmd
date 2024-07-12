@@ -906,15 +906,31 @@ year of birth. This should be kept in mind when interpreting the model.
 
 ## The Second 'M': Mixed Effects
 
-![](images/uc.gif)
+We can include quite complex random effects structures in GAMMs. As in the 
+case of generalised linear models, we can add random _intercepts_ and random
+_slopes_. GAMMs introduce the additional possibility of random _smooths_.
 
-## Auto-correlation
+We'll now switch to a data set which is more useful for illustrating the full
+range of random effects structures and which will also be useful when we turn 
+to the question of auto-correlation (@sec-auto).
 
-![](images/uc.gif)
+We will take up data shared in the course of 
+
+We will take trajectories from the [price]{.smallcaps} vowel, looking at both
+F1 and F2.
+
+## Auto-correlation {#sec-auto}
+
+Auto-correlation is an issue in time series data. Often a measurement at one
+time point is correlated with measurements at nearby time points. 
+
+When talking about random effects in the previous section, we discussed them in
+terms of information. We can think of auto-correlation in the same way.
+Measurements from nearby time points do not provide independent information.
 
 ## Hypothesis Testing {#sec-hyp}
 
-![](images/uc.gif)
+How do we test a GAMM model...
 
 ### Visual methods
 
@@ -922,15 +938,14 @@ year of birth. This should be kept in mind when interpreting the model.
 
 ### `itsadug::compareML()`.
 
-
-
 ## Reporting a GAMM
 
 It is important to know how to report a GAMM in a paper. 
 
 This section presents some (somewhat randomly selected) examples of GAMMs 'in
-the wild'. All of these are good enough for publication. I will then give a few
-opinions.
+the wild'. All of these are good enough for publication. After the examples,
+I'll give a few opinions about what ought to be included in the body of an
+article and in supplementary materials.
 
 ::: {.panel-tabset}
 
