@@ -194,7 +194,7 @@ We need the data from @soskuthyChangingWordUsage2017. We can get it from the
 
 ::: webex-box
 
-Have a look around the <osf.io> page. There are four files in the "Files"
+Have a look around the `osf.io` page. There are four files in the "Files"
 section of the page. What are they?
 
 :::
@@ -744,7 +744,7 @@ exploratory rather than confirmatory research.
 
 - See the `ggplot2` cheat sheet. This can be useful to print and put somewhere
 visible while you write plot code: <https://rstudio.github.io/cheatsheets/html/data-visualization.html>
-- The ggplot2 book may be useful if you want to get more deeply into the package: <https://ggplot2-book.org/>
+- The `ggplot2` book may be useful if you want to get more deeply into the package: <https://ggplot2-book.org/>
     - The book includes some great material on putting multiple plots together and on more 
     complex combinations of geoms.
 - I wrote a tutorial on plotting complex model outputs in vowel space plots here: <https://lingmethodshub.github.io/content/R/animated_vowel_plots_tutorial/>

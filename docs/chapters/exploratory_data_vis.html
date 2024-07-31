@@ -84,7 +84,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../chapters/others.html" rel="next">
+<link href="../chapters/linear_models.html" rel="next">
 <link href="../chapters/data_processing.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -122,6 +122,7 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<link rel="icon" type="image/png" sizes="32x32" href=".//global_images/fav.png">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -229,6 +230,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Exploratory Data Visualisation</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/linear_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear Models</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -243,19 +250,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/rstudio_server.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">RStudio Server</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">RStudio Server</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/qualtrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/gamms_1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -421,7 +428,7 @@ format:
 <p>In this chapter, we will use <code>ggplot2</code>, and some of the skills learned in previous chapters, to explore the data used in this paper. We will go on, in later chapters, to pre-register an analysis on the basis of this paper but applied to a different data set.</p>
 <p>We need the data from <span class="citation" data-cites="soskuthyChangingWordUsage2017">Sóskuthy and Hay (<a href="references.html#ref-soskuthyChangingWordUsage2017" role="doc-biblioref">2017</a>)</span>. We can get it from the <code>osf.io</code> repository for the paper, here: <a href="https://osf.io/q5wgh/" class="uri">https://osf.io/q5wgh/</a>.</p>
 <div class="webex-box">
-<p>Have a look around the &lt;osf.io&gt; page. There are four files in the “Files” section of the page. What are they?</p>
+<p>Have a look around the <code>osf.io</code> page. There are four files in the “Files” section of the page. What are they?</p>
 </div>
 <p>Download the <code>big_dia.csv</code> file and put it in the <code>data</code> directory in your R project. The download button is a little hard to spot. The big download icon on the right is to download the file’s metadata. Instead, you should select the small ‘hamburger menu’ button and then <code>Download file</code> (<a href="#fig-osf-download" class="quarto-xref">Figure&nbsp;<span>3.4</span></a>).</p>
 <div id="fig-osf-download" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -456,7 +463,7 @@ Figure&nbsp;3.4: Hamburger menu and download button on osf.io.
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>here() starts at /Users/jbl91/Dropbox (UC Enterprise)/teaching/intro_workshops/statistics_workshops</code></pre>
+<pre><code>here() starts at /Users/jbl91/UC Enterprise Dropbox/Joshua Wilson Black/teaching/intro_workshops/statistics_workshops</code></pre>
 </div>
 </div>
 <p>Have a look at the output of this code block. It tells you which packages are included in the ‘core tidyverse packages’ and which version you are loading. Note that <code>ggplot2</code> is included among them. A set of ‘conflicts’ follow: these are all of the form <code>x</code> masks <code>y</code>. The first of these is <code>✖ dplyr::filter() masks stats::filter()</code>. This means that the name <code>filter()</code> previously referred to a function in the <code>stats</code> package called <code>filter()</code>, but <em>now</em> refers to the function of the same name from <code>dplyr</code>. Keep an eye out for clashes between packages in terms of function names.</p>
@@ -910,7 +917,7 @@ Figure&nbsp;3.15: Violin plot of word duration divided by utterance finality. Ba
 <h3 data-number="3.4.8" class="anchored" data-anchor-id="useful-resources"><span class="header-section-number">3.4.8</span> Useful Resources</h3>
 <ul>
 <li>See the <code>ggplot2</code> cheat sheet. This can be useful to print and put somewhere visible while you write plot code: <a href="https://rstudio.github.io/cheatsheets/html/data-visualization.html" class="uri">https://rstudio.github.io/cheatsheets/html/data-visualization.html</a></li>
-<li>The ggplot2 book may be useful if you want to get more deeply into the package: <a href="https://ggplot2-book.org/" class="uri">https://ggplot2-book.org/</a>
+<li>The <code>ggplot2</code> book may be useful if you want to get more deeply into the package: <a href="https://ggplot2-book.org/" class="uri">https://ggplot2-book.org/</a>
 <ul>
 <li>The book includes some great material on putting multiple plots together and on more complex combinations of geoms.</li>
 </ul></li>
@@ -1579,8 +1586,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../chapters/others.html" class="pagination-link" aria-label="Additional Topics">
-        <span class="nav-page-text">Additional Topics</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../chapters/linear_models.html" class="pagination-link" aria-label="Linear Models">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear Models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

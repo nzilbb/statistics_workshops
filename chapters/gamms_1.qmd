@@ -912,9 +912,9 @@ _slopes_. GAMMs introduce the additional possibility of random _smooths_.
 
 We'll now switch to a data set which is more useful for illustrating the full
 range of random effects structures and which will also be useful when we turn 
-to the question of auto-correlation (@sec-auto).
+to the question of auto-correlation later (@sec-auto).
 
-We will take up data shared in the course of 
+The new data set comes from...
 
 We will take trajectories from the [price]{.smallcaps} vowel, looking at both
 F1 and F2.

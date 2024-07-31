@@ -122,6 +122,7 @@ div.csl-indent {
     "search-label": "Search"
   }
 }</script>
+<link rel="icon" type="image/png" sizes="32x32" href=".//global_images/fav.png">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -229,6 +230,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Exploratory Data Visualisation</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/linear_models.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear Models</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -243,19 +250,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/rstudio_server.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">RStudio Server</span></span></a>
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">RStudio Server</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/qualtrics.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/gamms_1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -617,24 +624,24 @@ window.Quarto = {
 <p>In fact, <code>some_name$some_other_name</code> is a shorthand form of <code>some_name[["some_other_name"]]</code>. A single element of a list or vector returned by <code>$</code> and <code>[[]]</code>, whereas <code>[]</code> returns a list or vector which may contain multiple elements.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div class="webex-check webex-box">
 If <code>data_frame</code> is a data frame, what will <code>data_frame[5:6, ]</code> return?
-<div id="radio_QUQUXNHPZF" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_QUQUXNHPZF" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_QUQUXNHPZF" value="answer"> <span>The fifth and sixth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_QUQUXNHPZF" value=""> <span>The fifth and sixth columns of the data frame</span></label>
+<div id="radio_CTGKXOVKFV" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_CTGKXOVKFV" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_CTGKXOVKFV" value="answer"> <span>The fifth and sixth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_CTGKXOVKFV" value=""> <span>The fifth and sixth columns of the data frame</span></label>
 </div>
 If <code>data_frame</code> is a data frame, what will <code>data_frame[, c(3, 6, 9)]</code> return?
-<div id="radio_JVHRKZKNBU" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_JVHRKZKNBU" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_JVHRKZKNBU" value=""> <span>The third, sixth, and ninth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_JVHRKZKNBU" value="answer"> <span>The third, sixth, and ninth column of the data frame.</span></label>
+<div id="radio_RIAKYGLQSO" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_RIAKYGLQSO" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_RIAKYGLQSO" value=""> <span>The third, sixth, and ninth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_RIAKYGLQSO" value="answer"> <span>The third, sixth, and ninth column of the data frame.</span></label>
 </div>
 <p>Imagine you save a vector to the variable <code>vector_name</code>, as follows:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>vector_name <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 What would be the output of <code>vector_name &gt; 2</code>?
-<div id="radio_IWVAMJEVZQ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_IWVAMJEVZQ" value="answer"> <span><code>[1]  TRUE FALSE  TRUE  TRUE FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_IWVAMJEVZQ" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_IWVAMJEVZQ" value=""> <span><code>FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_IWVAMJEVZQ" value=""> <span><code>[1] TRUE TRUE TRUE TRUE TRUE</code></span></label>
+<div id="radio_NEXJAIFQII" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_NEXJAIFQII" value="answer"> <span><code>[1]  TRUE FALSE  TRUE  TRUE FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_NEXJAIFQII" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_NEXJAIFQII" value=""> <span><code>FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_NEXJAIFQII" value=""> <span><code>[1] TRUE TRUE TRUE TRUE TRUE</code></span></label>
 </div>
 What would be the output of <code>vector_name[3, 5]</code>?
-<div id="radio_ABWEQKHVIL" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_ABWEQKHVIL" value=""> <span><code>[1] 7 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_ABWEQKHVIL" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_ABWEQKHVIL" value="answer"> <span><code>Error in vector_name[3, 5] : incorrect number of dimensions</code></span></label>
+<div id="radio_WATVIPKDKW" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WATVIPKDKW" value=""> <span><code>[1] 7 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_WATVIPKDKW" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_WATVIPKDKW" value="answer"> <span><code>Error in vector_name[3, 5] : incorrect number of dimensions</code></span></label>
 </div>
 </div>
 </section>

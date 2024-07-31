@@ -16,6 +16,7 @@ book:
     - chapters/getting_started.qmd
     - chapters/data_processing.qmd
     - chapters/exploratory_data_vis.qmd
+    - chapters/linear_models.qmd
   - part: chapters/others.qmd
     chapters: 
     - chapters/rstudio_server.qmd
@@ -33,6 +34,9 @@ format:
     - flatly
     - theme.scss
     css: include/webex.css
+    include-in-header:
+      - text: |
+          <link rel="icon" type="image/png" sizes="32x32" href=".//global_images/fav.png" />
     include-after-body: include/webex.js
     code-summary: "To view the code click here"
     df-print: tibble
