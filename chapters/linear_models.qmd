@@ -1,0 +1,700 @@
+# Linear Models
+
+```{r}
+#| echo: false
+library(tidyverse)
+library(tidymodels)
+library(glue)
+library(here)
+library(ggrepel)
+
+big_dia <- read_csv(here('data', 'big_dia.csv'))
+
+theme_set(theme_bw())
+```
+
+
+## Overview
+
+In this chapter we continue to explore the duration and word frequency data
+from @soskuthyChangingWordUsage2017. In the previous chapter we learned how
+to set up an R project in RStudio and plotted the data in various ways using
+`ggplot2`. In this chapter, we turn to _modelling_ the data. In particular,  
+we look at a very useful class of models: linear models. We're going to 
+draw some straight lines.
+
+What is a model? It's a simplified representation of something. The phenomena
+we're interested in in the human sciences, including linguistics, are
+incredibly complex. We have various strategies for reducing this complexity.
+Statistical models are an important (but not the only!) tool for this. Such 
+models usually find patterns of association between variables in a data set.
+These patterns might then be used to _predict_ future data, _explain_ one 
+variable in terms of others, or _explore_ looking for surprising features of 
+the data which might motivate future research.
+
+This chapter will quickly run through some of the key workflow steps in fitting
+a linear model. We'll start with a 'simple linear regression model' 
+(@sec-simple). We'll use a straight line to represent the relationship between
+word duration and word frequency. We'll follow this workflow: 
+
+1. Plot data.
+2. Fit a linear model using `lm()`.
+3. Check residual plots.
+4. Look at the model summary (`summary()`).
+5. Plot predictions
+
+There is no need to do things in _exactly_ this order all the time. But this is
+a nice pattern.
+
+We'll then add additional variables to the model (@sec-multiple), and consider
+how to fit _interactions_ between variables (@sec-interactions).
+
+You will notice, in @sec-further, that the material covered in this chapter 
+corresponds to _eight_ chapters in @winterStatisticsLinguistsIntroduction2019.
+We're moving fast here. As you get in to your own projects, with your own data,
+you will need to explore these topics in more detail.
+
+## Simple Linear Regression {#sec-simple}
+
+### Straight Lines
+
+At simplest, a linear model is just a straight line fit through data. 
+If we have a two-dimensional space with a horizontal $x$-axis and a 
+vertical $y$-axis, then we can specify any straight line using two numbers: the 
+**intercept** and the **slope**. The intercept tells you where the the line
+intercepts the $y$-axis and the slope tells you how steep the line is.
+
+```{r}
+#| label: fig-lines
+#| code-fold: true
+#| fig-cap: | 
+#|     A collection of lines with the intercept indicated by a point. Text 
+#|     annotation indicate the slope term.
+
+set.seed(26)
+
+lines <- tibble(
+  line_id = glue("line_{rep(1:5, each = 11)}"),
+  x = rep(-5:5, times = 5),
+  intercept = rep(runif(5, min=-4, max = 4), each = 11),
+  slope = rep(runif(5, min=-3, max=3), each = 11),
+  y = intercept + x * slope
+)
+
+intercepts <- lines |> 
+  filter(x == 0)
+
+labels <- lines |> 
+  filter(x != 0) |> 
+  group_by(line_id) |> 
+  slice_sample(n=1) |> 
+  mutate(label = glue("{round(slope, digits = 2)}"))
+
+lines |> 
+  ggplot(
+    aes(
+      x = x,
+      y = y,
+      colour = line_id
+    )
+  ) +
+  geom_vline(xintercept = 0) +
+  geom_hline(yintercept = 0) +
+  geom_path(linewidth = 2, show.legend = FALSE) +
+  geom_point(data = intercepts, size = 7, show.legend = FALSE) +
+  geom_label_repel(aes(label=label), data = labels, show.legend = FALSE)
+```
+
+In @fig-lines, the intercept is indicated with a large point. We see five
+distinct intercepts. The slope is indicated by the numbers in labels. Two of
+these are negative numbers, and the corresponding lines are going _down_ as you
+look from left to right. The positive slopes correspond to lines which go _up_
+as you view from left to right. The larger the magnitude of the slope (i.e., the
+size of the number, ignoring whether it is positive or negative), the steeper
+the line.
+
+Mathematically, a line in two-dimensional space is represented by the 
+equation $y = a + bx$, where $a$ is the intercept term and $b$ is the slope 
+term. If you increase the intercept term, then $y$ increases across the board.
+That is, changing the intercept moves the line up and down. The term $b$ 
+represents a relationship between the variables $y$ and $x$. If $b$ is positive,
+then as $x$ increases, $y$ will also increase. If it is negative, $y$ will
+decrease as $x$ increases.
+
+### Word Frequency and Word Duration
+
+In the data set we looked at in the last chapter, we considered explanations
+of word duration and word frequency. We can fit a straight line through our 
+data concerning word duration and word frequency. If we can do this, then 
+the slope term should tell us something about the relationship between word
+duration and frequency. That is, we are modelling for the purpose of _explanation_.
+
+We start our workflow by **plotting the data**. We already started this work in
+the previous chapter. Let's look at a scatter plot again (@fig-scatter-wf).
+
+```{r}
+#| label: fig-scatter-wf
+#| fig.cap: Scatter plot of word frequency and length.
+big_dia |> 
+  ggplot(
+    aes(
+      x = unigram.google.gb,
+      y = WordDuration
+    )
+  ) +
+  geom_point(alpha = 0.01) +
+  # Let's add some labels
+  labs(
+    x = "Log word frequency (via. Google)",
+    y = "Word Duration (s)"
+  )
+```
+
+@fig-scatter-wf is characteristic of the messy data we find in work with large
+corpora of linguistic data. The key thing to note here is whether there is a 
+shortage of data anywhere, whether there are any data points which are totally
+implausible (and perhaps represent measurement errors). Check any such points.
+You may need to filter them out (using functions we have already looked at
+in the previous chapter).
+
+The next step is to **fit the model** using `lm()`. Linear regression typically
+fits a straight line by 'least squares'. It finds the line which _minimises_ the
+sum of the squared differences between the line and the actual data points in
+the $y$ dimension. Put simply, it finds the slope and intercept which are 
+'closest' to the actual data.
+
+We specify a model using the `formula` argument. We can use variable names from
+our data set. If we do this, we have to specify the data set using the `data`
+argument. The formula for a simple linear regression just has the name of the
+variable to be explained (the 'response' variable) on the left of a `~` sign and
+the variable which we will use to explain it (the 'explanatory' variable) on the
+right.^[There are many different terms used for the variables used in regression
+modelling. These reflect different motivations for fitting a model and
+differences between disciplines. For instance, in some cases you might say
+'predictor' instead of 'explanatory variable'. You will pick up the terminology
+over time.] The following code block fits a simple model and associates it with
+the name `simple_fit`.
+
+```{r}
+simple_fit <- lm(
+  formula = WordDuration ~ unigram.google.gb,
+  data = big_dia
+)
+```
+
+The next step in our workflow is to **check residual plots**. The main ways in
+which a linear model can fail are present in 'residual plots'. There are a 
+few things to look for [see @winterStatisticsLinguistsIntroduction2019, 6.1].
+A 'residual' is the _difference_ between a particular data point and the line.
+The residuals are the variation which is _not_ captured by the model. We assume
+that this is normally distributed random noise. If there are clear patterns in
+the residuals, then we have good reason to think our model is missing something
+important.
+
+In R, we can use the `plot()` function to generate 'diagnostic plots' of our
+residuals. When plotting the result of a linear model, we can use the `which`
+argument to specify which of the four available diagnostic plots we want.^[In R,
+there are a series of functions called 'generics', which behave differently for
+different input. To see the documentation for `plot()` _when applied to a linear
+model_, use `?plot.lm` in the console. Note that the result of this is different
+from entering `?plot`.] The first plot is a plot of the 'fitted' values and
+the residuals (@fig-resfit.
+
+
+```{r}
+#| label: fig-resfit
+#| fig.cap: |
+#|     Scatter plot of fitted values and residuals from our simple linear 
+#|     regression model.
+plot(simple_fit, which = 1)
+```
+
+@fig-resfit should look like a big slug. If we look along the $x$ axis, we see
+'fitted' values. So, for instance, if we look up in the straight vertical 
+line from at $0.30$ on the $x$ axis, we see the range of residuals whenever the
+model says that $y$ is $0.30$. We don't want any kind of 'fan' pattern here, 
+where the distribution of residuals is much wider at one side of the plot than
+the other. 
+
+With this plot, and others like it, we are looking for large violations of
+the assumptions, rather than ensuring the the assumptions are perfectly 
+satisfied. 
+
+The most worrying thing about this plot is the red line, which shows the
+mean values of the residuals departs from $0$ as the fitted values increase.
+This suggests there might be some kind of non-linearity in the data.
+
+I also find 'QQ plots' useful. We can access this with `which = 2`.
+
+```{r}
+#| label: fig-qq
+#| fig.cap: |
+#|     Quantile-quantile plot from our simple linear 
+#|     regression model.
+plot(simple_fit, which = 2)
+```
+
+@fig-qq should show a series of points in a straight line. This is more or less
+true in the middle of the curve, but is violated heavily at both ends of the
+curve. This shows that we are missing something important in our simple model.
+
+What does this kind of plot show? We assume out residuals are normally 
+distributed. The 'theoretical quantiles` indicate the value we would expect
+from a normal distribution, the 'standardised residuals' are the values we
+actually observe, but appropriately scaled. The fact that the curve is 
+above the straight line indicates that there are many words which have much
+longer duration that we would assume given only information about the word
+frequency, and the assumptions of the linear regression model itself (including,
+importantly, that the relationship can be captured by a straight line.)
+
+So, we have some reason to be a bit sceptical that our model is capturing the
+patterns at the edges of the data. We should keep this in mind as we move to
+the next phase of our workflow: **look at the model summary**. Violation
+of model assumptions reduces the confidence we should have when looking at
+its results.^[We will continue to improve our model as we go on in these
+workshops.]
+
+The `summary()` function outputs key features of the model.^[The `summary()`
+function is also a generic function (just like `plot()`). Have a look at
+`?summary.lm()`.] Let's look at the output:
+
+```{r}
+summary(simple_fit)
+```
+We start with a `Call` which says what the R statement which generated the model
+was (including the formula). We then see information about the distribution of
+the residuals, before the `Coefficients:` section. This is where we will find
+the intercept and slope terms of out model. The `(Intercept)` term tells us what
+the model predicts when $x$ is $0$, i.e., when the log word frequency is 0. Is
+this a useful thing to know? Have a look at the scatter plot and see what this
+would correspond to in terms of our data (@fig-scatter-wf). We will consider
+some alternatives later. We look at the `Estimate` column to see the estimated
+value of the coefficients. In this case, we estimate a word duration of $0.04$
+when the log word frequency is 0.
+
+We then look at the `unigram.google.gb` row. This will tell us the _slope_
+of the line. The best straight line through the data has a slope of 
+$-0.028$. 
+
+What else is in the table? Information which quantifies our uncertainty about
+the estimates and tests of how consistent the data is with the _absence_ of
+an effect. That is, we've got a series of tests of **null hypotheses**. 
+For the 
+intercept, the null hypothesis is that the intercept is zero. For the slope,
+the null hypothesis is that the slope is zero. The 
+`t value` column is a 'test statistic' which summarises features of the data
+set with respect to the hypothesis that there is no effect. The `Pr(>|t|)`
+columns gives 'p values', which indicate the probability of observing the
+test statistic, or a more extreme value, if there is no actual effect. Low
+values, traditionally values less that 0.05, lead us to 'reject the
+null hypothesis'. In this case, then, we reject the null hypothesis for both
+the intercept term and the slope term. The effect of word frequency on 
+word duration is 'statistically significant' in this model.
+
+The final stage of our workflow is to **plot the predictions**. We get 
+access to the predictions using the `predict()` function.^[Yes, you guessed it,
+this is also a generic function.] We use the `interval` argument to specify that
+we want confidence intervals around the predictions.
+
+```{r}
+model_preds <- predict(
+  simple_fit, 
+  interval = "confidence"
+)
+
+simple_preds <- bind_cols(big_dia, model_preds)
+
+# Here's 10 random rows.
+simple_preds |> 
+  select(WordDuration, unigram.google.gb, fit, lwr, upr) |> 
+  slice_sample(n=10)
+```
+
+The output above shows the actual word duration scores, word frequencies,
+model predictions (`fit`) and lower (`lwr`) and upper (`upr`) bounds on the
+confidence intervals for 10 random rows of the data.
+
+We can plot this _without the original data_ as follows:
+
+```{r}
+#| label: fig-plotnodata
+#| fig.cap: |
+#|     Model predictions with 95% confidence intervals.
+simple_preds |> 
+  ggplot(
+    aes(
+      x = unigram.google.gb,
+      y = fit,
+      ymin = lwr,
+      ymax = upr
+    )
+  ) +
+  geom_ribbon(alpha = 0.5) +
+  geom_path(colour = "red") +
+  labs(
+    x = "Log word frequency (via. Google)",
+    y = "Predicted Word Duration (s)"
+  )
+```
+
+And _with data_:
+``` {r}
+#| label: fig-plotdata
+#| fig.cap: |
+#|     Model predictions with 95% confidence intervals and original data.
+simple_preds |> 
+  ggplot(
+    aes(
+      x = unigram.google.gb,
+      y = WordDuration
+    )
+  ) +
+  geom_point(alpha = 0.01) +
+  # Let's add some labels
+  geom_ribbon(
+    aes(
+      y = fit,
+      ymin = lwr,
+      ymax = upr
+    ),
+    alpha = 0.5
+  ) +
+  geom_path(
+    aes(
+      y = fit
+    ),
+    colour = "red") +
+  labs(
+    x = "Log word frequency (via. Google)",
+    y = "Word Duration (s)"
+  )
+```
+
+Sometimes it is valuable to plot the model alongside the raw data. It can make
+it more visually clear just how much variation there is from the model. However,
+real patterns in large corpus data sets may be very small relative to the range
+of raw data values. This can make plotting both model and data in a single plot
+impractical.
+
+::: {.callout-note collapse="true"}
+## Explanation and Correlation
+
+Why are we trying to explain word frequency using word duration rather than 
+the other way around? There is no _mathematical_ difference between the two 
+options.
+
+The simple answer is that we can think of plausible cognitive mechanisms by
+which word frequency might influence word duration. At simplest, this is
+something like the view that frequent signals are easier to process and this
+enables them to be 'reduced' in various ways, including in duration.
+
+The alternative direction of explanation would propose that we have a tendency
+to prefer shorter words, so that words that are on average shorter somehow 
+become more frequent. This doesn't make sense for a number of reasons. For
+one thing, we are looking at word duration _by token_. If there were a push 
+towards shorter and shorter words at this level, you would expect it to lead to
+faster speech across the board.
+
+The point is that we always interpret statistical models through previous
+research and more general intuitions about plausibility. These might end up
+being wrong, but we have to assume something to get an experiment or study
+going!
+:::
+
+## Multiple Linear Regression {#sec-multiple}
+
+In simple linear regression, we have a single explanatory variable. In multiple
+linear regression, we have more than one. There are a few different
+considerations when we do this. We'll separately look at adding categorical
+variables (columns which contain a finite number of 'categories': e.g. social
+categories like class or linguistic categories like what kind of consonant
+follows a vowel) and continuous variables (roughly, columns which contain
+numbers).
+
+Often, many variables are involved in the phenomena we explore or the
+hypotheses we test. Sometimes we add variables which we know have an independent
+effect on the response variable, but which we aren't directly interested in,
+in order to _control_ for the effect. This allows us to say things like:
+"holding the speed at which someone speaks constant, the height of this 
+vowel increases as a person ages". We thus avoid attributing variation due to
+the 'control' variable to the other variables we are investigating. This will
+make more sense with some examples.
+
+Do not just add all the variables you have as 'control' variables. Sometimes
+a 'control' variable can create effects which are not real. 
+Think about each variable you add to a model.^[
+We will also have
+to discuss what happens when multiple variables are correlated with one another
+(collinearity) in a later session. Adding multiple variables which track pretty
+much the same information (e.g., multiple closely related measures of how 
+fast someone is speaking or or their reaction time in a psychological 
+experiment) can lead to instability in the model. This is not a problem for
+_predicting_ the response variable, but it is a problem when we try to 
+_explain_ the variation in the response variable.
+] 
+
+### Adding a Categorical Variable
+
+There are a few categorical phenomena which affect word duration. For instance,
+whether or not a word appears at the end of an utterance affects its duration.
+We can incorporate this information into our model by adding a variable to the
+model which tracks whether observed word occurs at the end of an utterance or
+not.
+
+Why do we want this information? We might be worried that our sample of low
+frequency words just happens, by random change, to contain a lot of tokens
+from the end of an utterance. We might then see an effect of word frequency
+which is _actually_ due to where the words in our sample appear in an utterance.
+This is very unlikely in the dataset we are currently using, due to its sheer
+size (`r nrow(big_dia)` tokens). But it could very well be a factor in a smaller
+data set. 
+
+More generally, we hope that our model is the best depiction of the features of
+the phenomena we are interested in which we can manage with the data at hand.
+If we suspect some variable has an independent effect of the response variable,
+and there is no other downside to including it, it is good to include it in
+the model.^[This is a simplification and does not yet tell you much about what
+kind of variables to avoid. This will come later.]
+
+Let's have a quick visual look at the variable called `final` in the 
+`big_dia` dataset. We'll use a box plot.
+
+```{r}
+#| label: fig-box
+#| fig-cap: |
+#|  Box plot indicating word duration by position in utterance (utterance 
+#|  final vs. non-final).
+big_dia |> 
+  ggplot(
+    aes(
+      x = final, 
+      y = WordDuration
+    )
+  ) +
+  geom_boxplot()
+```
+
+On the $x$ axis, we distinguish whether an observed word token appears at the
+end of an utterance or not. On the $y$ axis we see the word duration. The line
+in the middle of a box plot indicates the median value within the relevant
+category. So, for instance, the line in the middle of the left box indicates the
+median word duration in seconds for word tokens which do not appear at the end
+of an utterance. 
+
+@fig-box suggests that words which appear at the end of an utterance as slightly
+longer than those which appear at the start of an utterance.
+
+In order to include this variation in a linear model, we simply add the variable
+to the formula using the `+` sign, as follows:
+
+```{r}
+multiple_fit <- lm(
+  WordDuration ~ unigram.google.gb + final,
+  data = big_dia
+)
+```
+
+::: {.webex-box}
+
+Carry out the graphical model checking steps we introduced for simple
+linear regression above with the `multiple_fit` model.
+
+:::
+
+What does this look like in the model summary? We will look at the 
+coefficients only. To get at the coefficients table in a convinent way,
+we can use the `tidy()` function from the `tidymodels` package.
+
+```{r}
+tidy(multiple_fit)
+```
+
+The most obvious difference is that we now have a row in our coefficients table
+called `finalTRUE`. But to understand how `final` is included in the model, we
+need to look at the intercept value again. Categorical variables are represented
+as having a 'base' level.^[This can be changed, but we won't look at this in
+these sessions.] In this case, `FALSE` is the base level. This means that the
+intercept value for this model is the intercept value _when the word is not_
+_at the end of an utterance_. The estimate of the coefficient `finalTRUE` tells
+us how much longer a word is when it appears at the end of an utterance. In
+this case, the estimate is $0.03$. So, on the whole, words at the end of 
+utterances are estimated to be $0.3$ seconds longer than words which are
+not at the end. 
+
+As in the previous case, we are given $p$-values for each of these estimates. 
+The very low $p$-values in this case indicate that the data at hand is not 
+compatible with these estimates being zero. That is, there is a 'statistically
+significant' associated with each of these coefficients.
+
+We now want to plot the model predictions. The following code extracts 
+model predictions for some specified points, rather that for every data point
+in the data frame. We use `crossing()` from the `tidyr` package (loaded as
+part of the `tidyverse`) to say we want every combination of the values we
+list. We then feed the result of this to the `predict()` function using the
+`newdata` argument.
+
+```{r}
+# specify the values we want predictions for.
+to_predict <- crossing(
+  "unigram.google.gb" = c(-15, -10, -8, -7),
+  "final" = c(TRUE, FALSE)
+)
+
+# get predictions using `predict()`.
+multiple_preds <- predict(
+  multiple_fit, 
+  newdata = to_predict,
+  interval = "confidence" # The interval argument says we want a confidence
+  # interval for each prediction too.
+)
+
+# combine predictions with the values we specified.
+multiple_preds <- bind_cols(to_predict, multiple_preds)
+```
+
+
+::: {.webex-box}
+
+Experiment with some ways to plot these model predictions. These should be
+in a variable called `multiple_preds`.
+
+:::
+
+### Adding a Continuous Variable
+
+We don't have any sense yet of how long we would _expect_ a given word to be.
+The variable `dur.context` gives a sense of the length expected given the
+context of the word in synthesised speech. Here's what the variable looks like
+in a scatter plot with word duration:
+
+```{r}
+#| label: fig-scat-context
+#| fig-cap: "Plot of word duration given expected duration (`dur.context`)."
+big_dia |> 
+  ggplot(
+    aes(
+      x = dur.context,
+      y = WordDuration
+    )
+  ) +
+  geom_point(alpha = 0.5)
+```
+
+If you want to see what a simple linear regression looks like on a scatter plot,
+it can be convenient to use `geom_smooth(method = "lm")`, as follows:
+```{r}
+#| label: fig-scat-context-reg
+#| fig-cap: |
+#|   Plot of word duration given expected duration (`dur.context`) 
+#|   with simple linear regression.
+big_dia |> 
+  ggplot(
+    aes(
+      x = dur.context,
+      y = WordDuration
+    )
+  ) +
+  geom_point(alpha = 0.5) +
+  geom_smooth(method = "lm")
+```
+
+The measure of expected duration is positively related to the actual measures of
+duration. This is an example of a simple visual check that we are on the right
+track.
+
+Let's add this measure to our model. Again, we just use a `+`. We will 
+reuse the variable name `multiple_fit`.
+```{r}
+multiple_fit <- lm(
+  # I will stop explicitly saying 'formula =' now.
+  WordDuration ~ unigram.google.gb + dur.context + final,
+  data = big_dia
+)
+```
+
+Are the diagnostic plots any better?
+```{r}
+plot(multiple_fit, which = 2)
+```
+This is better than before, but could still be improved. The addition of a 
+variable capturing contextual factors in word duration has helped.
+
+```{r}
+summary(multiple_fit)
+```
+
+
+## Interactions {#sec-interactions}
+
+```{r}
+interaction_fit <- lm(
+  # I will stop explicitly saying 'formula' now.
+  WordDuration ~ unigram.google.gb * final + dur.context,
+  data = big_dia
+)
+
+summary(interaction_fit)
+```
+
+<!-- plots w/ ggplot -->
+
+### Something something scaling
+
+## What's Missing?
+
+<!-- This content needs to be moved -->
+There are a series of _assumptions_ that are made when building a mathematical
+model. These are the assumptions which come along with the mathematical
+machinery used to back up the models. These are _always_ violated in the real
+world. Some statistics texts become obsessed with checking assumptions. This can
+become excessive. In cases with multiple continuous variables, it is worth
+checking for colinearity because it can lead to very unstable coefficients. 
+In so far as these coefficients tell us how big an effect is, unstable
+coefficients have a significant impact on the scientific conclusions we draw 
+from a model. But the primary thing to check is for normality _of the residuals_, 
+as we did in the diagnostic plots above.
+
+The primary assumption of linear regression which we have considered above is
+_normality of the residuals_. We want the variation which is left behind by 
+our model to have no obvious structure. But these is another very important 
+assumption of linear regression models: that each data point is _independent_.
+A simple way to think of this, is that every data point provides just as much
+information to the model as any other. But this is not true in many cases.
+
+When using corpora or carrying out experiments, we take multiple measurements
+from individual listeners or speakers. Each of these listeners or speakers has
+idiosyncratic features which influence the measurements we take from them. There
+is a _dependence_ between measurements taken from the same individual.
+
+There are mathematical tools to handle this problem: **mixed effects models**.
+We will look at these in the next chapter.
+
+## Futher Resources {#sec-further}
+
+For linear regression with linguistic data, see chapters 4-8 in 
+[@winterStatisticsLinguistsIntroduction2019]. For interpretation of
+p-values and confidence intervals, etc, see chapters 9-11.
+
+<!-- ## Mess -->
+
+<!-- ## What is Modelling? {#sec-modelling} -->
+
+
+<!-- ## Hypotheses: Scientific and Statistical {#sec-hyp} -->
+
+<!-- In almost all cases, we have some expectations when we start modelling. We have -->
+<!-- more-or-less strong beliefs on the basis of prior research, intuition, informal -->
+<!-- observation and personal idiosyncracies. This is particularly true in research -->
+<!-- on language variation. We are all language users of some sort and notice all -->
+<!-- sorts of things as we go about in the world. -->
+
+<!-- These expectations are one source of _hypotheses_. ... We might not actually -->
+<!-- _believe_ an hypothesis. The point is that it is a claim that we think it is  -->
+<!-- sensible to test. Sometimes, for instance, it is practical to test a massively -->
+<!-- _simplified_ hypothesis, which we might not think has any chance of being  -->
+<!-- the full story. -->
+
+<!-- There is also a statistical idea of an 'hypothesis'. A statistical hypothesis -->
+<!-- is a mathematical object. We turn out scientific hypothesis into a statement -->
+<!-- which can be directly tested by a statistical model. A 'null hypothesis', for -->
+<!-- instance, is the hypothesis that there is 'no effect'. ... -->

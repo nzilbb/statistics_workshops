@@ -17,6 +17,7 @@ book:
     - chapters/data_processing.qmd
     - chapters/exploratory_data_vis.qmd
     - chapters/linear_models.qmd
+    - chapters/mixed_effects.qmd
   - part: chapters/others.qmd
     chapters: 
     - chapters/rstudio_server.qmd
@@ -42,3 +43,4 @@ format:
     df-print: tibble
     execute:
       warning: false
+      freeze: auto

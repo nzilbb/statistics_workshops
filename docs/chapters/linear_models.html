@@ -289,8 +289,15 @@ window.Quarto = {
   <li><a href="#straight-lines" id="toc-straight-lines" class="nav-link" data-scroll-target="#straight-lines"><span class="header-section-number">4.2.1</span> Straight Lines</a></li>
   <li><a href="#word-frequency-and-word-duration" id="toc-word-frequency-and-word-duration" class="nav-link" data-scroll-target="#word-frequency-and-word-duration"><span class="header-section-number">4.2.2</span> Word Frequency and Word Duration</a></li>
   </ul></li>
-  <li><a href="#sec-multiple" id="toc-sec-multiple" class="nav-link" data-scroll-target="#sec-multiple"><span class="header-section-number">4.3</span> Multiple Linear Regression</a></li>
-  <li><a href="#sec-interactions" id="toc-sec-interactions" class="nav-link" data-scroll-target="#sec-interactions"><span class="header-section-number">4.4</span> Interactions</a></li>
+  <li><a href="#sec-multiple" id="toc-sec-multiple" class="nav-link" data-scroll-target="#sec-multiple"><span class="header-section-number">4.3</span> Multiple Linear Regression</a>
+  <ul class="collapse">
+  <li><a href="#adding-a-categorical-variable" id="toc-adding-a-categorical-variable" class="nav-link" data-scroll-target="#adding-a-categorical-variable"><span class="header-section-number">4.3.1</span> Adding a Categorical Variable</a></li>
+  <li><a href="#adding-a-continuous-variable" id="toc-adding-a-continuous-variable" class="nav-link" data-scroll-target="#adding-a-continuous-variable"><span class="header-section-number">4.3.2</span> Adding a Continuous Variable</a></li>
+  </ul></li>
+  <li><a href="#sec-interactions" id="toc-sec-interactions" class="nav-link" data-scroll-target="#sec-interactions"><span class="header-section-number">4.4</span> Interactions</a>
+  <ul class="collapse">
+  <li><a href="#something-something-scaling" id="toc-something-something-scaling" class="nav-link" data-scroll-target="#something-something-scaling"><span class="header-section-number">4.4.1</span> Something something scaling</a></li>
+  </ul></li>
   <li><a href="#whats-missing" id="toc-whats-missing" class="nav-link" data-scroll-target="#whats-missing"><span class="header-section-number">4.5</span> What’s Missing?</a></li>
   <li><a href="#sec-further" id="toc-sec-further" class="nav-link" data-scroll-target="#sec-further"><span class="header-section-number">4.6</span> Futher Resources</a></li>
   </ul>
@@ -423,7 +430,7 @@ Figure&nbsp;4.2: Scatter plot of word frequency and length.
 </div>
 </div>
 </div>
-<p><span class="citation" data-cites="fit-scatter-wf">(<a href="references.html#ref-fit-scatter-wf" role="doc-biblioref"><strong>fit-scatter-wf?</strong></a>)</span> is characteristic of the messy data we find in work with large corpora of linguistic data. The key thing to note here is whether there is a shortage of data anywhere, whether there are any data points which are totally implausible (and perhaps represent measurement errors). Check any such points. You may need to filter them out (using functions we have already looked at in the previous chapter).</p>
+<p><a href="#fig-scatter-wf" class="quarto-xref">Figure&nbsp;<span>4.2</span></a> is characteristic of the messy data we find in work with large corpora of linguistic data. The key thing to note here is whether there is a shortage of data anywhere, whether there are any data points which are totally implausible (and perhaps represent measurement errors). Check any such points. You may need to filter them out (using functions we have already looked at in the previous chapter).</p>
 <p>The next step is to <strong>fit the model</strong> using <code>lm()</code>. Linear regression typically fits a straight line by ‘least squares’. It finds the line which <em>minimises</em> the sum of the squared differences between the line and the actual data points in the <span class="math inline">\(y\)</span> dimension. Put simply, it finds the slope and intercept which are ‘closest’ to the actual data.</p>
 <p>We specify a model using the <code>formula</code> argument. We can use variable names from our data set. If we do this, we have to specify the data set using the <code>data</code> argument. The formula for a simple linear regression just has the name of the variable to be explained (the ‘response’ variable) on the left of a <code>~</code> sign and the variable which we will use to explain it (the ‘explanatory’ variable) on the right.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The following code block fits a simple model and associates it with the name <code>simple_fit</code>.</p>
 <div class="cell">
@@ -599,6 +606,7 @@ Figure&nbsp;4.6: Model predictions with 95% confidence intervals and original da
 </div>
 </div>
 </div>
+<p>Sometimes it is valuable to plot the model alongside the raw data. It can make it more visually clear just how much variation there is from the model. However, real patterns in large corpus data sets may be very small relative to the range of raw data values. This can make plotting both model and data in a single plot impractical.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
@@ -622,9 +630,223 @@ Explanation and Correlation
 </section>
 <section id="sec-multiple" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="sec-multiple"><span class="header-section-number">4.3</span> Multiple Linear Regression</h2>
+<p>In simple linear regression, we have a single explanatory variable. In multiple linear regression, we have more than one. There are a few different considerations when we do this. We’ll separately look at adding categorical variables (columns which contain a finite number of ‘categories’: e.g.&nbsp;social categories like class or linguistic categories like what kind of consonant follows a vowel) and continuous variables (roughly, columns which contain numbers).</p>
+<p>Often, many variables are involved in the phenomena we explore or the hypotheses we test. Sometimes we add variables which we know have an independent effect on the response variable, but which we aren’t directly interested in, in order to <em>control</em> for the effect. This allows us to say things like: “holding the speed at which someone speaks constant, the height of this vowel increases as a person ages”. We thus avoid attributing variation due to the ‘control’ variable to the other variables we are investigating. This will make more sense with some examples.</p>
+<p>Do not just add all the variables you have as ‘control’ variables. Sometimes a ‘control’ variable can create effects which are not real. Think about each variable you add to a model.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a></p>
+<section id="adding-a-categorical-variable" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="adding-a-categorical-variable"><span class="header-section-number">4.3.1</span> Adding a Categorical Variable</h3>
+<p>There are a few categorical phenomena which affect word duration. For instance, whether or not a word appears at the end of an utterance affects its duration. We can incorporate this information into our model by adding a variable to the model which tracks whether observed word occurs at the end of an utterance or not.</p>
+<p>Why do we want this information? We might be worried that our sample of low frequency words just happens, by random change, to contain a lot of tokens from the end of an utterance. We might then see an effect of word frequency which is <em>actually</em> due to where the words in our sample appear in an utterance. This is very unlikely in the dataset we are currently using, due to its sheer size (271764 tokens). But it could very well be a factor in a smaller data set.</p>
+<p>More generally, we hope that our model is the best depiction of the features of the phenomena we are interested in which we can manage with the data at hand. If we suspect some variable has an independent effect of the response variable, and there is no other downside to including it, it is good to include it in the model.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
+<p>Let’s have a quick visual look at the variable called <code>final</code> in the <code>big_dia</code> dataset. We’ll use a box plot.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> final, </span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-box" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-box-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="linear_models_files/figure-html/fig-box-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-box-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.7: Box plot indicating word duration by position in utterance (utterance final vs.&nbsp;non-final).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>On the <span class="math inline">\(x\)</span> axis, we distinguish whether an observed word token appears at the end of an utterance or not. On the <span class="math inline">\(y\)</span> axis we see the word duration. The line in the middle of a box plot indicates the median value within the relevant category. So, for instance, the line in the middle of the left box indicates the median word duration in seconds for word tokens which do not appear at the end of an utterance.</p>
+<p><a href="#fig-box" class="quarto-xref">Figure&nbsp;<span>4.7</span></a> suggests that words which appear at the end of an utterance as slightly longer than those which appear at the start of an utterance.</p>
+<p>In order to include this variation in a linear model, we simply add the variable to the formula using the <code>+</code> sign, as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>multiple_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  WordDuration <span class="sc">~</span> unigram.google.gb <span class="sc">+</span> final,</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> big_dia</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="webex-box">
+<p>Carry out the graphical model checking steps we introduced for simple linear regression above with the <code>multiple_fit</code> model.</p>
+</div>
+<p>What does this look like in the model summary? We will look at the coefficients only. To get at the coefficients table in a convinent way, we can use the <code>tidy()</code> function from the <code>tidymodels</code> package.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(multiple_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 5
+  term              estimate std.error statistic   p.value
+  &lt;chr&gt;                &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;
+1 (Intercept)         0.0428  0.00144       29.8 2.34e-194
+2 unigram.google.gb  -0.0276  0.000168    -164.  0        
+3 finalTRUE           0.0295  0.00115       25.7 5.75e-146</code></pre>
+</div>
+</div>
+<p>The most obvious difference is that we now have a row in our coefficients table called <code>finalTRUE</code>. But to understand how <code>final</code> is included in the model, we need to look at the intercept value again. Categorical variables are represented as having a ‘base’ level.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> In this case, <code>FALSE</code> is the base level. This means that the intercept value for this model is the intercept value <em>when the word is not</em> <em>at the end of an utterance</em>. The estimate of the coefficient <code>finalTRUE</code> tells us how much longer a word is when it appears at the end of an utterance. In this case, the estimate is <span class="math inline">\(0.03\)</span>. So, on the whole, words at the end of utterances are estimated to be <span class="math inline">\(0.3\)</span> seconds longer than words which are not at the end.</p>
+<p>As in the previous case, we are given <span class="math inline">\(p\)</span>-values for each of these estimates. The very low <span class="math inline">\(p\)</span>-values in this case indicate that the data at hand is not compatible with these estimates being zero. That is, there is a ‘statistically significant’ associated with each of these coefficients.</p>
+<p>We now want to plot the model predictions. The following code extracts model predictions for some specified points, rather that for every data point in the data frame. We use <code>crossing()</code> from the <code>tidyr</code> package (loaded as part of the <code>tidyverse</code>) to say we want every combination of the values we list. We then feed the result of this to the <code>predict()</code> function using the <code>newdata</code> argument.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify the values we want predictions for.</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>to_predict <span class="ot">&lt;-</span> <span class="fu">crossing</span>(</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"unigram.google.gb"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">15</span>, <span class="sc">-</span><span class="dv">10</span>, <span class="sc">-</span><span class="dv">8</span>, <span class="sc">-</span><span class="dv">7</span>),</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"final"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get predictions using `predict()`.</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>multiple_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  multiple_fit, </span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> to_predict,</span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">interval =</span> <span class="st">"confidence"</span> <span class="co"># The interval argument says we want a confidence</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># interval for each prediction too.</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co"># combine predictions with the values we specified.</span></span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>multiple_preds <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(to_predict, multiple_preds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="webex-box">
+<p>Experiment with some ways to plot these model predictions. These should be in a variable called <code>multiple_preds</code>.</p>
+</div>
+</section>
+<section id="adding-a-continuous-variable" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="adding-a-continuous-variable"><span class="header-section-number">4.3.2</span> Adding a Continuous Variable</h3>
+<p>We don’t have any sense yet of how long we would <em>expect</em> a given word to be. The variable <code>dur.context</code> gives a sense of the length expected given the context of the word in synthesised speech. Here’s what the variable looks like in a scatter plot with word duration:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> dur.context,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-scat-context" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scat-context-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="linear_models_files/figure-html/fig-scat-context-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scat-context-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.8: Plot of word duration given expected duration (<code>dur.context</code>).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If you want to see what a simple linear regression looks like on a scatter plot, it can be convenient to use <code>geom_smooth(method = "lm")</code>, as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> dur.context,</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-scat-context-reg" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scat-context-reg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="linear_models_files/figure-html/fig-scat-context-reg-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scat-context-reg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.9: Plot of word duration given expected duration (<code>dur.context</code>) with simple linear regression.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The measure of expected duration is positively related to the actual measures of duration. This is an example of a simple visual check that we are on the right track.</p>
+<p>Let’s add this measure to our model. Again, we just use a <code>+</code>. We will reuse the variable name <code>multiple_fit</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>multiple_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I will stop explicitly saying 'formula =' now.</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  WordDuration <span class="sc">~</span> unigram.google.gb <span class="sc">+</span> dur.context <span class="sc">+</span> final,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> big_dia</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Are the diagnostic plots any better?</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(multiple_fit, <span class="at">which =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="linear_models_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>This is better than before, but could still be improved. The addition of a variable capturing contextual factors in word duration has helped.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(multiple_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = WordDuration ~ unigram.google.gb + dur.context + 
+    final, data = big_dia)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.66112 -0.07115 -0.01392  0.05709  0.98263 
+
+Coefficients:
+                    Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)       -9.610e-03  1.272e-03  -7.555  4.2e-14 ***
+unigram.google.gb -1.022e-02  1.587e-04 -64.406  &lt; 2e-16 ***
+dur.context        6.191e-04  2.146e-06 288.461  &lt; 2e-16 ***
+finalTRUE         -7.348e-02  1.064e-03 -69.087  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.103 on 271760 degrees of freedom
+Multiple R-squared:  0.3057,    Adjusted R-squared:  0.3057 
+F-statistic: 3.989e+04 on 3 and 271760 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
 </section>
 <section id="sec-interactions" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="sec-interactions"><span class="header-section-number">4.4</span> Interactions</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>interaction_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I will stop explicitly saying 'formula' now.</span></span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  WordDuration <span class="sc">~</span> unigram.google.gb <span class="sc">*</span> final <span class="sc">+</span> dur.context,</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> big_dia</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(interaction_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = WordDuration ~ unigram.google.gb * final + dur.context, 
+    data = big_dia)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.66253 -0.07102 -0.01401  0.05705  0.99390 
+
+Coefficients:
+                              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                 -1.225e-02  1.304e-03  -9.394  &lt; 2e-16 ***
+unigram.google.gb           -1.051e-02  1.619e-04 -64.949  &lt; 2e-16 ***
+finalTRUE                   -2.032e-02  5.925e-03  -3.429 0.000606 ***
+dur.context                  6.196e-04  2.147e-06 288.647  &lt; 2e-16 ***
+unigram.google.gb:finalTRUE  6.158e-03  6.751e-04   9.122  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.103 on 271759 degrees of freedom
+Multiple R-squared:  0.3059,    Adjusted R-squared:  0.3059 
+F-statistic: 2.994e+04 on 4 and 271759 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<!-- plots w/ ggplot -->
+<section id="something-something-scaling" class="level3" data-number="4.4.1">
+<h3 data-number="4.4.1" class="anchored" data-anchor-id="something-something-scaling"><span class="header-section-number">4.4.1</span> Something something scaling</h3>
+</section>
 </section>
 <section id="whats-missing" class="level2" data-number="4.5">
 <h2 data-number="4.5" class="anchored" data-anchor-id="whats-missing"><span class="header-section-number">4.5</span> What’s Missing?</h2>
@@ -668,11 +890,14 @@ Winter, Bodo. 2019. <em>Statistics for <span>Linguists</span>: <span>An Introduc
 <section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
 <hr>
 <ol>
-<li id="fn1"><p>There are many different terms used for the variables used in regression modelling. These reflect different motivations for fitting a model and differences between disciplines. You will pick up the terminology over time.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn1"><p>There are many different terms used for the variables used in regression modelling. These reflect different motivations for fitting a model and differences between disciplines. For instance, in some cases you might say ‘predictor’ instead of ‘explanatory variable’. You will pick up the terminology over time.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p>In R, there are a series of functions called ‘generics’, which behave differently for different input. To see the documentation for <code>plot()</code> <em>when applied to a linear model</em>, use <code>?plot.lm</code> in the console. Note that the result of this is different from entering <code>?plot</code>.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn3"><p>We will continue to improve our model as we go on in these workshops.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn4"><p>The <code>summary()</code> function is also a generic function (just like <code>plot()</code>). Have a look at <code>?summary.lm()</code>.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>Yes, you guessed it, this is also a generic function.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p> We will also have to discuss what happens when multiple variables are correlated with one another (collinearity) in a later session. Adding multiple variables which track pretty much the same information (e.g., multiple closely related measures of how fast someone is speaking or or their reaction time in a psychological experiment) can lead to instability in the model. This is not a problem for <em>predicting</em> the response variable, but it is a problem when we try to <em>explain</em> the variation in the response variable.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>This is a simplification and does not yet tell you much about what kind of variables to avoid. This will come later.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>This can be changed, but we won’t look at this in these sessions.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 

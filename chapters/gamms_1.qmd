@@ -4,11 +4,17 @@
 
 ## Overview
 
-This chapter is going to grow over three initial sessions. The rough plan is:
+This chapter is going to grow over four workshop sessions. The rough plan is:
 
 1. Introduction to the idea of GAMs and how to specify parametric and smooth terms.
-2. The second 'M': we'll add random effects, looking at random intercepts, slopes, and smooths.
-3. Handling auto-correlation. How to work out when this is an issue, and the available options for solving it.
+2. The parenthetical 'M': we'll add random effects, looking at random intercepts, slopes, and smooths.
+3. Auto-correlation and model comparison: we'll consider various strategies for
+testing for and controlling autocorrelation and methods for comparing models.
+4. By-factor smooths and reporting models: We'll consider the varieties of 
+by-factor smooths available and how to implement them, before turning to how to report GA(M)Ms in papers and
+across supplementary material.
+
+
 
 We will be using the following libraries:
 ```{r}
@@ -121,7 +127,8 @@ derived from video footage. They also apply at very different time scales.
 Consider GAMMs fit through full monologues [@wilsonblackOverlookedEffectAmplitude2023],
 or to formant values across the history of a dialect [@brandSystematicCovariationMonophthongs2021].
 
-::: {.callout-note}
+::: {.callout-note collapse=true}
+## GAMMs and Polynomial Models
 
 You may have used polynomial models in the past. These models add terms such as $x^2$ and
 $x^3$ to models (where previously, only $x$ was included). You can do a lot with
@@ -358,7 +365,6 @@ basis_long <- basis |>
     names_to = "bf"
   )
 
-
 data |> 
   ggplot(
     aes(
@@ -392,7 +398,7 @@ data |>
 The black line is our best possible fit to the data here, but it is no good.
 It needs to be wigglier.
 
-So **knots** are one determinant of wiggliness. But there is another: 
+**Knots** are one determinant of wiggliness. But there is another: 
 the **smoothing parameter**. This is used in order to penalise wiggliness
 when we fit a GAM model and is handled automatically by the `mgcv` package.
 In practice, it is determined _from the data_, rather than being manually 
@@ -467,14 +473,15 @@ mean_onze_full |>
   )
 ```
 
-::: {.callout-tip}
+::: {.callout-tip collapse=true}
+## The Bias-Variance Trade Off
 
-We are in the broad area of a core data science concept: the 'bias variance tradeoff'. That is, with any
-statistical learning method, we can introduce errors with the assumptions of 
-our model (_bias_) and errors due to excessively following small fluctuations
-in our data (_variance_). But the less bias we include, the more we will be 
-lead astray by noise and vice versa. It's a _tradeoff_.
-
+We are now in the broad area of a core data science concept: the 'bias variance
+tradeoff'. That is, with any statistical learning method, we can introduce
+errors with the assumptions of our model (_bias_) and errors due to excessively
+following small fluctuations in our data (_variance_). But the less bias we
+include, the more we will be lead astray by noise and vice versa. It's a
+_tradeoff_.
 In the case we are looking at now, reducing the smoothing parameter is
 equivalent to decreasing bias and increasing variance.
 
@@ -527,14 +534,15 @@ large datasets.
 
 :::
 
-::: callout-warning
+::: {.callout-warning collapse=true}
+## Parallel Processing on macOS
 
 The `mgcv` package requires the `openmp` library to take advantage of the
 parallel processing available through `bam()`. This is
 typically not a problem for Windows and Linux installations of R. On macos,
 it can be a problem. 
 
-If you get a warning about `openmp` not being available on macos. I suggest 
+If you get a warning about `openmp` not being available on macOS. I suggest 
 you install the mandatory tools listed here: <https://mac.r-project.org/tools/> 
 and then follow the instructions at <https://mac.r-project.org/openmp/>.
 
@@ -904,20 +912,71 @@ You may have noticed that there is a correlation between speech rate and
 year of birth. This should be kept in mind when interpreting the model.
 ]
 
-## The Second 'M': Mixed Effects
+## The Parenthetical 'M': Mixed Effects
 
 We can include quite complex random effects structures in GAMMs. As in the 
 case of generalised linear models, we can add random _intercepts_ and random
 _slopes_. GAMMs introduce the additional possibility of random _smooths_.
+The purpose of random effects in this context is exactly the same as in
+linear mixed-effects models: we want to capture dependence between observations.
 
-We'll now switch to a data set which is more useful for illustrating the full
-range of random effects structures and which will also be useful when we turn 
+### Random Intercepts
+
+When fitting a random intercept in a linear mixed-effects model, using the
+`lme4`package, for instance, we use the syntax `(1 | x_1)` within the model
+formula to get random intercepts for each level of the variable `x_1`. In
+`mgcv`, we use the syntax `s(x_1, bs="re")`. That is, we specify that we 
+want random intercepts by changing the basis of a smooth term.
+
+In corpus phonetics, we usually want a random intercept for each speaker and
+each word. In our previous models, we took mean values for each speaker so that
+we had a single value for each. This is one strategy to avoid the need for 
+random effects, but it is better to include all the data points we have while
+building the dependence structure between the in to the model.
+
+We create a data set containing all of the [dress]{.smallcaps} F1 readings, 
+again applying Lobanov 2.0 normalisation.
+```{r}
+onze_dress <- onze_vowels_full |> 
+  lobanov_2() |> 
+  filter(
+    vowel == "DRESS"
+  )
+```
+
+We now have a column with speaker identifiers (`speaker`) and word identifiers
+(`word`). We fit the same structure as the previous model, but with random 
+intercepts for these two variables. Since we are 
+significantly increasing the number of tokens (from `r nrow(mean_onze_full)` 
+to `r nrow(onze_dress)`), we should also switch to the `bam` function.
+
+```{r}
+#| cache: true
+onze_ri_fit <- bam(
+  formula = F1_lob2 ~ 
+    s(yob, k = 10, by=gender, bs = "tp") +
+    s(speech_rate, k = 10, bs = "tp") +
+    ti(yob, speech_rate, by=gender, k=5, bs = "tp") +
+    s(speaker, bs = "re") + s(word, bs = "re"),
+  data = onze_dress,
+  family = scat(link="identity"),
+  discrete = TRUE,
+  nthreads = detectCores() - 1
+)
+```
+
+### Random Smooths
+
+We'll now switch to a data set which is more useful for illustrating random
+smooths and which will also be useful when we turn 
 to the question of auto-correlation later (@sec-auto).
 
-The new data set comes from...
-
-We will take trajectories from the [price]{.smallcaps} vowel, looking at both
-F1 and F2.
+The new data set comes from @soskuthyHorizontalDiphthongShift2019. This paper is
+an exploratory study of the dynamics of New Zealand English diphthongs. It
+contains formant trajectories for the [price]{.smallcaps} and
+[mouth]{.smallcaps} vowels. We will take a series of formant trajectories from
+the [price]{.smallcaps} vowel, looking at both F1 and F2 values. The full
+data set is available on GitHub, [here]() <!-- Add link -->
 
 ## Auto-correlation {#sec-auto}
 
@@ -1107,7 +1166,7 @@ packages I use within an analysis project.
   - Your discussion section might consist of description of the specific trajectories you find visually.
 - Supplementary material opens up many windows (including e.g., the interactive
 application in @brandSystematicCovariationMonophthongs2021). This is also, 
-however, a potential time sync. Try to balance the costs and benefits when you
+however, a potential time sink. Try to balance the costs and benefits when you
 go beyond the requirements of open science and into the realm of web development!
 
 ## Further Resources {#sec-resources}

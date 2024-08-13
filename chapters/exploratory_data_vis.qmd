@@ -211,7 +211,8 @@ small 'hamburger menu' button and then `Download file` (@fig-osf-download).
 ### Load libraries and data
 
 At the top of your Quarto Document, add a code block which loads the required
-libraries.
+libraries. A convenient way to do this is to use the keyboard shortcut 
+(Windows and Linux: `Ctrl + Alt + I`, macOS: `Cmd + Option + I`).
 
 ```{r}
 #| warning: true

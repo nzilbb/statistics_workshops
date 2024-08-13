@@ -293,7 +293,11 @@ window.Quarto = {
   <li><a href="#plotting" id="toc-plotting" class="nav-link" data-scroll-target="#plotting"><span class="header-section-number">7.2.5</span> Plotting</a></li>
   <li><a href="#interactions" id="toc-interactions" class="nav-link" data-scroll-target="#interactions"><span class="header-section-number">7.2.6</span> Interactions</a></li>
   </ul></li>
-  <li><a href="#the-second-m-mixed-effects" id="toc-the-second-m-mixed-effects" class="nav-link" data-scroll-target="#the-second-m-mixed-effects"><span class="header-section-number">7.3</span> The Second ‘M’: Mixed Effects</a></li>
+  <li><a href="#the-parenthetical-m-mixed-effects" id="toc-the-parenthetical-m-mixed-effects" class="nav-link" data-scroll-target="#the-parenthetical-m-mixed-effects"><span class="header-section-number">7.3</span> The Parenthetical ‘M’: Mixed Effects</a>
+  <ul class="collapse">
+  <li><a href="#random-intercepts" id="toc-random-intercepts" class="nav-link" data-scroll-target="#random-intercepts"><span class="header-section-number">7.3.1</span> Random Intercepts</a></li>
+  <li><a href="#random-smooths" id="toc-random-smooths" class="nav-link" data-scroll-target="#random-smooths"><span class="header-section-number">7.3.2</span> Random Smooths</a></li>
+  </ul></li>
   <li><a href="#sec-auto" id="toc-sec-auto" class="nav-link" data-scroll-target="#sec-auto"><span class="header-section-number">7.4</span> Auto-correlation</a></li>
   <li><a href="#sec-hyp" id="toc-sec-hyp" class="nav-link" data-scroll-target="#sec-hyp"><span class="header-section-number">7.5</span> Hypothesis Testing</a>
   <ul class="collapse">
@@ -331,11 +335,12 @@ window.Quarto = {
 <!-- Switch from bam to gam for the small models. This is more defensible.-->
 <section id="overview" class="level2" data-number="7.1">
 <h2 data-number="7.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">7.1</span> Overview</h2>
-<p>This chapter is going to grow over three initial sessions. The rough plan is:</p>
+<p>This chapter is going to grow over four workshop sessions. The rough plan is:</p>
 <ol type="1">
 <li>Introduction to the idea of GAMs and how to specify parametric and smooth terms.</li>
-<li>The second ‘M’: we’ll add random effects, looking at random intercepts, slopes, and smooths.</li>
-<li>Handling auto-correlation. How to work out when this is an issue, and the available options for solving it.</li>
+<li>The parenthetical ‘M’: we’ll add random effects, looking at random intercepts, slopes, and smooths.</li>
+<li>Auto-correlation and model comparison: we’ll consider various strategies for testing for and controlling autocorrelation and methods for comparing models.</li>
+<li>By-factor smooths and reporting models: We’ll consider the varieties of by-factor smooths available and how to implement them, before turning to how to report GA(M)Ms in papers and across supplementary material.</li>
 </ol>
 <p>We will be using the following libraries:</p>
 <div class="cell">
@@ -447,17 +452,20 @@ window.Quarto = {
 </div>
 <p>The same comments apply to trajectories taken from, e.g., tongue sensors or derived from video footage. They also apply at very different time scales. Consider GAMMs fit through full monologues <span class="citation" data-cites="wilsonblackOverlookedEffectAmplitude2023">(<a href="references.html#ref-wilsonblackOverlookedEffectAmplitude2023" role="doc-biblioref">Wilson Black et al. 2023</a>)</span>, or to formant values across the history of a dialect <span class="citation" data-cites="brandSystematicCovariationMonophthongs2021">(<a href="references.html#ref-brandSystematicCovariationMonophthongs2021" role="doc-biblioref">Brand et al. 2021</a>)</span>.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+GAMMs and Polynomial Models
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>You may have used polynomial models in the past. These models add terms such as <span class="math inline">\(x^2\)</span> and <span class="math inline">\(x^3\)</span> to models (where previously, only <span class="math inline">\(x\)</span> was included). You can do a lot with polynomial models, but they have some negative properties. For a brief and accessible explanation of the shortcomings of polynomial models compared to GAMMs see the motivating example section from the following Gavin Simpson video: <a href="https://youtu.be/Ukfvd8akfco?si=COncckzAvpqvfIfj&amp;t=107" class="uri">https://youtu.be/Ukfvd8akfco?si=COncckzAvpqvfIfj&amp;t=107</a>. A key issue with polynomial models, especially when the <span class="math inline">\(n\)</span> in <span class="math inline">\(x^n\)</span> gets very large, is called <a href="https://en.wikipedia.org/wiki/Runge%27s_phenomenon">Runge’s Phenomenon</a>. At the edges of the range of the data, high order polynomials become very unstable.</p>
 <p><span class="citation" data-cites="soskuthyGeneralisedAdditiveMixed2017">Sóskuthy (<a href="references.html#ref-soskuthyGeneralisedAdditiveMixed2017" role="doc-biblioref">2017</a>)</span> introduces polynomial models as, in effect, a simple kind of GAMM. This is different from thinking of GAMMs as an <em>alternative</em> to polynomial models. Both are defensible views, but you may get confused if you try to think them both at the same time!</p>
+</div>
 </div>
 </div>
 </section>
@@ -673,36 +681,35 @@ Figure&nbsp;7.3: Simulated data (black dots) with the basis functions after mult
 <span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"bf"</span></span>
 <span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> </span>
-<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
-<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x,</span>
-<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> yobs</span>
-<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
-<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x,</span>
-<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> value,</span>
-<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>      <span class="at">colour =</span> bf</span>
-<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> basis_long,</span>
-<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
-<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
-<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x,</span>
-<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> spline_fit</span>
-<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
-<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"black"</span>,</span>
-<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">1</span>,</span>
-<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> basis</span>
-<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
-<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">colour =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a>data <span class="sc">|&gt;</span> </span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x,</span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> yobs</span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>) <span class="sc">+</span></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x,</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> value,</span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a>      <span class="at">colour =</span> bf</span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> basis_long,</span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>    <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">1</span></span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> x,</span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> spline_fit</span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    <span class="at">inherit.aes =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"black"</span>,</span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">linewidth =</span> <span class="dv">1</span>,</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> basis</span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span> </span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>  <span class="fu">guides</span>(<span class="at">colour =</span> <span class="cn">FALSE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <div id="fig-fit-spline-bad" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -718,7 +725,7 @@ Figure&nbsp;7.4: Simulated data (black dots) with the basis functions after mult
 </div>
 </div>
 <p>The black line is our best possible fit to the data here, but it is no good. It needs to be wigglier.</p>
-<p>So <strong>knots</strong> are one determinant of wiggliness. But there is another: the <strong>smoothing parameter</strong>. This is used in order to penalise wiggliness when we fit a GAM model and is handled automatically by the <code>mgcv</code> package. In practice, it is determined <em>from the data</em>, rather than being manually specified. However, it is worth looking manually at what happens if we set the smoothing parameter too low and fail to sufficiently penalise wiggliness.</p>
+<p><strong>Knots</strong> are one determinant of wiggliness. But there is another: the <strong>smoothing parameter</strong>. This is used in order to penalise wiggliness when we fit a GAM model and is handled automatically by the <code>mgcv</code> package. In practice, it is determined <em>from the data</em>, rather than being manually specified. However, it is worth looking manually at what happens if we set the smoothing parameter too low and fail to sufficiently penalise wiggliness.</p>
 <p>Here’s what an excessively wiggly smooth function looks like with the New Zealand English <span class="smallcaps">dress</span> vowel in ONZE:</p>
 <div class="cell">
 <details class="code-fold">
@@ -806,18 +813,20 @@ Figure&nbsp;7.6: Mean normalised F1 for female speakers in ONZE by year of birth
 </div>
 </div>
 <div class="callout callout-style-default callout-tip callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Tip
+The Bias-Variance Trade Off
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>We are in the broad area of a core data science concept: the ‘bias variance tradeoff’. That is, with any statistical learning method, we can introduce errors with the assumptions of our model (<em>bias</em>) and errors due to excessively following small fluctuations in our data (<em>variance</em>). But the less bias we include, the more we will be lead astray by noise and vice versa. It’s a <em>tradeoff</em>.</p>
-<p>In the case we are looking at now, reducing the smoothing parameter is equivalent to decreasing bias and increasing variance.</p>
+<p>We are now in the broad area of a core data science concept: the ‘bias variance tradeoff’. That is, with any statistical learning method, we can introduce errors with the assumptions of our model (<em>bias</em>) and errors due to excessively following small fluctuations in our data (<em>variance</em>). But the less bias we include, the more we will be lead astray by noise and vice versa. It’s a <em>tradeoff</em>. In the case we are looking at now, reducing the smoothing parameter is equivalent to decreasing bias and increasing variance.</p>
 <p>See <a href="https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff">the Wikipedia page</a>.</p>
+</div>
 </div>
 </div>
 </section>
@@ -864,18 +873,21 @@ Note
 </div>
 </div>
 <div class="callout callout-style-default callout-warning callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-4-contents" aria-controls="callout-4" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Warning
+Parallel Processing on macOS
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-4" class="callout-4-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>The <code>mgcv</code> package requires the <code>openmp</code> library to take advantage of the parallel processing available through <code>bam()</code>. This is typically not a problem for Windows and Linux installations of R. On macos, it can be a problem.</p>
-<p>If you get a warning about <code>openmp</code> not being available on macos. I suggest you install the mandatory tools listed here: <a href="https://mac.r-project.org/tools/" class="uri">https://mac.r-project.org/tools/</a> and then follow the instructions at <a href="https://mac.r-project.org/openmp/" class="uri">https://mac.r-project.org/openmp/</a>.</p>
+<p>If you get a warning about <code>openmp</code> not being available on macOS. I suggest you install the mandatory tools listed here: <a href="https://mac.r-project.org/tools/" class="uri">https://mac.r-project.org/tools/</a> and then follow the instructions at <a href="https://mac.r-project.org/openmp/" class="uri">https://mac.r-project.org/openmp/</a>.</p>
 <p>This is not likely to be a pleasant experience, especially if you don’t like battling with the command line. UC and NZILBB researchers and students, feel free to message me on Rocket.Chat or via <a href="mailto:joshua.black@canterbury.ac.nz" class="email">joshua.black@canterbury.ac.nz</a> and I may be able to help.</p>
+</div>
 </div>
 </div>
 <div class="cell">
@@ -1326,12 +1338,41 @@ ti(yob,speech_rate):genderM 1.000523 1.000995   0.02282337 0.8815218793</code></
 <p>This version of the model claims a statistically significant interaction between year of birth and speech rate <em>for the female speakers</em>. The rough story, from the heatmap, when combined with the smooth for year of birth for the female speakers, is that the change over time is more extreme for faster speakers and less extreme for slower speakers.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
 </section>
 </section>
-<section id="the-second-m-mixed-effects" class="level2" data-number="7.3">
-<h2 data-number="7.3" class="anchored" data-anchor-id="the-second-m-mixed-effects"><span class="header-section-number">7.3</span> The Second ‘M’: Mixed Effects</h2>
-<p>We can include quite complex random effects structures in GAMMs. As in the case of generalised linear models, we can add random <em>intercepts</em> and random <em>slopes</em>. GAMMs introduce the additional possibility of random <em>smooths</em>.</p>
-<p>We’ll now switch to a data set which is more useful for illustrating the full range of random effects structures and which will also be useful when we turn to the question of auto-correlation later (<a href="#sec-auto" class="quarto-xref"><span>Section 7.4</span></a>).</p>
-<p>The new data set comes from…</p>
-<p>We will take trajectories from the <span class="smallcaps">price</span> vowel, looking at both F1 and F2.</p>
+<section id="the-parenthetical-m-mixed-effects" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="the-parenthetical-m-mixed-effects"><span class="header-section-number">7.3</span> The Parenthetical ‘M’: Mixed Effects</h2>
+<p>We can include quite complex random effects structures in GAMMs. As in the case of generalised linear models, we can add random <em>intercepts</em> and random <em>slopes</em>. GAMMs introduce the additional possibility of random <em>smooths</em>. The purpose of random effects in this context is exactly the same as in linear mixed-effects models: we want to capture dependence between observations.</p>
+<section id="random-intercepts" class="level3" data-number="7.3.1">
+<h3 data-number="7.3.1" class="anchored" data-anchor-id="random-intercepts"><span class="header-section-number">7.3.1</span> Random Intercepts</h3>
+<p>When fitting a random intercept in a linear mixed-effects model, using the <code>lme4</code>package, for instance, we use the syntax <code>(1 | x_1)</code> within the model formula to get random intercepts for each level of the variable <code>x_1</code>. In <code>mgcv</code>, we use the syntax <code>s(x_1, bs="re")</code>. That is, we specify that we want random intercepts by changing the basis of a smooth term.</p>
+<p>In corpus phonetics, we usually want a random intercept for each speaker and each word. In our previous models, we took mean values for each speaker so that we had a single value for each. This is one strategy to avoid the need for random effects, but it is better to include all the data points we have while building the dependence structure between the in to the model.</p>
+<p>We create a data set containing all of the <span class="smallcaps">dress</span> F1 readings, again applying Lobanov 2.0 normalisation.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>onze_dress <span class="ot">&lt;-</span> onze_vowels_full <span class="sc">|&gt;</span> </span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">lobanov_2</span>() <span class="sc">|&gt;</span> </span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    vowel <span class="sc">==</span> <span class="st">"DRESS"</span></span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>We now have a column with speaker identifiers (<code>speaker</code>) and word identifiers (<code>word</code>). We fit the same structure as the previous model, but with random intercepts for these two variables. Since we are significantly increasing the number of tokens (from 481 to 69925), we should also switch to the <code>bam</code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>onze_ri_fit <span class="ot">&lt;-</span> <span class="fu">bam</span>(</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">formula =</span> F1_lob2 <span class="sc">~</span> </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">s</span>(yob, <span class="at">k =</span> <span class="dv">10</span>, <span class="at">by=</span>gender, <span class="at">bs =</span> <span class="st">"tp"</span>) <span class="sc">+</span></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">s</span>(speech_rate, <span class="at">k =</span> <span class="dv">10</span>, <span class="at">bs =</span> <span class="st">"tp"</span>) <span class="sc">+</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">ti</span>(yob, speech_rate, <span class="at">by=</span>gender, <span class="at">k=</span><span class="dv">5</span>, <span class="at">bs =</span> <span class="st">"tp"</span>) <span class="sc">+</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">s</span>(speaker, <span class="at">bs =</span> <span class="st">"re"</span>) <span class="sc">+</span> <span class="fu">s</span>(word, <span class="at">bs =</span> <span class="st">"re"</span>),</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> onze_dress,</span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> <span class="fu">scat</span>(<span class="at">link=</span><span class="st">"identity"</span>),</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">discrete =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">nthreads =</span> <span class="fu">detectCores</span>() <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="random-smooths" class="level3" data-number="7.3.2">
+<h3 data-number="7.3.2" class="anchored" data-anchor-id="random-smooths"><span class="header-section-number">7.3.2</span> Random Smooths</h3>
+<p>We’ll now switch to a data set which is more useful for illustrating random smooths and which will also be useful when we turn to the question of auto-correlation later (<a href="#sec-auto" class="quarto-xref"><span>Section 7.4</span></a>).</p>
+<p>The new data set comes from <span class="citation" data-cites="soskuthyHorizontalDiphthongShift2019">Sóskuthy, Hay, and Brand (<a href="references.html#ref-soskuthyHorizontalDiphthongShift2019" role="doc-biblioref">2019</a>)</span>. This paper is an exploratory study of the dynamics of New Zealand English diphthongs. It contains formant trajectories for the <span class="smallcaps">price</span> and <span class="smallcaps">mouth</span> vowels. We will take a series of formant trajectories from the <span class="smallcaps">price</span> vowel, looking at both F1 and F2 values. The full data set is available on GitHub, <a href="">here</a> <!-- Add link --></p>
+</section>
 </section>
 <section id="sec-auto" class="level2" data-number="7.4">
 <h2 data-number="7.4" class="anchored" data-anchor-id="sec-auto"><span class="header-section-number">7.4</span> Auto-correlation</h2>
@@ -1415,11 +1456,11 @@ ti(yob,speech_rate):genderM 1.000523 1.000995   0.02282337 0.8815218793</code></
 </blockquote>
 <p>Equation 7 is the following R formula:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gam</span>(Fluctuation <span class="sc">~</span> <span class="fu">te</span>(FTS, TFd) <span class="sc">+</span> </span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">s</span>(FTS, TFd, Participant, <span class="at">bs =</span> <span class="st">"fs"</span>, <span class="at">m =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">s</span>(SPS, Participant, <span class="at">bs =</span> <span class="st">"re"</span>) <span class="sc">+</span> </span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">s</span>(Tokentype, Participant, <span class="at">bs =</span> <span class="st">"re"</span>)</span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gam</span>(Fluctuation <span class="sc">~</span> <span class="fu">te</span>(FTS, TFd) <span class="sc">+</span> </span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>      <span class="fu">s</span>(FTS, TFd, Participant, <span class="at">bs =</span> <span class="st">"fs"</span>, <span class="at">m =</span> <span class="dv">1</span>) <span class="sc">+</span> </span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>      <span class="fu">s</span>(SPS, Participant, <span class="at">bs =</span> <span class="st">"re"</span>) <span class="sc">+</span> </span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>      <span class="fu">s</span>(Tokentype, Participant, <span class="at">bs =</span> <span class="st">"re"</span>)</span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Note, btw, the use of all both random smooths (the second smooth term) and two smooth terms defining random slopes (the third and fourth smooth terms in the model).</p>
 <p>The methods sections describes the method used to deal with autocorrelation as well.</p>
@@ -1458,7 +1499,7 @@ ti(yob,speech_rate):genderM 1.000523 1.000995   0.02282337 0.8815218793</code></
 <ul>
 <li>Your discussion section might consist of description of the specific trajectories you find visually.</li>
 </ul></li>
-<li>Supplementary material opens up many windows (including e.g., the interactive application in <span class="citation" data-cites="brandSystematicCovariationMonophthongs2021">Brand et al. (<a href="references.html#ref-brandSystematicCovariationMonophthongs2021" role="doc-biblioref">2021</a>)</span>). This is also, however, a potential time sync. Try to balance the costs and benefits when you go beyond the requirements of open science and into the realm of web development!</li>
+<li>Supplementary material opens up many windows (including e.g., the interactive application in <span class="citation" data-cites="brandSystematicCovariationMonophthongs2021">Brand et al. (<a href="references.html#ref-brandSystematicCovariationMonophthongs2021" role="doc-biblioref">2021</a>)</span>). This is also, however, a potential time sink. Try to balance the costs and benefits when you go beyond the requirements of open science and into the realm of web development!</li>
 </ul>
 </section>
 <section id="sec-resources" class="level2" data-number="7.7">
