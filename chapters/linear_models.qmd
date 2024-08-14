@@ -667,7 +667,7 @@ idiosyncratic features which influence the measurements we take from them. There
 is a _dependence_ between measurements taken from the same individual.
 
 There are mathematical tools to handle this problem: **mixed effects models**.
-We will look at these in the next chapter.
+We will look at these in the next chapter
 
 ## Futher Resources {#sec-further}
 
