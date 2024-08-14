@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>6&nbsp; Loading Data from Qualtrics – NZILBB R and Open Science Workshops</title>
+<title>7&nbsp; Loading Data from Qualtrics – NZILBB R and Open Science Workshops</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -146,7 +146,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="../chapters/qualtrics.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="../chapters/qualtrics.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -216,6 +216,12 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Linear Models</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../chapters/mixed_effects.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Mixed Effects</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
         <li class="sidebar-item sidebar-item-section">
@@ -230,19 +236,19 @@ window.Quarto = {
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/rstudio_server.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">RStudio Server</span></span></a>
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">RStudio Server</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/qualtrics.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></span></a>
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../chapters/gamms_1.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></span></a>
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></span></a>
   </div>
 </li>
       </ul>
@@ -263,23 +269,23 @@ window.Quarto = {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#set-up-an-r-project" id="toc-set-up-an-r-project" class="nav-link active" data-scroll-target="#set-up-an-r-project"><span class="header-section-number">6.1</span> Set up an R Project</a></li>
-  <li><a href="#load-useful-libraries" id="toc-load-useful-libraries" class="nav-link" data-scroll-target="#load-useful-libraries"><span class="header-section-number">6.2</span> Load Useful Libraries</a></li>
-  <li><a href="#load-data-exported-from-qualtrics-with-read_survey" id="toc-load-data-exported-from-qualtrics-with-read_survey" class="nav-link" data-scroll-target="#load-data-exported-from-qualtrics-with-read_survey"><span class="header-section-number">6.3</span> Load Data Exported from Qualtrics with <code>read_survey()</code></a></li>
-  <li><a href="#a-bar-chart" id="toc-a-bar-chart" class="nav-link" data-scroll-target="#a-bar-chart"><span class="header-section-number">6.4</span> A Bar Chart</a></li>
-  <li><a href="#factor-associations" id="toc-factor-associations" class="nav-link" data-scroll-target="#factor-associations"><span class="header-section-number">6.5</span> Factor Associations</a></li>
-  <li><a href="#wide-and-long-data" id="toc-wide-and-long-data" class="nav-link" data-scroll-target="#wide-and-long-data"><span class="header-section-number">6.6</span> Wide and Long Data</a></li>
-  <li><a href="#another-plot" id="toc-another-plot" class="nav-link" data-scroll-target="#another-plot"><span class="header-section-number">6.7</span> Another Plot</a></li>
-  <li><a href="#continuous-associations" id="toc-continuous-associations" class="nav-link" data-scroll-target="#continuous-associations"><span class="header-section-number">6.8</span> Continuous Associations</a></li>
+  <li><a href="#set-up-an-r-project" id="toc-set-up-an-r-project" class="nav-link active" data-scroll-target="#set-up-an-r-project"><span class="header-section-number">7.1</span> Set up an R Project</a></li>
+  <li><a href="#load-useful-libraries" id="toc-load-useful-libraries" class="nav-link" data-scroll-target="#load-useful-libraries"><span class="header-section-number">7.2</span> Load Useful Libraries</a></li>
+  <li><a href="#load-data-exported-from-qualtrics-with-read_survey" id="toc-load-data-exported-from-qualtrics-with-read_survey" class="nav-link" data-scroll-target="#load-data-exported-from-qualtrics-with-read_survey"><span class="header-section-number">7.3</span> Load Data Exported from Qualtrics with <code>read_survey()</code></a></li>
+  <li><a href="#a-bar-chart" id="toc-a-bar-chart" class="nav-link" data-scroll-target="#a-bar-chart"><span class="header-section-number">7.4</span> A Bar Chart</a></li>
+  <li><a href="#factor-associations" id="toc-factor-associations" class="nav-link" data-scroll-target="#factor-associations"><span class="header-section-number">7.5</span> Factor Associations</a></li>
+  <li><a href="#wide-and-long-data" id="toc-wide-and-long-data" class="nav-link" data-scroll-target="#wide-and-long-data"><span class="header-section-number">7.6</span> Wide and Long Data</a></li>
+  <li><a href="#another-plot" id="toc-another-plot" class="nav-link" data-scroll-target="#another-plot"><span class="header-section-number">7.7</span> Another Plot</a></li>
+  <li><a href="#continuous-associations" id="toc-continuous-associations" class="nav-link" data-scroll-target="#continuous-associations"><span class="header-section-number">7.8</span> Continuous Associations</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/nzilbb/statistics_workshops/edit/main/chapters/qualtrics.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/nzilbb/statistics_workshops/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="../chapters/qualtrics.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../chapters/others.html">Additional Topics</a></li><li class="breadcrumb-item"><a href="../chapters/qualtrics.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></h1>
+<h1 class="title"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Loading Data from Qualtrics</span></h1>
 </div>
 
 
@@ -325,8 +331,8 @@ Note
 <p>This book will have details about creating an R project soon. For now, follow the check list below and if you want more detail see https://r4ds.had.co.nz/workflow-projects.html.</p>
 </div>
 </div>
-<section id="set-up-an-r-project" class="level2" data-number="6.1">
-<h2 data-number="6.1" class="anchored" data-anchor-id="set-up-an-r-project"><span class="header-section-number">6.1</span> Set up an R Project</h2>
+<section id="set-up-an-r-project" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="set-up-an-r-project"><span class="header-section-number">7.1</span> Set up an R Project</h2>
 <p>To set up a new R project:</p>
 <ol type="1">
 <li>Go to <code>File &gt; New Project</code></li>
@@ -343,8 +349,8 @@ Note
 <p>Place the <code>.csv</code> file you want to use in the <code>data</code> directory. For this exercise we will use <a href="../data/Ling310-Week1-2022.csv">this csv</a>.</p>
 <p>Create an R script and save it in the <code>scripts</code> directory.</p>
 </section>
-<section id="load-useful-libraries" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="load-useful-libraries"><span class="header-section-number">6.2</span> Load Useful Libraries</h2>
+<section id="load-useful-libraries" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="load-useful-libraries"><span class="header-section-number">7.2</span> Load Useful Libraries</h2>
 <p>Start the script with the following lines:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
@@ -358,8 +364,8 @@ Note
 </div>
 <p>If R says that a package is not found, install it using <code>install.packages()</code>. Simply enter the name of the package inside quotation marks inside the brackets. For instant, if you don’t have the <code>ggcorrplot</code> package, enter the following in the R console (the bottom pane in RStudio): <code>install.packages('ggcorrplot')</code></p>
 </section>
-<section id="load-data-exported-from-qualtrics-with-read_survey" class="level2" data-number="6.3">
-<h2 data-number="6.3" class="anchored" data-anchor-id="load-data-exported-from-qualtrics-with-read_survey"><span class="header-section-number">6.3</span> Load Data Exported from Qualtrics with <code>read_survey()</code></h2>
+<section id="load-data-exported-from-qualtrics-with-read_survey" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="load-data-exported-from-qualtrics-with-read_survey"><span class="header-section-number">7.3</span> Load Data Exported from Qualtrics with <code>read_survey()</code></h2>
 <p>We can now use the <code>read_survey</code> function from the <code>qualtRics</code> package to read in the data.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># load the qualtRics package</span></span>
@@ -499,8 +505,8 @@ attr(,"label")
 <p>What do you think the function <code>factor</code> is doing here? See what happens if you remove it and have a look here to understand what is going on in more detail: <a href="https://r4ds.hadley.nz/factors.html" class="uri">https://r4ds.hadley.nz/factors.html</a></p>
 </div>
 </section>
-<section id="a-bar-chart" class="level2" data-number="6.4">
-<h2 data-number="6.4" class="anchored" data-anchor-id="a-bar-chart"><span class="header-section-number">6.4</span> A Bar Chart</h2>
+<section id="a-bar-chart" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="a-bar-chart"><span class="header-section-number">7.4</span> A Bar Chart</h2>
 <p>Let’s create some plots in <code>ggplot</code> using the data we have loaded from Qualtrics.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>survey <span class="sc">|&gt;</span> </span>
@@ -523,8 +529,8 @@ attr(,"label")
 </div>
 </div>
 </section>
-<section id="factor-associations" class="level2" data-number="6.5">
-<h2 data-number="6.5" class="anchored" data-anchor-id="factor-associations"><span class="header-section-number">6.5</span> Factor Associations</h2>
+<section id="factor-associations" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="factor-associations"><span class="header-section-number">7.5</span> Factor Associations</h2>
 <p>We are often interested in associations between answers to distinct questions. The <code>table</code> function can be very useful as an initial was of seeing differences. Table is not a <code>tidyverse</code> function, and so we have to use the <code>$</code> to indicate column names.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(</span>
@@ -592,8 +598,8 @@ survey$Q8              No      Yes
 <p>Or, if the association were statistically significant: &gt; We found a statistically significant association between questions x and y (Chi = ???, df = ???, p = ???).</p>
 <p>With the appropriate values inserted.</p>
 </section>
-<section id="wide-and-long-data" class="level2" data-number="6.6">
-<h2 data-number="6.6" class="anchored" data-anchor-id="wide-and-long-data"><span class="header-section-number">6.6</span> Wide and Long Data</h2>
+<section id="wide-and-long-data" class="level2" data-number="7.6">
+<h2 data-number="7.6" class="anchored" data-anchor-id="wide-and-long-data"><span class="header-section-number">7.6</span> Wide and Long Data</h2>
 <p>One of the most common things to do with survey data is to convert from our current situation, where we have <strong>a column for each question</strong> to one in which we use <strong>two columns:</strong> one to identify questions and one to store responses.</p>
 <p>That is, we want to move from a <strong>wider</strong> data frame to a <strong>longer</strong> data frame. A longer data frame as fewer columns and more rows.</p>
 <p>We achieve this using the <code>pivot_longer()</code> function. It is often useful to assign the longer version of the data frame to a new variable.</p>
@@ -648,8 +654,8 @@ survey$Q8              No      Yes
 </ol>
 <p>There are some other column selection options. If you want more detail, enter <code>?tidyselect::language</code> into the console and look at the help file which appears.</p>
 </section>
-<section id="another-plot" class="level2" data-number="6.7">
-<h2 data-number="6.7" class="anchored" data-anchor-id="another-plot"><span class="header-section-number">6.7</span> Another Plot</h2>
+<section id="another-plot" class="level2" data-number="7.7">
+<h2 data-number="7.7" class="anchored" data-anchor-id="another-plot"><span class="header-section-number">7.7</span> Another Plot</h2>
 <p>Let’s produce a nice violin plot, which will show the distribution of scores across multiple questions:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>skills_v_plot <span class="ot">&lt;-</span> skills_longer <span class="sc">|&gt;</span> </span>
@@ -731,8 +737,8 @@ survey$Q8              No      Yes
 </div>
 <p>There are many ways this could be improved. Have a look for some <code>ggplot2</code> tutorials online.</p>
 </section>
-<section id="continuous-associations" class="level2" data-number="6.8">
-<h2 data-number="6.8" class="anchored" data-anchor-id="continuous-associations"><span class="header-section-number">6.8</span> Continuous Associations</h2>
+<section id="continuous-associations" class="level2" data-number="7.8">
+<h2 data-number="7.8" class="anchored" data-anchor-id="continuous-associations"><span class="header-section-number">7.8</span> Continuous Associations</h2>
 <p>Can we look at how these skills are related to one another? Yes!</p>
 <p>First, let’s look at a correlation plot:</p>
 <div class="cell">
@@ -1488,12 +1494,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../chapters/rstudio_server.html" class="pagination-link" aria-label="RStudio Server">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">RStudio Server</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">RStudio Server</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../chapters/gamms_1.html" class="pagination-link" aria-label="Generalized Additive (Mixed) Models">
-        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Generalized Additive (Mixed) Models</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
