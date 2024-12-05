@@ -26,6 +26,7 @@ book:
   - chapters/references.qmd
   sidebar:
     logo: global_images/nzilbb-logo.svg
+  favicon: global_images/fav.png
 bibliography: 
   - stat_workshops.bib
   - grateful-refs.bib
@@ -35,9 +36,6 @@ format:
     - flatly
     - theme.scss
     css: include/webex.css
-    include-in-header:
-      - text: |
-          <link rel="icon" type="image/png" sizes="32x32" href=".//global_images/fav.png" />
     include-after-body: include/webex.js
     code-summary: "To view the code click here"
     df-print: tibble

@@ -5,7 +5,7 @@
 R is a programming language. RStudio is a piece of software for interacting
 with R.
 
-You don't *have* to use RStudio in order to use R, but we will assume you are
+You don't have to use RStudio in order to use R, but we will assume you are
 using it in these workshops.^[For alternatives which you might explore see @sec-alternatives]
 
 To install R and RStudio on your own device follow the steps at 
