@@ -18,6 +18,24 @@ To install R and RStudio on a University of Canterbury device:
 
 Installing RStudio on a University of Canterbury device will also install R.
 
+::: callout-note
+### Optional: install tools for building R packages
+At this stage, you may also want to install additional tools for building R
+packages from source (rather than downloading pre-built versions of packages). 
+This is sometimes important for getting fast performance out of a package.
+
+For Windows, install Rtools: <https://cran.r-project.org/bin/windows/Rtools/rtools44/rtools.html>
+
+RTools comes with RStudio when you install it on a University of Canterbury 
+Windows device via the software centre.
+
+Linux should already have everything required.
+
+Instructions for macOS are here: <https://mac.r-project.org/tools/>
+
+**If this starts to melt your mind, stop!**
+:::
+
 ## Open RStudio
 
 If you have installed RStudio, if should now appear in your start menu on
@@ -36,25 +54,28 @@ out there. I'm following the language in the official RStudio User Guide:
 
 The **console** pane should have a message telling you what version of R you are
 using and the platform you are on (i.e. your hardware and operating system).
-This is what you would see if you opened R by itself.^[Try this. You should find
-a shortcut to open R in the Start menu on Windows or the Launchpad in macOS. On
-Linux or macOS you can also open a terminal window, type 'r', and press enter.]
+This is what you would see if you opened R by itself rather than through
+RStudio.^[Try this. You should find a shortcut to open R in the Start menu on
+Windows or the Launchpad in macOS. On Linux or macOS you can also open R by
+opening a terminal window, typing 'r', and pressing enter.]
 
 The **environment** pane should be empty. You will see multiple tabs across the
 top of this pane. The environment tab will allow us to see the data which we are
 working with at a given time. At this stage, you _may_ see a tab labelled
 'Tutorial'. I'll tell you how to use this later (@sec-gs-additional).
 
-The **output** pane will start by showing you a list of files on your computer. 
-This is useful for finding and manipulating files (just like a file browser) 
-In future, it is also where plots and help pages will appear.
+The **output** pane will start by showing you a list of files on your computer.
+This is useful for finding and manipulating files (just like the file browser
+built in to your operating system). This is also where plots and help pages
+will appear.
 
 ## Interact with R in the Console
 
-We will get started by interacting with R in the console pane. You should
-see a `> ` in the console pane. We can enter code here. If the code works, we
-will see the output immediately below (or perhaps in the output pane, depending
-on the code). If the code doesn't work, an error message will appear.
+We will get started by interacting with R in the console pane. You should see a
+`> ` in the console pane. This is one of the places we can enter R code. If the
+code works, we will see the output immediately below (or perhaps in the output
+pane, depending on the code). If the code doesn't work, an error message will
+appear.
 
 ### Basic arithmetic
 
@@ -68,19 +89,20 @@ enter/return.
 1 + 1
 ```
 
-The other basic arithmetic operators work in the same way. Subtraction:
+The other basic arithmetic operators work in the same way. So subtraction we use
+'`-`'.
 
 ```{r}
 500 - 49
 ```
 
-We use `*` for multiplication. We enter real numbers by using a decimal point.
+We use `*` for multiplication. 
 
 ```{r}
 43 * 6.4
 ```
 
-For exponentiation we use `^` (usually, shift + 6).
+For exponentiation we use `^` (usually, Shift + 6).
 
 ```{r}
 924^5
@@ -97,14 +119,18 @@ According to Wikipedia, this is something like the total number of cells in six
 and a half adult humans and a bit fewer than the number of ants on Earth.
 
 There are a few different operators associated with division. Usually, you will 
-want to use `/`. e.g.:
+want to use `/`.
 
 ```{r}
 43 / 7
 ```
 
-Sometimes, it is useful to get the integer component on the answer or the
-remainder. If we want the integer, we use `%/%`:
+Sometimes, it is useful to get the integer^[The integers are 0, the natural
+numbers (1, 2, 3, ...) and the negatives of the natural numbers (-1, -2, -3,
+...). They do not have a decimal point. The 'real' numbers include integers and
+numbers which need a decimal point. When programming it is sometimes important
+to know whether a number is an integer or a real number.] component on the
+answer or the remainder. If we want the integer, we use `%/%`:
 ```{r}
 43 %/% 7
 ```
@@ -114,8 +140,10 @@ If we want the remainder, we use:
 43 %% 7
 ```
 
-That is, if we divide 43 by 7, we get 6 groups of 7, with 1 remaining.
+That is, if we divide $43$ by $7$, we get $6$ groups of $7$, with $1$ left over.
 
+::: callout-note
+### Spaces, punctuation, and style
 Computer programming requires attention to minor details of punctuation and
 spacing. Hours can be spent trying to discover why code is not working, only to
 discover a missing comma. This is especially true in the early stages of
@@ -141,12 +169,14 @@ some other ('high precedence') operators which we will encounter later.^[You
 might want to look at this page: <https://style.tidyverse.org/>. I try to follow
 this style guide as much as possible.]
 
-### Vectors and Variables
+:::
 
-We work with large collections of experimental data or values derived from
-corpora. But the commands we've looked at above only deal with two 
-numbers at a time. The simplest structure for dealing with more than one
-value is a vector.
+### Vectors
+
+In our actual research, we work with large collections of experimental data or
+values derived from corpora. But the commands we've looked at above only deal
+with two numbers at a time. The simplest structure for dealing with more than
+one value is a vector.
 
 We create vectors using the function `c()`. The `c()` function _combines_
 values in to a vector.
@@ -165,9 +195,11 @@ The `:` operator produces a vector from the first number to the second number
 (inclusive) in steps of one. The resulting output is long enough that it has
 to go across two lines. When the new line starts you will see another number in
 square brackets. This tells you how far through the vector you are at the line
-break. Exactly _which_ number it is will vary according to the system you
-are using. For me, currently editing this text in RStudio, it is `[38]`. That is,
-the number which _follows_ `[38]` is the 38th number in the vector.
+break. Exactly _which_ number it is will vary according to the width of whatever
+you are using to view the output. For me, editing this text in
+RStudio, it is `[38]`. That is, the number which _follows_ `[38]` is the 38th
+number in the vector. If you are viewing this online, then the number is likely
+`[20]`.
 
 We call the values in a vector the **elements** of the vector. The elements of a
 vector have to be the same _type_ of thing. We'll talk about types more later.
@@ -178,13 +210,14 @@ characters. So, what happens if we try to mix numbers and strings in a vector?
 c(1, 2, 3, "dog")
 ```
 
-R hasn't explicitly complained, but it has done something without telling you
-what it has done. The numbers we entered now have quotation marks around them.
-They have been turned in to strings. Keep an eye out for quotation marks ---
-sometimes you might think you are dealing with numbers, but really you are
-dealing with strings. This is a common problem when loading your own data.
+R hasn't explicitly complained, but it has done something in the background
+without telling you. The numbers we entered now have quotation marks around
+them. They have been turned in to strings. Keep an eye out for quotation marks
+--- sometimes you might think you are dealing with numbers, but really you are
+dealing with strings. This is a common problem when loading data from external
+files (e.g., from a `.csv` file).
 
-Why worry? Well, your code likely won't work if you have strings rather than
+Why worry? Your code likely won't work if you have strings rather than
 numbers. For instance, you can't apply arithmetic operators to strings.
 
 ```{r}
@@ -194,11 +227,14 @@ numbers. For instance, you can't apply arithmetic operators to strings.
 
 The above is the first **error message** you've seen in this course. You will
 see many more in your time working with R. The error message is telling you that
-what you are doing does not work on anything but numbers.
+what you are doing does not work with anything 'non-numeric' (i.e., anything
+that isn't a number). The 'binary operator' in this case is `+` (binary because
+it adds together *two* values).
 
-To enter a string, you can use either double quotes or single quotes.
+To enter a string, you can use either double quotes (`"`) or single quotes
+(`'`).
 
-Vectors can also be used for arithmetic. Under the hood, statistics is mostly
+Vectors can also be used in arithmetic. Under the hood, statistics is mostly
 arithmetic with collections of vectors. How are these arithmetic operations
 implemented in R?
 
@@ -227,10 +263,12 @@ If one vector is shorter than the other, is will be
 c(1, 2) * c(1, 2, 3, 4)
 ```
 
+### Variables
+
 You do not want to be entering the same vector over and over again. This is
 where **variables** come in. Variables allow us to associate names with values.
 
-To _assign_ an object to a name, we use `<-`. For instance:
+To 'assign' an object to a name, we use `<-`. For instance:
 ```{r}
 my_cool_vector <- c(6, 9, 4, 5, 2, 2)
 ```
@@ -243,16 +281,19 @@ left and the value on the right.
 ![Our cool vector in the RStudio environment pane. Your screen may look a little different.](images/environment.png)
 
 ::: {.callout-warning}
-In most cases you can also use `=` to assign an object to a name. This may seem more
-natural to you if you are coming from another programming languages. The convention is
-to use `<-`. Sometimes `=` takes on a different function, but `<-` is _always_
-assignment of an object to a name.
+In most cases you can also use `=` to assign an object to a name. This may seem
+more natural to you if you are coming from another programming languages. The
+convention in R is to use `<-`. This is because `=` has multiple functions in R,
+but `<-` is _always_ assignment of an object to a name.
 :::
 
-We can now apply operations using the name. For instance:
+We can now apply operations using the name instead of manually entering the
+vector again. For instance:
 ```{r}
 4 * my_cool_vector
 ```
+
+This has multiplied each of the elements of `my_cool_vector` by $4$.
 
 To see what object is associated with a name we can look in the environment
 pane or simply enter the name into the console.
@@ -267,7 +308,7 @@ code.
 my_cool_vector[4]
 ```
 
-We can even change elements by using the assignment opperator (`<-`).
+We can even change specific elements by using the assignment opperator (`<-`).
 ```{r}
 my_cool_vector[4] <- 3
 my_cool_vector
@@ -277,13 +318,14 @@ The fourth entry in the vector is now `3` rather than `5`.
 Naming variables is serious business. It is important to know what you _could_
 do and what you _should_ do. 
 
-R institutes the following rules for names:
+R has the following rules for names:
 
 - A name must consist of letters, digits, `.`, and `_`.
 - It **cannot** begin with digits or `_`.
 - It cannot come from a list of reserved words (e.g. `TRUE` --- these names have important roles in R and can't be overridden.)
 
 ::: {.callout-note}
+### What's a letter?
 What counts as a 'letter' varies by operating system and local settings (your
 'locale'). The recommendation from Hadley Wickham is that you only use ASCII 
 letters (for instance, avoid use of any diacritics/accents).^[See (<https://adv-r.hadley.nz/names-values.html>)]
@@ -312,7 +354,7 @@ temperament, you might decide to use variable names like this:
 `👻` <- 5
 ```
 
-And you could even do some maths with these variables:
+You could even do some maths with these variables:
 ``` {r}
 #| error: true
 `t̸̡͚̳͓̜̘̪̙̟̣͛̋̈̐͜ḩ̷̛̗̬̪̔̾͋̌̂̓͑̔̚͝ë̵̮̟̟̼̲̦͙̠̟́͋̇̏̓ ̶̟̱̲̠͎̙̠̆̑̈́̉̆̏̋͠͠t̷̲͉͔̘̬̪͖̗́͌̏̉̏̄͊̍̽͋̈̈́̀͝͠o̵͚͙̮͙͉̱̱͕̗̘̻͋͋͋̀́̒͝ͅw̸͖͚̖̣̭̥͍̹͚̞͕̺͇͙͌͛͋̆̿̈́̎̆̋̑͌̏͘͠͝e̵͖̝̞̙͕̤̅̃̓r̴͍̼̱̜̹͚̎̌̂͆͗̏́ṡ̷͔͉͇͗̍̆̔̕ͅ ̷̪̱̞͈̰̈́͜ǫ̷̤͍̫̠̻̣̪̻͖̒̈́͐͂̿̆̑̄̂͘f̶̠͉̯̪̪̖̦͋͝ ̶̙̻̝͆̈͠C̴̳̪̪̻̫̬̳̜̅͑̇͌̆̕a̶̡͚̼͍̺͂̈́̄r̷̨̛̛̜̹͙̲̝̲̖͍̓̊͒̄̓̏͂͐͛͑̊͘c̸͇̲̲͈͕͉͍̗̐ơ̵̟̠̒̔͑͆s̶̨̢̱̱̲͇͉̪̻̖̠͊̈́̐͋́̈́͜a̸̗̩̯̳̝͈̰̅͒̂̏͛̽̓͑̈́̾ͅ ̷̢͎͎̳̖̤̥̜̀̑̈́̈́r̴̦͌͛͘o̴̩̩̯̤̝̊͗̿̉͗͂͂̆̈́͘s̶͔̼̞̱̻̭̻͑̔͛̔ḙ̸̢̀̎͗̓͊̈̊̉̚̚͝ ̸̠̰̞̬̐̆̽̅̀̈̂̌͠b̶̧̜̟͍͔̘̥͇̈́͒̃͒̈́͊̓̉́̉̐͘͘͝͝ę̵͚̀̈́̿̌̆̈́͘̕͠͝ͅh̸̛͎̱͚͕̹̘̥̠͕̟̼͝ͅî̶̞̹̺̰̎̿̊̽͒͑͑̽͝n̵̢̢̛̛̟͓̗̮̦̪̥̩͓̪̘͗͗̑̊̌̉̂͊͠͝d̵͎̭̤̲͋͌̃̎̊ ̷̧̧̛̤͇̫̝̗̻͚̐̊̈́̇̂͗̋t̵͓̻̦̻̗͇̜̼̻̫̼̭̄́͘̚h̵̨̅̉̄e̸̡̡̨̞̪̝̝̟͔̞̞͔̰̒̓͆̐͛̂̒͂̊̆̽̃̌͘ ̴̛̦̖̖̖̹̖̹̣̳̕m̶̡͉̦̣͉̳̪͖͕͍͙̪̟͌̍̏͆̐̄̂̚͘o̸̭̯̠̭͎̖͐͗̏̉͋̅͊̓̓̂̏̓̏̍͝ǫ̴͖͈̖̣̤͍̝̩̳̪̔͂̋̄̑̏̒̏̏̈́ñ̸̙̪͉͓̼̯̩͋̋̌̏̃͘̕͘.̵̙̮̾̐͠ͅ` + `👻`
@@ -324,11 +366,12 @@ Unsurprisingly, if you try this without the backticks, you will get an error:
 👻 <- 5
 ```
 
-Do not take advantage of backticks to use names like this.
+**Do not take advantage of backticks to use names like this.**
 
 Why am I even telling you about backticks? They often appear in practice 
 as a result of importing data from a spreadsheet. Usually they appear because
-the column names in the spreadsheet have spaces in them. One of the first
+the column names in the spreadsheet have spaces in them (e.g. a column called
+'Response Time' would be loaded into R with the name `` `Response Time` ``). One of the first
 things to do when tidying up data loading from a spreadsheet is to change the
 names.
 
@@ -393,56 +436,53 @@ accepted by R? I.e., are they syntactically valid?
 ## Start an R Script
 
 If we exclusively used R in the console, we would be in no better position than
-if we just used Excel or another spreadsheet programme. We want to be able to
-retrace our steps.
+if we just used Excel or another spreadsheet programme. We need to be able to
+retrace our steps. R Scripts are one way for us to do this.
 
 In order to start an R script go to `File > New File > R Script` or use the 
 keyboard shortcut `Cmd + Shift + N` (macOS) or `Ctrl + Shift + N` (Windows).
 
 This will open the **source** pane. We will now enter code in the source pane
-rather than the console.^[While you are writing, you may find it occasionally
-useful to use the console to double check something. But all steps required
+rather than the console.^[All steps required
 to repeat your analysis should be in a script or markdown (more about markdown
-later).]
-
-You can enter R code into a script in the same way you have been adding it to
-the console. Unlike the console, each command is saved in the script and 
+later). However, sometimes it is useful to use the console to double check 
+something about your data or load a help file etc.]
+Unlike the console, each command is saved in the script and 
 pressing return/enter will not run the code. 
 
-Usually you will run code by selecting it and pressing `Cmd + Return` (macOS)
-or `Ctrl + Enter` (Windows).^[
-The same can be achieved by pressing the `Run` button at the top right. But 
-since you are likely to be running code very frequently, it is best to learn 
-the keyboard shortcut.
-] If you have no code selected, this command will run the line which your cursor
-is on. The alternative is to run the entire script all at once. This can be done
-by pressing `Source` at the top right of the source pane.^[ The keyboard
-shortcut for this is `Cmd + Shift + S` (macOS) or `Ctrl + Shift + S` (Windows).
-From now on you can look up keyboard shortcuts by using `Option + Shift + K` (macOS)
-or `Alt + Shift + K` (Windows).]
+Usually you will run code by selecting it and pressing `Cmd + Return` (macOS) or
+`Ctrl + Enter` (Windows).^[ The same can be achieved by pressing the `Run`
+button at the top right. But since you are likely to be running code very
+frequently, it is best to learn the keyboard shortcut. ] If you have no code
+selected, this command will run the line which your cursor is on. The
+alternative is to run the entire script all at once. This can be done by
+pressing `Source` at the top right of the source pane.^[ The keyboard shortcut
+for this is `Cmd + Shift + S` (macOS) or `Ctrl + Shift + S` (Windows). From now
+on you can look up keyboard shortcuts by using `Option + Shift + K` (macOS) or
+`Alt + Shift + K` (Windows).]
 
-Copy and paste the following into your new script then run it. You should see
+Enter the following into your new script then run it. You should see
 the output in the console pane.
-
-::: {.callout-note}
-There is some wisdom to the idea that you should get coding 'into your fingers'
-by typing out examples yourself. This may be true, but it is up to you! I have
-enabled the 'copy/paste' button in all code blocks. You should see a clipboard
-icon when you have your cursor over a code block. Click the clipboard to copy
-the code.
-:::
 
 ```{r}
 my_cool_vector <- c(6, 9, 4, 5, 2, 2)
 my_cool_vector ^ 2
 ```
 
+![The source pane with our script entered. Note the 'Run' and 'Source' buttons at the right.](images/script.png)
 
-![The source pane with our script entered. Note the 'Source' button at the right.](images/script.png)
+::: {.callout-note}
+### Copying vs. typing
+There is some wisdom to the idea that you should get coding 'into your fingers'
+by typing out examples yourself. It's up to you whether you follow this wisdom.
+I have enabled the 'copy/paste' button in all code blocks. You should see a
+clipboard icon when you have your cursor over a code block. Click the clipboard
+to copy the code.
+:::
 
 It is important to leave **comments**, so that your code can be interpreted 
-by other researchers (including yourself in the future!). Anything which 
-appears after a `#` is a comment and will be ignored by R.
+by other researchers (including yourself in the future). Anything which 
+appears in a line after a `#` is a comment and will be ignored by R.
 
 We could change our script as follows, and the result will be identical:
 ```{r}
@@ -470,28 +510,33 @@ my_cool_matrix
 We now have a $3\times2$ matrix of numbers. 
 
 Square brackets are again used to manipulate individual elements. But we now
-have to include both rows and columns. If we want the second column and third
-row we can use `my_cool_matrix[3, 2]`. If you want the entire second column 
-you would enter `my_cool_matrix[, 2]`. If you want the entire first row, you 
-would enter `my_cool_matrix[1, ]`. Try out these commands in either the script
-or the console window.
+have to include both rows and columns inside the square brackets (separated by a
+comma). If we want the second column and third row we can use `my_cool_matrix[3,
+2]`. If you want the entire second column you would enter `my_cool_matrix[, 2]`
+(don't put a number _before_ the comma). If you want the entire first row, you
+would enter `my_cool_matrix[1, ]` (don't put a number _after_ the comma). Try
+out these commands in either the script or the console window.
 
 Have a look in the environment pane. You should now see a separation between
 "data" and "values". The "data" section contains structured objects, such as
-matrices. The one practical difference here is that if you click on something
-in the data section it will usually open in a new tab. In this case, you'll
-see something that looks a lot like a spreadsheet application. 
+matrices. The one practical difference here is that if you click on something in
+the data section you can explore its structure. If you click on the name of a
+data frame you'll see something that looks a lot like a spreadsheet application
+in a new tab in the source pane.
 
-Often our data will include elements of multiple different types. For instance,
-it might include _numbers_ indicating the age of a participant, or which of a 
-series of options they chose. It might also include _words_ (strings) indicating
-which experimental condition they are in, or a transcript of an interview. 
-Matricies can't handle this, but **data frames** can. 
+Often our data will comes in many different types. For instance, it might
+include _numbers_ indicating the age of a participant, or which of a series of
+options they chose. It might also include _words_ (strings) indicating which
+experimental condition they are in, or a transcript of an interview. Matricies
+can't handle having elements of different types, but **data frames** can.
 
 We create data frames using the `data.frame` function. Enter the following into
-your script and run it:
+your script and run it:^[Note the use of a comment to explain why we are
+re-creating `my_cool_vector`. This is the kind of step in the middle of a script
+which is likely to cause confusion without a comment.]
 ```{r}
-# Re-enter the vector to revert modifications made above.
+# We repeat this line from above because subsequent code modified 
+# `my_cool_vector`.
 my_cool_vector <- c(6, 9, 4, 5, 2, 2)
 
 my_data_frame <- data.frame(
@@ -505,9 +550,10 @@ my_data_frame
 We now have a data frame with a column of _numbers_ and a column of
 corresponding _letters_. We have also given each of these columns a name (
 'numbers' for the column of numbers and 'letters' for the column of letters).
-Each row of the data frame is an observation, and each
-column is a variable.^[More on this in the next session.] Perhaps you can figure
-out what the association between the two variables is.
+Each row of the data frame is an observation, and each column is a
+variable.^[Note that there are two meanings of 'variable'. An R variable is a
+name and its object, a data variable is a column of a data frame.] Perhaps you
+can figure out what the association between the two variables is.
 
 When we have names for columns, we can access the column using the name by 
 means of the `$` symbol:
@@ -515,17 +561,17 @@ means of the `$` symbol:
 my_data_frame$numbers
 ```
 
-Note the use of a comment to explain why we are re-creating
-`my_cool_vector`. This is the kind of step in the middle of a script which is
-likely to cause confusion without a comment.
+
 
 ### Functions and Help
 
 We have now seen a few **functions** (`matrix` to create a matrix, and 
 `data.frame` to create a data frame). Functions are what we use to perform 
-data analysis tasks in R. To apply a function, we writes its name and then
+data analysis tasks in R. To apply a function, we write its name and then
 enter a series of **arguments** inside brackets. The arguments are the 
 information which we pass for the function in order for it to do its work.
+Usually functions produce an output, which we can either see in the console 
+or save to a variable.
 
 Recall the matrix code from above:
 ```{r}
@@ -535,9 +581,9 @@ my_cool_matrix <- matrix(my_cool_vector, nrow = 3)
 
 Here the `matrix` function is given two arguments. The first is the vector
 `my_cool_vector` and the second is `nrow = 3`. The two arguments are separated
-by a comma. If we want to work out where these came from, we need to look at 
-the help page for the function. To do that enter the following in either the
-script or the console:
+by a comma. If we want to work out what the arguments to a function are, we can
+look at the help page for the function. To do that enter the following in either
+the script or the console:
 ```{r}
 ?matrix
 ```
@@ -558,24 +604,26 @@ used the argument. But we could have:
 my_cool_matrix <- matrix(data = my_cool_vector, nrow = 3)
 ```
 
-Sometimes it makes your code more clear to include a name, like this.
+Sometimes it makes your code more clear to include the names of arguments. This
+is a judgement call.
 
-The help screen also shows the default values for these argument. If there are
-default values, then you don't need to manually enter every argument. If you
+The help screen also shows the default values for these arguments. If there are
+default values, then you don't need to manually the argument. If you
 are modifying only one argument, which appears latter in the list, then you will
 need to use the name. 
 
 For instance, if we wanted to say the matrix has two columns (rather than three
-rows), we would have to add `ncol`:
+rows), we would have to add `ncol` as a named argument when we call the 
+function:^[To 'call' a function just means to use it.]
 ```{r}
 my_cool_matrix <- matrix(my_cool_vector, ncol = 3)
 my_cool_matrix
 ```
 
-If we didn't, R would not know what argument we intended to modify. If you 
-look in the 'details' section of the help page, you will see that if we only
-specify a number of rows or a number of columns, it will attempt to work out
-the other value. 
+If we didn't include the name of this argument, R would not know what argument
+we intended to modify. If you look in the 'details' section of the help page,
+you will see that if we only specify a number of rows or a number of columns, it
+will attempt to work out the other value.
 
 ### Install and Use a Package
 
@@ -608,7 +656,11 @@ see this before we carry out any data analysis.
 To see what functions `cowsay` has, look at the documentation. If you want to
 see the names of functions, you can enter `cowsay::` and RStudio will suggest
 the names of functions. You can add a `?` in front of any of these function
-names to see the help file for the function.
+names to see the help file for the function. Often packages have one or more
+'vignettes' which explain the package. To see what vignettes come with the
+`cowsay` package enter `vignette(package="cowsay")`. In this case, there is 
+only one, called "cowsay". To open this in the output pane enter
+`vignette("cowsay", package="cowsay")`.
 
 There are two functions which come with `cowsay`: `say` and `endless_horse`. 
 The function we will use is called `say`, so enter `?say` in
@@ -625,7 +677,7 @@ say(
 Here, I have used comments to indicate what you need to do to complete the 
 code. 
 
-Here's one possible answer:
+Here's one possible completion:
 ```{r}
 say(
   what = "It sure is lonely down here.",
@@ -633,8 +685,8 @@ say(
 )
 ```
 
-Sometimes packages contain data. This is one day to get data in to your 
-analysis.
+Sometimes packages contain data. This is one way to get data in to your R 
+session.
 
 In fact, there's plenty of data built in to R. Often this is used to demonstrate
 different functions. To see these, enter `data()` in the console. You can load
@@ -729,13 +781,14 @@ will not be able to run it successfully and it might take a long time to
 discover the problem.
 
 ::: {.callout-warning}
-If you have been using R for a while, you may be relying on R to keep the result
-of long computations between sessions. If so, leave the settings as they are for
-now and talk to me (Josh). There are a few ways to save computations so that you
-do not have to, say, refit a large model from scratch every time.
+If you have been using R for a while already, you may be relying on R to keep
+the result of long computations between sessions. If so, leave the settings as
+they are for now and talk to me (Josh). There are a few ways to save
+computations so that you do not have to, say, refit a large model from scratch
+every time.
 :::
 
-You should also modify the appearance of RStudio to your liking using the
+You can also modify the appearance of RStudio to your liking using the
 `Appearance` options.
 
 ![The appearance pane in General Options](images/appearance.png)
@@ -772,4 +825,7 @@ We won't discuss these alternatives in these workshops. The most likely reason
 for you to use one of them is that you are already a keen programmer with
 strong preferences concerning your tools.
 
-
+The company that make RStudio (Posit) also have a new editor called Positron. 
+This is built on top of Visual Studio Code. I have used it a little and think it
+is very good! It is not yet officially released, but pre-release versions are 
+available at <https://github.com/posit-dev/positron>.
