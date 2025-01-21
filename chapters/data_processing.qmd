@@ -5,11 +5,11 @@ We will also begin to work with a series of packages called the `tidyverse`,
 which implement a series of data processing and visualising techniques on top
 of base R. 
 
-I tend to use `tidyverse` functions and methods when I work with data, but there
-are many people who prefer base R methods. We will look at some base R
-approaches as these workshops progress, and especially in this chapter, but the
-majority of the code I put in front of you will use at least some tidyverse
-methods.
+I tend to use the `tidyverse` when I work with data, but there
+are many people who prefer "base R" (i.e., not the `tidyverse`). We will look at
+some base R approaches as these workshops progress, and especially in this
+chapter, but the majority of the code I put in front of you will use at least
+some `tidyverse` methods.
 
 The easiest way to follow the code in this chapter is to run the following code
 in the R console: `usethis::use_course('nzilbb/getting_started_sessions')`.
@@ -18,6 +18,17 @@ session along with the necessary data. It also contains the beginning of a
 script for this chapter (in `scripts/session_2.R`). If this line doesn't work,
 the most likely problem is that you need to install the `usethis` package first
 (`install.packages('usethis')`).
+
+::: callout-note
+You might have difficulty with `usethis::use_course()` if you have previously
+linked RStudio and GitHub, but your access token has now expired. To fix this,
+follow the instructions at <https://happygitwithr.com/https-pat>. To ignore the
+problem for now and continue with the workshop, just go to
+<https://github.com/nzilbb/getting_started_sessions/>, click the big green
+button, select 'Downloads Zip', unzip the downloaded file somewhere sensible
+(e.g., a folder in your Documents folder for R projects), and double click on
+`getting_started.Rproj`.
+:::
 
 Start a script (or open `scripts/session_2.R`) with the code in the following
 cell. Try to run the code. If R complains, ensure each package is installed. If
@@ -42,25 +53,26 @@ library(here)
 
 Usually, you will load data from an external file. It is best practice to treat
 this file as 'read only' for the purposes of your R project. That is, you 
-shouldn't be overwriting the data file in the course of your project. Usually
-this data will be either:
+shouldn't be overwriting the data file in the course of your project. 
+
+Usually this data will be either:
 
 1. a `csv` file: CSV stands for comma separated values. It is a text file in
 which values a separated by commas and each new line is a new row. It is an
 example of the more general class of 'delimited' files, where there is a special
 character separating values (another one you might come across is 'tab separated
-values' --- where the values are separated by a tab). 
+values' (`.tsv`)--- where the values are separated by a tab). 
 2. an Excel file (`.xlsx` or `.xls`). There is no base R function to directly
-read Excel files, but we have already loaded the `readxl` package which allows 
-this. **Be extra careful** when loading Excel files. Excel may have modified the 
-data in various ways. Famously, dates and times are difficult to manage. We 
-will consider sanity checks in the following chapter.
+read Excel files, but the `readxl` package provides one. **Be extra careful**
+when loading Excel files. Excel may have modified the data in various ways.
+Famously, dates and times are difficult to manage.
 
 There are other possibilities as well. Perhaps, for instance, you are
 collaborating with someone using SPSS or some other statistical software. There
-are too many cases to consider here, but [Google will be your friend](https://www.google.com/search?q=read+.bizarre_file_extension+files+in+R). 
+are too many cases to consider here. Usually a quick search online will tell you
+what you need to do.
 
-Here, we'll read a csv of reading from vowels from the QuakeBox corpus using
+Here, we'll load a csv of reading from vowels from the QuakeBox corpus using
 the base R `read.csv` function. The most simple approach is:
 ```{r}
 #| eval: false
@@ -80,6 +92,18 @@ vowels <- read.csv(here('data', 'qb_vowels.csv'))
 Look in your file browser to make sure you understand where the file you are 
 loading lives and how the path you enter, either using relative paths within
 an R project and/or using the `here` package, relates to the file.
+
+::: callout-warning
+You should (almost) never have a full file path in your R script. These cause a
+lot of problems for reproducibility as they refer to your specific computer. 
+
+For instance, the full path on my computer to the `qb_vowels.csv` file is
+`~/UC Enterprise Dropbox/Joshua Wilson Black/teaching/intro_workshops/statistics_workshops/data/qb_vowels`.
+This is not the full path on your computer.
+
+The `here()` package ensures that file paths always start from the project 
+directory. This means file paths will work for anyone who has the project.
+:::
 
 We should always check a few entries to make sure the data is being read in
 correctly. The `head()` function is very useful.

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>2&nbsp; Data Processing – NZILBB R and Open Science Workshops</title>
+<title>2&nbsp; Data Processing – NZILBB R, Stats, and Open Science Workshops</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -92,10 +92,10 @@ div.csl-indent {
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e26003cea8cd680ca0c55a263523d882.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-ac4d638824e2c5328f4ab76f3dcaa411.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap-b7c2d8834e08b04a63bb76a724ffbcac.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-e72520f81c6f05641b1fa35cac52c828.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -184,7 +184,7 @@ window.Quarto = {
       <img src="../global_images/nzilbb-logo.svg" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
       </a>
     <div class="sidebar-title mb-0 py-0">
-      <a href="../">NZILBB R and Open Science Workshops</a> 
+      <a href="../">NZILBB R, Stats, and Open Science Workshops</a> 
         <div class="sidebar-tools-main">
     <a href="https://github.com/nzilbb/statistics_workshops" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
 </div>
@@ -328,8 +328,21 @@ window.Quarto = {
 
 
 <p>In this chapter, we’ll look at some common things you will need to do with data. We will also begin to work with a series of packages called the <code>tidyverse</code>, which implement a series of data processing and visualising techniques on top of base R.</p>
-<p>I tend to use <code>tidyverse</code> functions and methods when I work with data, but there are many people who prefer base R methods. We will look at some base R approaches as these workshops progress, and especially in this chapter, but the majority of the code I put in front of you will use at least some tidyverse methods.</p>
+<p>I tend to use the <code>tidyverse</code> when I work with data, but there are many people who prefer “base R” (i.e., not the <code>tidyverse</code>). We will look at some base R approaches as these workshops progress, and especially in this chapter, but the majority of the code I put in front of you will use at least some <code>tidyverse</code> methods.</p>
 <p>The easiest way to follow the code in this chapter is to run the following code in the R console: <code>usethis::use_course('nzilbb/getting_started_sessions')</code>. This will download a file from GitHub and use it to generate a new RStudio session along with the necessary data. It also contains the beginning of a script for this chapter (in <code>scripts/session_2.R</code>). If this line doesn’t work, the most likely problem is that you need to install the <code>usethis</code> package first (<code>install.packages('usethis')</code>).</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You might have difficulty with <code>usethis::use_course()</code> if you have previously linked RStudio and GitHub, but your access token has now expired. To fix this, follow the instructions at <a href="https://happygitwithr.com/https-pat" class="uri">https://happygitwithr.com/https-pat</a>. To ignore the problem for now and continue with the workshop, just go to <a href="https://github.com/nzilbb/getting_started_sessions/" class="uri">https://github.com/nzilbb/getting_started_sessions/</a>, click the big green button, select ‘Downloads Zip’, unzip the downloaded file somewhere sensible (e.g., a folder in your Documents folder for R projects), and double click on <code>getting_started.Rproj</code>.</p>
+</div>
+</div>
 <p>Start a script (or open <code>scripts/session_2.R</code>) with the code in the following cell. Try to run the code. If R complains, ensure each package is installed. If it isn’t, run <code>install.packages("PACKAGE NAME")</code> where you replace <code>PACKAGE NAME</code> with the name of the package. Make sure the package name is inside quotation marks.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We load two packages from the 'tidyverse' by name. `dplyr` includes functions</span></span>
@@ -345,13 +358,14 @@ window.Quarto = {
 <h2 data-number="2.1" class="anchored" data-anchor-id="processing-data-in-base-r."><span class="header-section-number">2.1</span> Processing Data in Base R.</h2>
 <section id="loading-in-data" class="level3" data-number="2.1.1">
 <h3 data-number="2.1.1" class="anchored" data-anchor-id="loading-in-data"><span class="header-section-number">2.1.1</span> Loading in Data</h3>
-<p>Usually, you will load data from an external file. It is best practice to treat this file as ‘read only’ for the purposes of your R project. That is, you shouldn’t be overwriting the data file in the course of your project. Usually this data will be either:</p>
+<p>Usually, you will load data from an external file. It is best practice to treat this file as ‘read only’ for the purposes of your R project. That is, you shouldn’t be overwriting the data file in the course of your project.</p>
+<p>Usually this data will be either:</p>
 <ol type="1">
-<li>a <code>csv</code> file: CSV stands for comma separated values. It is a text file in which values a separated by commas and each new line is a new row. It is an example of the more general class of ‘delimited’ files, where there is a special character separating values (another one you might come across is ‘tab separated values’ — where the values are separated by a tab).</li>
-<li>an Excel file (<code>.xlsx</code> or <code>.xls</code>). There is no base R function to directly read Excel files, but we have already loaded the <code>readxl</code> package which allows this. <strong>Be extra careful</strong> when loading Excel files. Excel may have modified the data in various ways. Famously, dates and times are difficult to manage. We will consider sanity checks in the following chapter.</li>
+<li>a <code>csv</code> file: CSV stands for comma separated values. It is a text file in which values a separated by commas and each new line is a new row. It is an example of the more general class of ‘delimited’ files, where there is a special character separating values (another one you might come across is ‘tab separated values’ (<code>.tsv</code>)— where the values are separated by a tab).</li>
+<li>an Excel file (<code>.xlsx</code> or <code>.xls</code>). There is no base R function to directly read Excel files, but the <code>readxl</code> package provides one. <strong>Be extra careful</strong> when loading Excel files. Excel may have modified the data in various ways. Famously, dates and times are difficult to manage.</li>
 </ol>
-<p>There are other possibilities as well. Perhaps, for instance, you are collaborating with someone using SPSS or some other statistical software. There are too many cases to consider here, but <a href="https://www.google.com/search?q=read+.bizarre_file_extension+files+in+R">Google will be your friend</a>.</p>
-<p>Here, we’ll read a csv of reading from vowels from the QuakeBox corpus using the base R <code>read.csv</code> function. The most simple approach is:</p>
+<p>There are other possibilities as well. Perhaps, for instance, you are collaborating with someone using SPSS or some other statistical software. There are too many cases to consider here. Usually a quick search online will tell you what you need to do.</p>
+<p>Here, we’ll load a csv of reading from vowels from the QuakeBox corpus using the base R <code>read.csv</code> function. The most simple approach is:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>vowels <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'data/qb_vowels.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -360,6 +374,21 @@ window.Quarto = {
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>vowels <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'qb_vowels.csv'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Look in your file browser to make sure you understand where the file you are loading lives and how the path you enter, either using relative paths within an R project and/or using the <code>here</code> package, relates to the file.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>You should (almost) never have a full file path in your R script. These cause a lot of problems for reproducibility as they refer to your specific computer.</p>
+<p>For instance, the full path on my computer to the <code>qb_vowels.csv</code> file is <code>~/UC Enterprise Dropbox/Joshua Wilson Black/teaching/intro_workshops/statistics_workshops/data/qb_vowels</code>. This is not the full path on your computer.</p>
+<p>The <code>here()</code> package ensures that file paths always start from the project directory. This means file paths will work for anyone who has the project.</p>
+</div>
+</div>
 <p>We should always check a few entries to make sure the data is being read in correctly. The <code>head()</code> function is very useful.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vowels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -630,24 +659,24 @@ window.Quarto = {
 <p>In fact, <code>some_name$some_other_name</code> is a shorthand form of <code>some_name[["some_other_name"]]</code>. A single element of a list or vector returned by <code>$</code> and <code>[[]]</code>, whereas <code>[]</code> returns a list or vector which may contain multiple elements.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div class="webex-check webex-box">
 If <code>data_frame</code> is a data frame, what will <code>data_frame[5:6, ]</code> return?
-<div id="radio_BBPRDDQTVQ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_BBPRDDQTVQ" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_BBPRDDQTVQ" value="answer"> <span>The fifth and sixth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_BBPRDDQTVQ" value=""> <span>The fifth and sixth columns of the data frame</span></label>
+<div id="radio_SQMILHUCDR" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_SQMILHUCDR" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_SQMILHUCDR" value="answer"> <span>The fifth and sixth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_SQMILHUCDR" value=""> <span>The fifth and sixth columns of the data frame</span></label>
 </div>
 If <code>data_frame</code> is a data frame, what will <code>data_frame[, c(3, 6, 9)]</code> return?
-<div id="radio_LORXFHBCMQ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_LORXFHBCMQ" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_LORXFHBCMQ" value=""> <span>The third, sixth, and ninth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_LORXFHBCMQ" value="answer"> <span>The third, sixth, and ninth column of the data frame.</span></label>
+<div id="radio_VKIUSTEVKD" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_VKIUSTEVKD" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_VKIUSTEVKD" value=""> <span>The third, sixth, and ninth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_VKIUSTEVKD" value="answer"> <span>The third, sixth, and ninth column of the data frame.</span></label>
 </div>
 <p>Imagine you save a vector to the variable <code>vector_name</code>, as follows:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>vector_name <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 What would be the output of <code>vector_name &gt; 2</code>?
-<div id="radio_YWUDAOVDXB" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_YWUDAOVDXB" value="answer"> <span><code>[1]  TRUE FALSE  TRUE  TRUE FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_YWUDAOVDXB" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_YWUDAOVDXB" value=""> <span><code>FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_YWUDAOVDXB" value=""> <span><code>[1] TRUE TRUE TRUE TRUE TRUE</code></span></label>
+<div id="radio_NDPKWVXQWL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_NDPKWVXQWL" value="answer"> <span><code>[1]  TRUE FALSE  TRUE  TRUE FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_NDPKWVXQWL" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_NDPKWVXQWL" value=""> <span><code>FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_NDPKWVXQWL" value=""> <span><code>[1] TRUE TRUE TRUE TRUE TRUE</code></span></label>
 </div>
 What would be the output of <code>vector_name[3, 5]</code>?
-<div id="radio_SRJNWEEGDQ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_SRJNWEEGDQ" value=""> <span><code>[1] 7 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_SRJNWEEGDQ" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_SRJNWEEGDQ" value="answer"> <span><code>Error in vector_name[3, 5] : incorrect number of dimensions</code></span></label>
+<div id="radio_TVOIKWCGLL" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_TVOIKWCGLL" value=""> <span><code>[1] 7 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_TVOIKWCGLL" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_TVOIKWCGLL" value="answer"> <span><code>Error in vector_name[3, 5] : incorrect number of dimensions</code></span></label>
 </div>
 </div>
 </section>

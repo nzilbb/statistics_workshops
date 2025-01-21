@@ -2,7 +2,7 @@ project:
   type: book
   output-dir: docs
 book:
-  title: NZILBB R and Open Science Workshops
+  title: NZILBB R, Stats, and Open Science Workshops
   author:
   - name: Joshua Wilson Black
     orcid: 0000-0002-8272-5763
@@ -34,6 +34,7 @@ format:
   html:
     theme:
     - flatly
+    - brand
     - theme.scss
     css: include/webex.css
     include-after-body: include/webex.js
