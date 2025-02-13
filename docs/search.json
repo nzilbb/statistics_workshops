@@ -4,7 +4,47 @@
     "href": "index.html",
     "title": "NZILBB R, Stats, and Open Science Workshops",
     "section": "",
-    "text": "Introduction\nThis online book contains material for NZILBB’s R, Stats, and Open Science workshops. The workshops began late in the first semester of 2024. As time goes on, this book will expand in both content and contributors.\n\n\nIn-person sessions\nI am currently running in-person sessions at NZILBB. We are running two groups:\n\nAn ‘introductory’ session, working through the material in the Foundations section of this book.\nAn ‘advanced’ session, working through material in the Additional Topics section.\n\nThe sessions run on alternate weeks from 1-2:30pm in the Brain Box (Elsie Locke 203), with the first intro session on the 24th of July and the first advanced session the following week.\nAnnouncements are made on the NZILBB Rocket Chat in the #r-stats-open-sci-workshops channel. If you don’t know how to access this, email me at joshua.black@canterbury.ac.nz.\n\n\nOne-on-one help\nFor UC students and staff, I am happy to talk over any issues you have with this material. Please get in touch with me at joshua.black@canterbury.ac.nz.\nIf you have found your way to this material by some other means, you can also email me!\n\n\nOther resources\nYou may find the following links profitable:\n\nThe alternative to data analysis with a programming language is usually some kind of spreadsheet. Here are some spreadsheet horror stories: https://eusprig.org/research-info/horror-stories/.\nWhy do we have to learn how to program? Why is science ‘amateur software development’? This is a good lecture on the topic: https://www.youtube.com/watch?v=8qzVV7eEiaI.\n\nUsually these techniques aren’t explicitly taught. These workshops are our attempt to respond to this problem!\n\nWhy can’t you do data science with a spreadsheet? https://www.youtube.com/watch?v=cpbtcsGE0OA\nThese workshops have been heavily influenced by Winter (2019)\n\n\n\n\n\nWinter, Bodo. 2019. Statistics for Linguists: An Introduction Using R. New York: Routledge. https://doi.org/10.4324/9781315165547.",
+    "text": "Introduction\nThis online book contains material for NZILBB’s R, Stats, and Open Science workshops. The workshops began late in the first semester of 2024. As time goes on, this book will expand in both content and contributors.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#sessions-in-semester-1-2025",
+    "href": "index.html#sessions-in-semester-1-2025",
+    "title": "NZILBB R, Stats, and Open Science Workshops",
+    "section": "Sessions in Semester 1, 2025",
+    "text": "Sessions in Semester 1, 2025\nIn Semester 1, 2025 I’ll be running sessions on Wednesday (fortnightly) and Thursday (every week). Thursday sessions will alternate between programmed workshops and drop-in sessions. The Wednesday sessions will be a hands-on reading group for more advanced R users.\nAll sessions will be held in the Brain Box, Elsie Locke 203.\nAnnouncements are made on the NZILBB Rocket Chat in the #r-stats-open-sci-workshops channel. If you don’t know how to access this, email me at joshua.black@canterbury.ac.nz.\n\nProgrammed Workshops\nWorkshop sessions consist of a short presentation and a chance for some hands-on practice. The series as a whole is for complete beginners, but the sessions are cumulative.\nIf you need to catch up, check out the material in the ‘Foundations’ section of this website and don’t hesitate to contact me for a one-on-one session to discuss any difficulties.\nThe first session will be on Thurs 20th Feb, at 11am.,\n\n\nDrop-in Sessions\nI will remain in the Brain Box for an hour after the NZILBB research seminar for anyone who wishes to discuss any coding or stats problems.\nThe first drop-in session will be on Thurs 27th Feb at 11am, with subsequent sessions fortnightly.\n\n\nWednesday Sessions\nOur theme for this semester will be variable selection in statistical models. Typically, there are many possible variables which we might include in a model. There are many (strong!) opinions about the variable selection process. We’ll look at the options, their pros and cons, and implement them with our own data. This will help you both with your own research and when reading (and peer-reviewing!) other people’s work.\nThe first Wednesday session will be on Wed 26th Feb at 1pm, with subsequent sessions at the same time fortnightly.",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#one-on-one-help",
+    "href": "index.html#one-on-one-help",
+    "title": "NZILBB R, Stats, and Open Science Workshops",
+    "section": "One-on-one help",
+    "text": "One-on-one help\nFor UC students and staff, I am happy to talk over any issues you have with this material. Please get in touch with me at joshua.black@canterbury.ac.nz.\nIf you have found your way to this material by some other means, you can also email me!",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#sec-induction",
+    "href": "index.html#sec-induction",
+    "title": "NZILBB R, Stats, and Open Science Workshops",
+    "section": "NZILBB induction",
+    "text": "NZILBB induction\nThe following steps are a very quick guide to getting up and running for quantitative analysis with R, along with the wider Open Science infrastructure at NZILBB. Some of these steps are discussed at greater length elsewhere.\nIf you have any troubles with any of the steps, let me know!\n\nInstall R and R Studio, following the steps here: https://posit.co/download/rstudio-desktop/ or using the UC Software Centre if you are on a managed UC laptop.\nOpen RStudio, type install.packages('usethis') into the ‘Console’ (at the bottom left of RStudio) and press enter/return.\nInstall Git.\n\nFor Windows: download from https://git-scm.com/downloads/win. If you are given an option to allow ‘3rd-party software’ say yes.\nFor macOS: install developer tools by opening the Terminal app and typing xcode-select --install.\nFor Linux: odds are you have it already, but here’s a list of terminal commands to install it for different versions of Linux: https://git-scm.com/downloads/linux.\n\nCreate accounts at https://github.com and https://osf.io.\n\nOn GitHub, request to join the NZILBB group at https://github.com/nzilbb/.\n\nConnect R and GitHub.\n\nWrite usethis::use_git_config(user.name=\"YOUR NAME\", user.email=\"YOUR GITHUB ACCOUNT'S EMAIL ADDRESS\") in the console and press enter/return. Replace YOUR NAME and YOUR GITHUB ACCOUNT'S EMAIL ADDRESS with your name and the email you used to sign up to GitHub.\nWrite usethis::git_default_branch_configure() in the console and press enter/return.\nWrite usethis::create_github_token() in the console and press enter/return.\n\nThis will open a browser window where you will log in to your GitHub account. Accept the default options (click ‘Generate Token’) and copy the token which appears (don’t close the window until you’re finished the next step).\n\nWrite gitcreds::gitcreds_set() in the console and press enter/return.\n\nPaste the token in after Enter password or token:.\n\n\nUniversity of Canterbury staff and students: ensure you can log in to the UC GitLab at (use your UC log in and password): https://eng-git.canterbury.ac.nz/\nInstall GitKracken: https://www.gitkraken.com/",
+    "crumbs": [
+      "Introduction"
+    ]
+  },
+  {
+    "objectID": "index.html#other-resources",
+    "href": "index.html#other-resources",
+    "title": "NZILBB R, Stats, and Open Science Workshops",
+    "section": "Other resources",
+    "text": "Other resources\nYou may find the following links profitable:\n\nThe alternative to data analysis with a programming language is usually some kind of spreadsheet. Here are some spreadsheet horror stories: https://eusprig.org/research-info/horror-stories/.\nWhy do we have to learn how to program? Why is science ‘amateur software development’? This is a good lecture on the topic: https://www.youtube.com/watch?v=8qzVV7eEiaI.\n\nUsually these techniques aren’t explicitly taught. These workshops are our attempt to respond to this problem!\n\nWhy can’t you do data science with a spreadsheet? https://www.youtube.com/watch?v=cpbtcsGE0OA\nThese workshops have been heavily influenced by Winter (2019)\n\n\n\n\n\nWinter, Bodo. 2019. Statistics for Linguists: An Introduction Using R. New York: Routledge. https://doi.org/10.4324/9781315165547.",
     "crumbs": [
       "Introduction"
     ]
