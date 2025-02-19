@@ -81,6 +81,7 @@ and press enter/return.
     - On GitHub, request to join the NZILBB group at <https://github.com/nzilbb/>.
 
 5. Connect R and GitHub.
+    - Restart RStudio.
     - Write 
     `usethis::use_git_config(user.name="YOUR NAME", user.email="YOUR GITHUB ACCOUNT'S EMAIL ADDRESS")`
     in the console and press enter/return. Replace `YOUR NAME` and `YOUR GITHUB ACCOUNT'S EMAIL ADDRESS` with
