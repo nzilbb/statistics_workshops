@@ -99,7 +99,7 @@ and press enter/return.
 6. **University of Canterbury staff and students:** ensure you can log in to 
   the UC GitLab at (use your UC log in and password): <https://eng-git.canterbury.ac.nz/>
 
-7. Install GitKracken: <https://www.gitkraken.com/>
+7. **Optional:** Install GitKracken: <https://www.gitkraken.com/>
 
 ## Other resources
 
