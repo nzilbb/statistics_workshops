@@ -1,5 +1,18 @@
 # Getting Started
 
+::: {.callout-note collapse="true"}
+### Access related workshop materials
+If you have followed the [induction instructions](https://nzilbb.github.io/statistics_workshops/#sec-induction) on 
+the homepage, you can access a workshop which is closely related to this 
+chapter by entering the following code in the console pane:
+
+```r
+usethis::create_from_github(
+  "https://github.com/nzilbb/ws-getting-started
+)
+```
+:::
+
 ## Install R and RStudio
 
 R is a programming language. RStudio is a piece of software for interacting
@@ -18,7 +31,7 @@ To install R and RStudio on a University of Canterbury device:
 
 Installing RStudio on a University of Canterbury device will also install R.
 
-::: callout-note
+::: {.callout-note collapse="true"}
 ### Optional: install tools for building R packages
 At this stage, you may also want to install additional tools for building R
 packages from source (rather than downloading pre-built versions of packages). 

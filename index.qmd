@@ -5,14 +5,13 @@ R, Stats, and Open Science workshops. The workshops began late in the first
 semester of 2024. As time goes on, this book will expand in both content and
 contributors. 
 
-## Sessions in Semester 1, 2025
+## Sessions in Semester 2, 2025
 
-In Semester 1, 2025 I'll be running sessions on Wednesday (fortnightly) and
-Thursday (every week). Thursday sessions will alternate between **programmed
-workshops** and **drop-in sessions**. The Wednesday sessions will be a
-**hands-on reading group** for more advanced R users.
+In Semester 2, 2025 we will work through the "Foundations" sections of this 
+book with occasional one-off sessions interspersed throughout.
 
-All sessions will be held in the **Brain Box**, Elsie Locke 203.
+All sessions will be held in the **Brain Box**, Elsie Locke 203 on **Thursdays**
+at **10am**.
 
 Announcements are made on the NZILBB Rocket Chat in the #r-stats-open-sci-workshops
 channel. If you don't know how to access this, email me at <joshua.black@canterbury.ac.nz>.

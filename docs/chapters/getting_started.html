@@ -333,6 +333,25 @@ window.Quarto = {
 </header>
 
 
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Access related workshop materials
+</div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
+</div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
+<div class="callout-body-container callout-body">
+<p>If you have followed the <a href="https://nzilbb.github.io/statistics_workshops/#sec-induction">induction instructions</a> on the homepage, you can access a workshop which is closely related to this chapter by entering the following code in the console pane:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">create_from_github</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://github.com/nzilbb/ws-getting-started</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="st">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</div>
+</div>
 <section id="install-r-and-rstudio" class="level2" data-number="1.1">
 <h2 data-number="1.1" class="anchored" data-anchor-id="install-r-and-rstudio"><span class="header-section-number">1.1</span> Install R and RStudio</h2>
 <p>R is a programming language. RStudio is a piece of software for interacting with R.</p>
@@ -345,14 +364,16 @@ window.Quarto = {
 </ul>
 <p>Installing RStudio on a University of Canterbury device will also install R.</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-2-contents" aria-controls="callout-2" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
 Optional: install tools for building R packages
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-2" class="callout-2-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
 <p>At this stage, you may also want to install additional tools for building R packages from source (rather than downloading pre-built versions of packages). This is sometimes important for getting fast performance out of a package.</p>
 <p>For Windows, install Rtools: <a href="https://cran.r-project.org/bin/windows/Rtools/rtools44/rtools.html" class="uri">https://cran.r-project.org/bin/windows/Rtools/rtools44/rtools.html</a></p>
@@ -360,6 +381,7 @@ Optional: install tools for building R packages
 <p>Linux should already have everything required.</p>
 <p>Instructions for macOS are here: <a href="https://mac.r-project.org/tools/" class="uri">https://mac.r-project.org/tools/</a></p>
 <p><strong>If this starts to melt your mind, stop!</strong></p>
+</div>
 </div>
 </div>
 </section>
@@ -380,28 +402,28 @@ Optional: install tools for building R packages
 <h3 data-number="1.3.1" class="anchored" data-anchor-id="basic-arithmetic"><span class="header-section-number">1.3.1</span> Basic arithmetic</h3>
 <p>We’ll start with some basic arithmetic. We add two numbers together by writing the first number, the <code>+</code> sign, and the second number. Enter the code in the box below after the <code>&gt;</code> in your console. The expected output appears below the box. You should see the same thing in your console after you press enter/return.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2</code></pre>
 </div>
 </div>
 <p>The other basic arithmetic operators work in the same way. So subtraction we use ‘<code>-</code>’.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dv">500</span> <span class="sc">-</span> <span class="dv">49</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="dv">500</span> <span class="sc">-</span> <span class="dv">49</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 451</code></pre>
 </div>
 </div>
 <p>We use <code>*</code> for multiplication.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span> <span class="sc">*</span> <span class="fl">6.4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span> <span class="sc">*</span> <span class="fl">6.4</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 275.2</code></pre>
 </div>
 </div>
 <p>For exponentiation we use <code>^</code> (usually, Shift + 6).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="dv">924</span><span class="sc">^</span><span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dv">924</span><span class="sc">^</span><span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6.735345e+14</code></pre>
 </div>
@@ -409,21 +431,21 @@ Optional: install tools for building R packages
 <p>The output given here is in scientific notation. It is important to be able to read this notation when using R. It makes very very small and very very large numbers much easier to write and is often used in the output of R functions. To convert from scientific notation to regular digits, multiple the number which appears <em>before</em> the <code>e</code> by 10 to the power of the number <em>after</em> the <code>e</code>. In this case, we take the number <span class="math inline">\(6.735345\)</span> and multiply it by <span class="math inline">\(10^{14}\)</span> to get <span class="math inline">\(673,534,500,000,000\)</span>. That is, six hundred seventy-three trillion and a bit. According to Wikipedia, this is something like the total number of cells in six and a half adult humans and a bit fewer than the number of ants on Earth.</p>
 <p>There are a few different operators associated with division. Usually, you will want to use <code>/</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span> <span class="sc">/</span> <span class="dv">7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span> <span class="sc">/</span> <span class="dv">7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6.142857</code></pre>
 </div>
 </div>
 <p>Sometimes, it is useful to get the integer<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> component on the answer or the remainder. If we want the integer, we use <code>%/%</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span> <span class="sc">%/%</span> <span class="dv">7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span> <span class="sc">%/%</span> <span class="dv">7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6</code></pre>
 </div>
 </div>
 <p>If we want the remainder, we use:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span> <span class="sc">%%</span> <span class="dv">7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span> <span class="sc">%%</span> <span class="dv">7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1</code></pre>
 </div>
@@ -442,14 +464,14 @@ Spaces, punctuation, and style
 <p>Computer programming requires attention to minor details of punctuation and spacing. Hours can be spent trying to discover why code is not working, only to discover a missing comma. This is especially true in the early stages of learning, where error messages can be very confusing.</p>
 <p>It is worth knowing when you can add spaces and when you can’t. The spaces in the code above between the numbers and the arithmetic operators are not necessary. So, for instance, you could write:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span><span class="sc">/</span><span class="dv">7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="dv">43</span><span class="sc">/</span><span class="dv">7</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6.142857</code></pre>
 </div>
 </div>
 <p>In fact, you can add however many spaces you like!</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="dv">34</span>  <span class="sc">/</span>    <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="dv">34</span>  <span class="sc">/</span>    <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 17</code></pre>
 </div>
@@ -463,14 +485,14 @@ Spaces, punctuation, and style
 <p>In our actual research, we work with large collections of experimental data or values derived from corpora. But the commands we’ve looked at above only deal with two numbers at a time. The simplest structure for dealing with more than one value is a vector.</p>
 <p>We create vectors using the function <code>c()</code>. The <code>c()</code> function <em>combines</em> values in to a vector.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1 2 3 4</code></pre>
 </div>
 </div>
 <p>The <code>[1]</code> you see in the output is followed by the first element of the vector. If you print out a very long vector you will see numbers other than 1 inside the square brackets. For instance:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="dv">60</span><span class="sc">:</span><span class="dv">124</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="dv">60</span><span class="sc">:</span><span class="dv">124</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code> [1]  60  61  62  63  64  65  66  67  68  69  70  71  72  73  74  75  76  77  78
 [20]  79  80  81  82  83  84  85  86  87  88  89  90  91  92  93  94  95  96  97
@@ -481,7 +503,7 @@ Spaces, punctuation, and style
 <p>The <code>:</code> operator produces a vector from the first number to the second number (inclusive) in steps of one. The resulting output is long enough that it has to go across two lines. When the new line starts you will see another number in square brackets. This tells you how far through the vector you are at the line break. Exactly <em>which</em> number it is will vary according to the width of whatever you are using to view the output. For me, editing this text in RStudio, it is <code>[38]</code>. That is, the number which <em>follows</em> <code>[38]</code> is the 38th number in the vector. If you are viewing this online, then the number is likely <code>[20]</code>.</p>
 <p>We call the values in a vector the <strong>elements</strong> of the vector. The elements of a vector have to be the same <em>type</em> of thing. We’ll talk about types more later. For now, just note that a number is a different kind of thing from a string of characters. So, what happens if we try to mix numbers and strings in a vector?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="st">"dog"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="st">"dog"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "1"   "2"   "3"   "dog"</code></pre>
 </div>
@@ -489,7 +511,7 @@ Spaces, punctuation, and style
 <p>R hasn’t explicitly complained, but it has done something in the background without telling you. The numbers we entered now have quotation marks around them. They have been turned in to strings. Keep an eye out for quotation marks — sometimes you might think you are dealing with numbers, but really you are dealing with strings. This is a common problem when loading data from external files (e.g., from a <code>.csv</code> file).</p>
 <p>Why worry? Your code likely won’t work if you have strings rather than numbers. For instance, you can’t apply arithmetic operators to strings.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="st">"1"</span> <span class="sc">+</span> <span class="st">"2"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="st">"1"</span> <span class="sc">+</span> <span class="st">"2"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in "1" + "2": non-numeric argument to binary operator</code></pre>
 </div>
@@ -499,21 +521,21 @@ Spaces, punctuation, and style
 <p>Vectors can also be used in arithmetic. Under the hood, statistics is mostly arithmetic with collections of vectors. How are these arithmetic operations implemented in R?</p>
 <p>The simplest case is when we use a vector and a single number, as follows</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="dv">2</span> <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2 4 6 8</code></pre>
 </div>
 </div>
 <p>Each element of the vector has been multiplied by <span class="math inline">\(2\)</span>. The same is true of addition, division, and subtraction. These are ‘element-wise’ operations. That is, they are applied to each element individually.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">/</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="dv">3</span> <span class="sc">/</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 3.00 1.50 1.00 0.75</code></pre>
 </div>
 </div>
 <p>This also works with two vectors. For instance:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>) <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>) <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  1  4  9 16</code></pre>
 </div>
@@ -521,7 +543,7 @@ Spaces, punctuation, and style
 <p>Here we get the first elements multiplied together, then the second, then the third, and so on.</p>
 <p>If one vector is shorter than the other, is will be ‘recycled’ to match the longer vector:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>) <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 1 4 3 8</code></pre>
 </div>
@@ -532,7 +554,7 @@ Spaces, punctuation, and style
 <p>You do not want to be entering the same vector over and over again. This is where <strong>variables</strong> come in. Variables allow us to associate names with values.</p>
 <p>To ‘assign’ an object to a name, we use <code>&lt;-</code>. For instance:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Now the name <code>my_cool_vector</code> is associated with the vector <code>c(6, 9, 4, 5, 2, 2)</code>. If you look to the top right of the RStudio window you should now see this variable in your environment pane. The name will be on the left and the value on the right.</p>
 <div class="quarto-figure quarto-figure-center">
@@ -556,7 +578,7 @@ Warning
 </div>
 <p>We can now apply operations using the name instead of manually entering the vector again. For instance:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="sc">*</span> my_cool_vector</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="dv">4</span> <span class="sc">*</span> my_cool_vector</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 24 36 16 20  8  8</code></pre>
 </div>
@@ -564,22 +586,22 @@ Warning
 <p>This has multiplied each of the elements of <code>my_cool_vector</code> by <span class="math inline">\(4\)</span>.</p>
 <p>To see what object is associated with a name we can look in the environment pane or simply enter the name into the console.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6 9 4 5 2 2</code></pre>
 </div>
 </div>
 <p>We can also look up specific elements using square brackets. If we wanted to look up the fourth element in <code>my_cool_vector</code> we would enter the following code.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector[<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector[<span class="dv">4</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 5</code></pre>
 </div>
 </div>
 <p>We can even change specific elements by using the assignment opperator (<code>&lt;-</code>).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector[<span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>my_cool_vector</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector[<span class="dv">4</span>] <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>my_cool_vector</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6 9 4 3 2 2</code></pre>
 </div>
@@ -609,24 +631,24 @@ What’s a letter?
 <p>I follow the convention of using <code>_</code> rather than <code>.</code> in my variable names. So, e.g., I’d prefer <code>my_cool_vector</code> over <code>my.cool.vector</code>. This reduces ambiguity in some cases.</p>
 <p>While we are talking about naming, R will accept <em>anything</em> placed within backticks (‘`’) as a variable name. If you have a chaotic temperament, you might decide to use variable names like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eldritch variable</span></span>
-<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">t̸̡͚̳͓̜̘̪̙̟̣͛̋̈̐͜ḩ̷̛̗̬̪̔̾͋̌̂̓͑̔̚͝ë̵̮̟̟̼̲̦͙̠̟́͋̇̏̓ ̶̟̱̲̠͎̙̠̆̑̈́̉̆̏̋͠͠t̷̲͉͔̘̬̪͖̗́͌̏̉̏̄͊̍̽͋̈̈́̀͝͠o̵͚͙̮͙͉̱̱͕̗̘̻͋͋͋̀́̒͝ͅw̸͖͚̖̣̭̥͍̹͚̞͕̺͇͙͌͛͋̆̿̈́̎̆̋̑͌̏͘͠͝e̵͖̝̞̙͕̤̅̃̓r̴͍̼̱̜̹͚̎̌̂͆͗̏́ṡ̷͔͉͇͗̍̆̔̕ͅ ̷̪̱̞͈̰̈́͜ǫ̷̤͍̫̠̻̣̪̻͖̒̈́͐͂̿̆̑̄̂͘f̶̠͉̯̪̪̖̦͋͝ ̶̙̻̝͆̈͠C̴̳̪̪̻̫̬̳̜̅͑̇͌̆̕a̶̡͚̼͍̺͂̈́̄r̷̨̛̛̜̹͙̲̝̲̖͍̓̊͒̄̓̏͂͐͛͑̊͘c̸͇̲̲͈͕͉͍̗̐ơ̵̟̠̒̔͑͆s̶̨̢̱̱̲͇͉̪̻̖̠͊̈́̐͋́̈́͜a̸̗̩̯̳̝͈̰̅͒̂̏͛̽̓͑̈́̾ͅ ̷̢͎͎̳̖̤̥̜̀̑̈́̈́r̴̦͌͛͘o̴̩̩̯̤̝̊͗̿̉͗͂͂̆̈́͘s̶͔̼̞̱̻̭̻͑̔͛̔ḙ̸̢̀̎͗̓͊̈̊̉̚̚͝ ̸̠̰̞̬̐̆̽̅̀̈̂̌͠b̶̧̜̟͍͔̘̥͇̈́͒̃͒̈́͊̓̉́̉̐͘͘͝͝ę̵͚̀̈́̿̌̆̈́͘̕͠͝ͅh̸̛͎̱͚͕̹̘̥̠͕̟̼͝ͅî̶̞̹̺̰̎̿̊̽͒͑͑̽͝n̵̢̢̛̛̟͓̗̮̦̪̥̩͓̪̘͗͗̑̊̌̉̂͊͠͝d̵͎̭̤̲͋͌̃̎̊ ̷̧̧̛̤͇̫̝̗̻͚̐̊̈́̇̂͗̋t̵͓̻̦̻̗͇̜̼̻̫̼̭̄́͘̚h̵̨̅̉̄e̸̡̡̨̞̪̝̝̟͔̞̞͔̰̒̓͆̐͛̂̒͂̊̆̽̃̌͘ ̴̛̦̖̖̖̹̖̹̣̳̕m̶̡͉̦̣͉̳̪͖͕͍͙̪̟͌̍̏͆̐̄̂̚͘o̸̭̯̠̭͎̖͐͗̏̉͋̅͊̓̓̂̏̓̏̍͝ǫ̴͖͈̖̣̤͍̝̩̳̪̔͂̋̄̑̏̒̏̏̈́ñ̸̙̪͉͓̼̯̩͋̋̌̏̃͘̕͘.̵̙̮̾̐͠ͅ</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="dv">10</span></span>
-<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Spooky variable</span></span>
-<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">👻</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Eldritch variable</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">t̸̡͚̳͓̜̘̪̙̟̣͛̋̈̐͜ḩ̷̛̗̬̪̔̾͋̌̂̓͑̔̚͝ë̵̮̟̟̼̲̦͙̠̟́͋̇̏̓ ̶̟̱̲̠͎̙̠̆̑̈́̉̆̏̋͠͠t̷̲͉͔̘̬̪͖̗́͌̏̉̏̄͊̍̽͋̈̈́̀͝͠o̵͚͙̮͙͉̱̱͕̗̘̻͋͋͋̀́̒͝ͅw̸͖͚̖̣̭̥͍̹͚̞͕̺͇͙͌͛͋̆̿̈́̎̆̋̑͌̏͘͠͝e̵͖̝̞̙͕̤̅̃̓r̴͍̼̱̜̹͚̎̌̂͆͗̏́ṡ̷͔͉͇͗̍̆̔̕ͅ ̷̪̱̞͈̰̈́͜ǫ̷̤͍̫̠̻̣̪̻͖̒̈́͐͂̿̆̑̄̂͘f̶̠͉̯̪̪̖̦͋͝ ̶̙̻̝͆̈͠C̴̳̪̪̻̫̬̳̜̅͑̇͌̆̕a̶̡͚̼͍̺͂̈́̄r̷̨̛̛̜̹͙̲̝̲̖͍̓̊͒̄̓̏͂͐͛͑̊͘c̸͇̲̲͈͕͉͍̗̐ơ̵̟̠̒̔͑͆s̶̨̢̱̱̲͇͉̪̻̖̠͊̈́̐͋́̈́͜a̸̗̩̯̳̝͈̰̅͒̂̏͛̽̓͑̈́̾ͅ ̷̢͎͎̳̖̤̥̜̀̑̈́̈́r̴̦͌͛͘o̴̩̩̯̤̝̊͗̿̉͗͂͂̆̈́͘s̶͔̼̞̱̻̭̻͑̔͛̔ḙ̸̢̀̎͗̓͊̈̊̉̚̚͝ ̸̠̰̞̬̐̆̽̅̀̈̂̌͠b̶̧̜̟͍͔̘̥͇̈́͒̃͒̈́͊̓̉́̉̐͘͘͝͝ę̵͚̀̈́̿̌̆̈́͘̕͠͝ͅh̸̛͎̱͚͕̹̘̥̠͕̟̼͝ͅî̶̞̹̺̰̎̿̊̽͒͑͑̽͝n̵̢̢̛̛̟͓̗̮̦̪̥̩͓̪̘͗͗̑̊̌̉̂͊͠͝d̵͎̭̤̲͋͌̃̎̊ ̷̧̧̛̤͇̫̝̗̻͚̐̊̈́̇̂͗̋t̵͓̻̦̻̗͇̜̼̻̫̼̭̄́͘̚h̵̨̅̉̄e̸̡̡̨̞̪̝̝̟͔̞̞͔̰̒̓͆̐͛̂̒͂̊̆̽̃̌͘ ̴̛̦̖̖̖̹̖̹̣̳̕m̶̡͉̦̣͉̳̪͖͕͍͙̪̟͌̍̏͆̐̄̂̚͘o̸̭̯̠̭͎̖͐͗̏̉͋̅͊̓̓̂̏̓̏̍͝ǫ̴͖͈̖̣̤͍̝̩̳̪̔͂̋̄̑̏̒̏̏̈́ñ̸̙̪͉͓̼̯̩͋̋̌̏̃͘̕͘.̵̙̮̾̐͠ͅ</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Spooky variable</span></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">👻</span><span class="st">`</span> <span class="ot">&lt;-</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You could even do some maths with these variables:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">t̸̡͚̳͓̜̘̪̙̟̣͛̋̈̐͜ḩ̷̛̗̬̪̔̾͋̌̂̓͑̔̚͝ë̵̮̟̟̼̲̦͙̠̟́͋̇̏̓ ̶̟̱̲̠͎̙̠̆̑̈́̉̆̏̋͠͠t̷̲͉͔̘̬̪͖̗́͌̏̉̏̄͊̍̽͋̈̈́̀͝͠o̵͚͙̮͙͉̱̱͕̗̘̻͋͋͋̀́̒͝ͅw̸͖͚̖̣̭̥͍̹͚̞͕̺͇͙͌͛͋̆̿̈́̎̆̋̑͌̏͘͠͝e̵͖̝̞̙͕̤̅̃̓r̴͍̼̱̜̹͚̎̌̂͆͗̏́ṡ̷͔͉͇͗̍̆̔̕ͅ ̷̪̱̞͈̰̈́͜ǫ̷̤͍̫̠̻̣̪̻͖̒̈́͐͂̿̆̑̄̂͘f̶̠͉̯̪̪̖̦͋͝ ̶̙̻̝͆̈͠C̴̳̪̪̻̫̬̳̜̅͑̇͌̆̕a̶̡͚̼͍̺͂̈́̄r̷̨̛̛̜̹͙̲̝̲̖͍̓̊͒̄̓̏͂͐͛͑̊͘c̸͇̲̲͈͕͉͍̗̐ơ̵̟̠̒̔͑͆s̶̨̢̱̱̲͇͉̪̻̖̠͊̈́̐͋́̈́͜a̸̗̩̯̳̝͈̰̅͒̂̏͛̽̓͑̈́̾ͅ ̷̢͎͎̳̖̤̥̜̀̑̈́̈́r̴̦͌͛͘o̴̩̩̯̤̝̊͗̿̉͗͂͂̆̈́͘s̶͔̼̞̱̻̭̻͑̔͛̔ḙ̸̢̀̎͗̓͊̈̊̉̚̚͝ ̸̠̰̞̬̐̆̽̅̀̈̂̌͠b̶̧̜̟͍͔̘̥͇̈́͒̃͒̈́͊̓̉́̉̐͘͘͝͝ę̵͚̀̈́̿̌̆̈́͘̕͠͝ͅh̸̛͎̱͚͕̹̘̥̠͕̟̼͝ͅî̶̞̹̺̰̎̿̊̽͒͑͑̽͝n̵̢̢̛̛̟͓̗̮̦̪̥̩͓̪̘͗͗̑̊̌̉̂͊͠͝d̵͎̭̤̲͋͌̃̎̊ ̷̧̧̛̤͇̫̝̗̻͚̐̊̈́̇̂͗̋t̵͓̻̦̻̗͇̜̼̻̫̼̭̄́͘̚h̵̨̅̉̄e̸̡̡̨̞̪̝̝̟͔̞̞͔̰̒̓͆̐͛̂̒͂̊̆̽̃̌͘ ̴̛̦̖̖̖̹̖̹̣̳̕m̶̡͉̦̣͉̳̪͖͕͍͙̪̟͌̍̏͆̐̄̂̚͘o̸̭̯̠̭͎̖͐͗̏̉͋̅͊̓̓̂̏̓̏̍͝ǫ̴͖͈̖̣̤͍̝̩̳̪̔͂̋̄̑̏̒̏̏̈́ñ̸̙̪͉͓̼̯̩͋̋̌̏̃͘̕͘.̵̙̮̾̐͠ͅ</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">👻</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="st">`</span><span class="at">t̸̡͚̳͓̜̘̪̙̟̣͛̋̈̐͜ḩ̷̛̗̬̪̔̾͋̌̂̓͑̔̚͝ë̵̮̟̟̼̲̦͙̠̟́͋̇̏̓ ̶̟̱̲̠͎̙̠̆̑̈́̉̆̏̋͠͠t̷̲͉͔̘̬̪͖̗́͌̏̉̏̄͊̍̽͋̈̈́̀͝͠o̵͚͙̮͙͉̱̱͕̗̘̻͋͋͋̀́̒͝ͅw̸͖͚̖̣̭̥͍̹͚̞͕̺͇͙͌͛͋̆̿̈́̎̆̋̑͌̏͘͠͝e̵͖̝̞̙͕̤̅̃̓r̴͍̼̱̜̹͚̎̌̂͆͗̏́ṡ̷͔͉͇͗̍̆̔̕ͅ ̷̪̱̞͈̰̈́͜ǫ̷̤͍̫̠̻̣̪̻͖̒̈́͐͂̿̆̑̄̂͘f̶̠͉̯̪̪̖̦͋͝ ̶̙̻̝͆̈͠C̴̳̪̪̻̫̬̳̜̅͑̇͌̆̕a̶̡͚̼͍̺͂̈́̄r̷̨̛̛̜̹͙̲̝̲̖͍̓̊͒̄̓̏͂͐͛͑̊͘c̸͇̲̲͈͕͉͍̗̐ơ̵̟̠̒̔͑͆s̶̨̢̱̱̲͇͉̪̻̖̠͊̈́̐͋́̈́͜a̸̗̩̯̳̝͈̰̅͒̂̏͛̽̓͑̈́̾ͅ ̷̢͎͎̳̖̤̥̜̀̑̈́̈́r̴̦͌͛͘o̴̩̩̯̤̝̊͗̿̉͗͂͂̆̈́͘s̶͔̼̞̱̻̭̻͑̔͛̔ḙ̸̢̀̎͗̓͊̈̊̉̚̚͝ ̸̠̰̞̬̐̆̽̅̀̈̂̌͠b̶̧̜̟͍͔̘̥͇̈́͒̃͒̈́͊̓̉́̉̐͘͘͝͝ę̵͚̀̈́̿̌̆̈́͘̕͠͝ͅh̸̛͎̱͚͕̹̘̥̠͕̟̼͝ͅî̶̞̹̺̰̎̿̊̽͒͑͑̽͝n̵̢̢̛̛̟͓̗̮̦̪̥̩͓̪̘͗͗̑̊̌̉̂͊͠͝d̵͎̭̤̲͋͌̃̎̊ ̷̧̧̛̤͇̫̝̗̻͚̐̊̈́̇̂͗̋t̵͓̻̦̻̗͇̜̼̻̫̼̭̄́͘̚h̵̨̅̉̄e̸̡̡̨̞̪̝̝̟͔̞̞͔̰̒̓͆̐͛̂̒͂̊̆̽̃̌͘ ̴̛̦̖̖̖̹̖̹̣̳̕m̶̡͉̦̣͉̳̪͖͕͍͙̪̟͌̍̏͆̐̄̂̚͘o̸̭̯̠̭͎̖͐͗̏̉͋̅͊̓̓̂̏̓̏̍͝ǫ̴͖͈̖̣̤͍̝̩̳̪̔͂̋̄̑̏̒̏̏̈́ñ̸̙̪͉͓̼̯̩͋̋̌̏̃͘̕͘.̵̙̮̾̐͠ͅ</span><span class="st">`</span> <span class="sc">+</span> <span class="st">`</span><span class="at">👻</span><span class="st">`</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 15</code></pre>
 </div>
 </div>
 <p>Unsurprisingly, if you try this without the backticks, you will get an error:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>👻 <span class="ot">&lt;-</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>👻 <span class="ot">&lt;-</span> <span class="dv">5</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
-<pre><code>Error: &lt;text&gt;:1:1: unexpected invalid token
+<pre><code>Error in parse(text = input): &lt;text&gt;:1:1: unexpected input
 1: 👻
     ^</code></pre>
 </div>
@@ -638,16 +660,16 @@ What’s a letter?
 <h3 data-number="1.3.4" class="anchored" data-anchor-id="exercises"><span class="header-section-number">1.3.4</span> Exercises</h3>
 <div class="webex-check webex-box">
 What is the output of <code>5:10</code>?
-<div id="radio_DEUECKPMQP" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_DEUECKPMQP" value=""> <span><code>c(5, 10)</code></span></label><label><input type="radio" autocomplete="off" name="radio_DEUECKPMQP" value="answer"> <span><code>[1]  5  6  7  8  9 10</code></span></label><label><input type="radio" autocomplete="off" name="radio_DEUECKPMQP" value=""> <span><code>[1]  5  6  7  8  9</code></span></label>
+<div id="radio_QMRVMHQXCK" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_QMRVMHQXCK" value=""> <span><code>c(5, 10)</code></span></label><label><input type="radio" autocomplete="off" name="radio_QMRVMHQXCK" value="answer"> <span><code>[1]  5  6  7  8  9 10</code></span></label><label><input type="radio" autocomplete="off" name="radio_QMRVMHQXCK" value=""> <span><code>[1]  5  6  7  8  9</code></span></label>
 </div>
 What is the output of <code>10 * c(1, 2)</code>?
-<div id="radio_AYKLQNNQTC" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_AYKLQNNQTC" value="answer"> <span><code>[1] 10 20</code></span></label><label><input type="radio" autocomplete="off" name="radio_AYKLQNNQTC" value=""> <span><code>[1]  30</code></span></label><label><input type="radio" autocomplete="off" name="radio_AYKLQNNQTC" value=""> <span><code>Error in 10 * c(1, 2) : non-numeric argument to binary operator</code></span></label>
+<div id="radio_EHLVKOECGF" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_EHLVKOECGF" value="answer"> <span><code>[1] 10 20</code></span></label><label><input type="radio" autocomplete="off" name="radio_EHLVKOECGF" value=""> <span><code>[1]  30</code></span></label><label><input type="radio" autocomplete="off" name="radio_EHLVKOECGF" value=""> <span><code>Error in 10 * c(1, 2) : non-numeric argument to binary operator</code></span></label>
 </div>
 What is the output of <code>c(3, 4, 6, 2)[2]</code>?
-<div id="radio_TEZCSCFHGJ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_TEZCSCFHGJ" value="answer"> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_TEZCSCFHGJ" value=""> <span><code>[1] 3 4 6 2</code></span></label>
+<div id="radio_MKFFHGZTWD" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MKFFHGZTWD" value="answer"> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_MKFFHGZTWD" value=""> <span><code>[1] 3 4 6 2</code></span></label>
 </div>
 <p>Look at the variable names in the following list. Some of them are very bad names for <em>stylistic</em> reasons, but will they be accepted by R? I.e., are they syntactically valid?</p>
 <ul>
@@ -674,8 +696,8 @@ What is the output of <code>c(3, 4, 6, 2)[2]</code>?
 <p>Usually you will run code by selecting it and pressing <code>Cmd + Return</code> (macOS) or <code>Ctrl + Enter</code> (Windows).<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> If you have no code selected, this command will run the line which your cursor is on. The alternative is to run the entire script all at once. This can be done by pressing <code>Source</code> at the top right of the source pane.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
 <p>Enter the following into your new script then run it. You should see the output in the console pane.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="sc">^</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="sc">^</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 36 81 16 25  4  4</code></pre>
 </div>
@@ -702,9 +724,9 @@ Copying vs.&nbsp;typing
 <p>It is important to leave <strong>comments</strong>, so that your code can be interpreted by other researchers (including yourself in the future). Anything which appears in a line after a <code>#</code> is a comment and will be ignored by R.</p>
 <p>We could change our script as follows, and the result will be identical:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
-<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Square each element of my cool vector and output to console.</span></span>
-<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="sc">^</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Square each element of my cool vector and output to console.</span></span>
+<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="sc">^</span> <span class="dv">2</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 36 81 16 25  4  4</code></pre>
 </div>
@@ -716,8 +738,8 @@ Copying vs.&nbsp;typing
 <p>The simplest version of this is a <strong>matrix</strong>. Matricies are like vectors in that they can only contain elements of the same type.</p>
 <p>Add the following lines to your script and run them:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>my_cool_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(my_cool_vector, <span class="at">nrow =</span> <span class="dv">3</span>)</span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>my_cool_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>my_cool_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(my_cool_vector, <span class="at">nrow =</span> <span class="dv">3</span>)</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>my_cool_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2]
 [1,]    6    5
@@ -731,16 +753,16 @@ Copying vs.&nbsp;typing
 <p>Often our data will comes in many different types. For instance, it might include <em>numbers</em> indicating the age of a participant, or which of a series of options they chose. It might also include <em>words</em> (strings) indicating which experimental condition they are in, or a transcript of an interview. Matricies can’t handle having elements of different types, but <strong>data frames</strong> can.</p>
 <p>We create data frames using the <code>data.frame</code> function. Enter the following into your script and run it:<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We repeat this line from above because subsequent code modified </span></span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="co"># `my_cool_vector`.</span></span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>my_data_frame <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"numbers"</span> <span class="ot">=</span> my_cool_vector,</span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"letters"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"N"</span>, <span class="st">"Z"</span>, <span class="st">"I"</span>, <span class="st">"L"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>)</span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a>my_data_frame</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We repeat this line from above because subsequent code modified </span></span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="co"># `my_cool_vector`.</span></span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>my_cool_vector <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">2</span>)</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>my_data_frame <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>  <span class="st">"numbers"</span> <span class="ot">=</span> my_cool_vector,</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>  <span class="st">"letters"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="st">"N"</span>, <span class="st">"Z"</span>, <span class="st">"I"</span>, <span class="st">"L"</span>, <span class="st">"B"</span>, <span class="st">"B"</span>)</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a>my_data_frame</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 2
   numbers letters
@@ -756,7 +778,7 @@ Copying vs.&nbsp;typing
 <p>We now have a data frame with a column of <em>numbers</em> and a column of corresponding <em>letters</em>. We have also given each of these columns a name ( ‘numbers’ for the column of numbers and ‘letters’ for the column of letters). Each row of the data frame is an observation, and each column is a variable.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a> Perhaps you can figure out what the association between the two variables is.</p>
 <p>When we have names for columns, we can access the column using the name by means of the <code>$</code> symbol:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>my_data_frame<span class="sc">$</span>numbers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>my_data_frame<span class="sc">$</span>numbers</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 6 9 4 5 2 2</code></pre>
 </div>
@@ -767,23 +789,23 @@ Copying vs.&nbsp;typing
 <p>We have now seen a few <strong>functions</strong> (<code>matrix</code> to create a matrix, and <code>data.frame</code> to create a data frame). Functions are what we use to perform data analysis tasks in R. To apply a function, we write its name and then enter a series of <strong>arguments</strong> inside brackets. The arguments are the information which we pass for the function in order for it to do its work. Usually functions produce an output, which we can either see in the console or save to a variable.</p>
 <p>Recall the matrix code from above:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a>my_cool_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(my_cool_vector, <span class="at">nrow =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>my_cool_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(my_cool_vector, <span class="at">nrow =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Here the <code>matrix</code> function is given two arguments. The first is the vector <code>my_cool_vector</code> and the second is <code>nrow = 3</code>. The two arguments are separated by a comma. If we want to work out what the arguments to a function are, we can look at the help page for the function. To do that enter the following in either the script or the console:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>?matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>?matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>You should now see the help screen in the output pane (bottom right). This help page tells you about three related functions. In the ‘usage’ section, you will see some code examples which use the functions. The section <code>arguments</code> tells you what you can include as an argument to the function. So, for instance, you see that the <code>nrow</code> argument expects you to tell it how many rows you want the matrix to have.</p>
 <p>The functions come in the order they appear in the usage example. In this case, each of the possible arguments is <em>named</em>. So, for instance, the first argument is called <code>data</code>. We did not enter this explicitly when we used the argument. But we could have:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>my_cool_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> my_cool_vector, <span class="at">nrow =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>my_cool_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> my_cool_vector, <span class="at">nrow =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Sometimes it makes your code more clear to include the names of arguments. This is a judgement call.</p>
 <p>The help screen also shows the default values for these arguments. If there are default values, then you don’t need to manually the argument. If you are modifying only one argument, which appears latter in the list, then you will need to use the name.</p>
 <p>For instance, if we wanted to say the matrix has two columns (rather than three rows), we would have to add <code>ncol</code> as a named argument when we call the function:<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb62"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb62-1"><a href="#cb62-1" aria-hidden="true" tabindex="-1"></a>my_cool_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(my_cool_vector, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
-<span id="cb62-2"><a href="#cb62-2" aria-hidden="true" tabindex="-1"></a>my_cool_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>my_cool_matrix <span class="ot">&lt;-</span> <span class="fu">matrix</span>(my_cool_vector, <span class="at">ncol =</span> <span class="dv">3</span>)</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>my_cool_matrix</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>     [,1] [,2] [,3]
 [1,]    6    4    2
@@ -798,38 +820,38 @@ Copying vs.&nbsp;typing
 <p>Well start with a silly package: <code>cowsay</code>.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> This package produces text art animals who will ‘say’ whatever text you enter.</p>
 <p>To install a package, enter the following to the console:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'cowsay'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'cowsay'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This means that the package <code>cowsay</code> is now installed on your computer. To use it in a script, you need to enter the following at the top of your script:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowsay)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(cowsay)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>By convention, we add libraries at the start of a script. This lets other researchers see exactly what is needed to run the script at the start. In addition, packages sometimes conflict with one another, and it is important to see this before we carry out any data analysis.</p>
 <p>To see what functions <code>cowsay</code> has, look at the documentation. If you want to see the names of functions, you can enter <code>cowsay::</code> and RStudio will suggest the names of functions. You can add a <code>?</code> in front of any of these function names to see the help file for the function. Often packages have one or more ‘vignettes’ which explain the package. To see what vignettes come with the <code>cowsay</code> package enter <code>vignette(package="cowsay")</code>. In this case, there is only one, called “cowsay”. To open this in the output pane enter <code>vignette("cowsay", package="cowsay")</code>.</p>
 <p>There are two functions which come with <code>cowsay</code>: <code>say</code> and <code>endless_horse</code>. The function we will use is called <code>say</code>, so enter <code>?say</code> in the console.</p>
 <p>Now enter the following into your script:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="fu">say</span>(</span>
-<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">what =</span> <span class="st">""</span>, <span class="co"># Write your own quote here (between the quotation marks)</span></span>
-<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">""</span> <span class="co"># Enter a 'type of thing' from the list on the help page.</span></span>
-<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">say</span>(</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">what =</span> <span class="st">""</span>, <span class="co"># Write your own quote here (between the quotation marks)</span></span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">""</span> <span class="co"># Enter a 'type of thing' from the list on the help page.</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Here, I have used comments to indicate what you need to do to complete the code.</p>
 <p>Here’s one possible completion:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="fu">say</span>(</span>
-<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">what =</span> <span class="st">"It sure is lonely down here."</span>,</span>
-<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">"whale"</span></span>
-<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb68"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb68-1"><a href="#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="fu">say</span>(</span>
+<span id="cb68-2"><a href="#cb68-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">what =</span> <span class="st">"It sure is lonely down here."</span>,</span>
+<span id="cb68-3"><a href="#cb68-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="st">"whale"</span></span>
+<span id="cb68-4"><a href="#cb68-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
-            ------ 
-           It sure is lonely down here. 
-            ------ 
-               \   
-                \  
-                 \
-     .-'          
+ ______________________________ 
+&lt; It sure is lonely down here. &gt;
+ ------------------------------ 
+  \
+   \
+
+     .-'
 '--./ /     _.---.
 '-,  (__..-`       \
    \          .     |
@@ -840,10 +862,10 @@ Copying vs.&nbsp;typing
 <p>Sometimes packages contain data. This is one way to get data in to your R session.</p>
 <p>In fact, there’s plenty of data built in to R. Often this is used to demonstrate different functions. To see these, enter <code>data()</code> in the console. You can load one of these datasets in to your script by entering the name of the dataset as an argument to the function <code>data()</code>. The following code block loads up one of these datasets.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(warpbreaks)</span>
-<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="co"># To view the data in RStudio, use `View` instead of `head`.</span></span>
-<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(warpbreaks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(warpbreaks)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-3"><a href="#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="co"># To view the data in RStudio, use `View` instead of `head`.</span></span>
+<span id="cb70-4"><a href="#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(warpbreaks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 3
   breaks wool  tension
@@ -859,7 +881,7 @@ Copying vs.&nbsp;typing
 <p>There datasets also have help pages (see <code>?warpbreaks</code>). What does this data represent?</p>
 <p>As a final bit of R code, and to show you another function in action, let’s plot the numeric information in <code>warpbreaks</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(warpbreaks<span class="sc">$</span>breaks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(warpbreaks<span class="sc">$</span>breaks)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -874,15 +896,15 @@ Copying vs.&nbsp;typing
 <h3 data-number="1.4.4" class="anchored" data-anchor-id="exercises-1"><span class="header-section-number">1.4.4</span> Exercises</h3>
 <div class="webex-check webex-box">
 What is the output of <code># 2 + 2</code>?
-<div id="radio_KUBFLQXSGI" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_KUBFLQXSGI" value=""> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_KUBFLQXSGI" value=""> <span><code>2 + 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_KUBFLQXSGI" value="answer"> <span>Nothing.</span></label>
+<div id="radio_WYTPCCPAGU" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_WYTPCCPAGU" value=""> <span><code>[1] 4</code></span></label><label><input type="radio" autocomplete="off" name="radio_WYTPCCPAGU" value=""> <span><code>2 + 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_WYTPCCPAGU" value="answer"> <span>Nothing.</span></label>
 </div>
 <p>Consider the following code to create a matrix:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb72"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb72-1"><a href="#cb72-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(</span>
-<span id="cb72-2"><a href="#cb72-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>,</span>
-<span id="cb72-3"><a href="#cb72-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ncol =</span> <span class="dv">5</span></span>
-<span id="cb72-4"><a href="#cb72-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(</span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>,</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">ncol =</span> <span class="dv">5</span></span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>How many columns does the matrix have? <select class="webex-select"><option value="blank"></option><option value="">10</option><option value="answer">5</option><option value="">Not enough information.</option></select></p>
 <p>Have a look at the documentation for the function <code>say()</code>, are the following statements true or false:</p>
