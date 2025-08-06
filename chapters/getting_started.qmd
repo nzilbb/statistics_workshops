@@ -8,7 +8,7 @@ chapter by entering the following code in the console pane:
 
 ```r
 usethis::create_from_github(
-  "https://github.com/nzilbb/ws-getting-started
+  "https://github.com/nzilbb/ws-getting-started"
 )
 ```
 :::
