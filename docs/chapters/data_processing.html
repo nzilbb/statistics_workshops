@@ -300,6 +300,7 @@ window.Quarto = {
   <li><a href="#reading-in-data-again" id="toc-reading-in-data-again" class="nav-link" data-scroll-target="#reading-in-data-again"><span class="header-section-number">2.2.1</span> Reading in Data (again!)</a></li>
   <li><a href="#some-dplyr-verbs" id="toc-some-dplyr-verbs" class="nav-link" data-scroll-target="#some-dplyr-verbs"><span class="header-section-number">2.2.2</span> Some <code>dplyr</code> Verbs</a></li>
   <li><a href="#grouped-data" id="toc-grouped-data" class="nav-link" data-scroll-target="#grouped-data"><span class="header-section-number">2.2.3</span> Grouped Data</a></li>
+  <li><a href="#pivoting-data" id="toc-pivoting-data" class="nav-link" data-scroll-target="#pivoting-data"><span class="header-section-number">2.2.4</span> Pivoting data</a></li>
   </ul></li>
   <li><a href="#further-resources" id="toc-further-resources" class="nav-link" data-scroll-target="#further-resources"><span class="header-section-number">2.3</span> Further Resources</a></li>
   </ul>
@@ -327,32 +328,39 @@ window.Quarto = {
 </header>
 
 
-<p>In this chapter, we’ll look at some common things you will need to do with data. We will also begin to work with a series of packages called the <code>tidyverse</code>, which implement a series of data processing and visualising techniques on top of base R.</p>
-<p>I tend to use the <code>tidyverse</code> when I work with data, but there are many people who prefer “base R” (i.e., not the <code>tidyverse</code>). We will look at some base R approaches as these workshops progress, and especially in this chapter, but the majority of the code I put in front of you will use at least some <code>tidyverse</code> methods.</p>
-<p>The easiest way to follow the code in this chapter is to run the following code in the R console: <code>usethis::use_course('nzilbb/getting_started_sessions')</code>. This will download a file from GitHub and use it to generate a new RStudio session along with the necessary data. It also contains the beginning of a script for this chapter (in <code>scripts/session_2.R</code>). If this line doesn’t work, the most likely problem is that you need to install the <code>usethis</code> package first (<code>install.packages('usethis')</code>).</p>
 <div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
+<div class="callout-header d-flex align-content-center" data-bs-toggle="collapse" data-bs-target=".callout-1-contents" aria-controls="callout-1" aria-expanded="false" aria-label="Toggle callout">
 <div class="callout-icon-container">
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-Note
+Access related workshop materials and data
 </div>
+<div class="callout-btn-toggle d-inline-block border-0 py-1 ps-1 pe-0 float-end"><i class="callout-toggle"></i></div>
 </div>
+<div id="callout-1" class="callout-1-contents callout-collapse collapse">
 <div class="callout-body-container callout-body">
-<p>You might have difficulty with <code>usethis::use_course()</code> if you have previously linked RStudio and GitHub, but your access token has now expired. To fix this, follow the instructions at <a href="https://happygitwithr.com/https-pat" class="uri">https://happygitwithr.com/https-pat</a>. To ignore the problem for now and continue with the workshop, just go to <a href="https://github.com/nzilbb/getting_started_sessions/" class="uri">https://github.com/nzilbb/getting_started_sessions/</a>, click the big green button, select ‘Downloads Zip’, unzip the downloaded file somewhere sensible (e.g., a folder in your Documents folder for R projects), and double click on <code>getting_started.Rproj</code>.</p>
+<p>If you have followed the <a href="https://nzilbb.github.io/statistics_workshops/#sec-induction">induction instructions</a> on the homepage, you can access a workshop which is closely related to this chapter, and get access to the data, by entering the following code in the console pane:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>usethis<span class="sc">::</span><span class="fu">create_from_github</span>(</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"https://github.com/nzilbb/ws-data-processing"</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </div>
-<p>Start a script (or open <code>scripts/session_2.R</code>) with the code in the following cell. Try to run the code. If R complains, ensure each package is installed. If it isn’t, run <code>install.packages("PACKAGE NAME")</code> where you replace <code>PACKAGE NAME</code> with the name of the package. Make sure the package name is inside quotation marks.</p>
+</div>
+<p>In this chapter, we’ll look at some common things you will need to do with data. We will also begin to work with a series of packages called the <code>tidyverse</code>, which implement a series of data processing and visualising techniques on top of base R.</p>
+<p>I tend to use the <code>tidyverse</code> when I work with data, but there are many people who prefer “base R” (i.e., not the <code>tidyverse</code>). We will look at some base R approaches as these workshops progress, and especially in this chapter, but the majority of the code I put in front of you will use at least some <code>tidyverse</code> methods.</p>
+<p>The easiest way to interact with this chapter is to run the code in the callout block above. This will set up a new RStudio project and provide all the data you need. However, you may wish to set up your own project and avoid GitHub. If so, you need to have <a href="https://github.com/nzilbb/ws-data-processing/blob/6b3babe0505ffde3a3350fdfe04863f54bf4256b/data/qb_vowels.csv">this data file</a> inside a folder called <code>data</code> inside your project. To download the file after following the link, click the download button at the right of the toolbar.</p>
+<p><img src="images/bar.png" class="img-fluid" alt="The download button on the GitHub toolbar."> Now either make your own new script and enter in the code from each of the blocks below, or open <code>scripts/data_processing.R</code> to follow along.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We load two packages from the 'tidyverse' by name. `dplyr` includes functions</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co"># for manipulating data. `readr` includes a series of functions for reading</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># data in to R.</span></span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># This package helps to manage the paths to files.</span></span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># We load three packages from the 'tidyverse' by name. `dplyr` includes</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># functions for manipulating data. `readr` includes a series of functions for</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="co"># reading data in to R, and `tidyr` to pivot data.</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readr)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># This package helps to manage the paths to files.</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="processing-data-in-base-r." class="level2" data-number="2.1">
 <h2 data-number="2.1" class="anchored" data-anchor-id="processing-data-in-base-r."><span class="header-section-number">2.1</span> Processing Data in Base R.</h2>
@@ -367,11 +375,11 @@ Note
 <p>There are other possibilities as well. Perhaps, for instance, you are collaborating with someone using SPSS or some other statistical software. There are too many cases to consider here. Usually a quick search online will tell you what you need to do.</p>
 <p>Here, we’ll load a csv of reading from vowels from the QuakeBox corpus using the base R <code>read.csv</code> function. The most simple approach is:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>vowels <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'data/qb_vowels.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>vowels <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">'data/qb_vowels.csv'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>I often use the <code>here</code> package to manage file paths. These can be a little finicky, especially when shifting between devices and operating systems. In an R project, the function <code>here()</code> starts from the root directory of the project. We then add arguments to the function containing the names of the directories and files that we want. The <code>here</code> version of the previous line of code is:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>vowels <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'qb_vowels.csv'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>vowels <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'qb_vowels.csv'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Look in your file browser to make sure you understand where the file you are loading lives and how the path you enter, either using relative paths within an R project and/or using the <code>here</code> package, relates to the file.</p>
 <div class="callout callout-style-default callout-warning callout-titled">
@@ -391,7 +399,7 @@ Warning
 </div>
 <p>We should always check a few entries to make sure the data is being read in correctly. The <code>head()</code> function is very useful.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vowels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vowels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 14
   speaker     vowel F1_50 F2_50 participant_age_category participant_gender
@@ -410,7 +418,7 @@ Warning
 <p>We see a mix of numerical values and characters.</p>
 <p>Another useful function is <code>summary</code> which provides some nice descriptive statistics.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vowels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(vowels)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   speaker             vowel               F1_50            F2_50     
  Length:26331       Length:26331       Min.   : 208.0   Min.   : 473  
@@ -432,7 +440,7 @@ Warning
  Min.   :     0   Length:26331       Min.   :   0.54   Min.   :0.03000  
  1st Qu.:   688   Class :character   1st Qu.: 150.30   1st Qu.:0.05000  
  Median :  2859   Mode  :character   Median : 313.10   Median :0.08000  
- Mean   :  8204                      Mean   : 472.27   Mean   :0.08747  
+ Mean   :  8204                      Mean   : 472.27   Mean   :0.08746  
  3rd Qu.:  7540                      3rd Qu.: 578.62   3rd Qu.:0.11000  
  Max.   :111471                      Max.   :3352.78   Max.   :1.81000  
  NA's   :7                                                              
@@ -449,8 +457,8 @@ Warning
 <p>Look at the values for <code>amplitude</code>. Reading down the column we see that the minimum value for amplitude is <span class="math inline">\(35.53\)</span>, the first quartile is <span class="math inline">\(61.94\)</span>, and so on, until we read the entry <code>NA's</code>, which tells us that <span class="math inline">\(31\)</span> entries in the column are missing.</p>
 <p>Many of the entries in this summary just say <code>Class: character</code>. Sometimes, we can get more information by turning a column into a <strong>factor</strong> variable. A factor variable is like a <strong>character</strong> variable, except that it also stores the range of possible values for the column. So, for instance, there is a short list of possible vowels in this data set. We can use the <code>factor()</code> function to create a factor variable and look at the resulting summary.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The use of `$` here will be explained in a moment.</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">factor</span>(vowels<span class="sc">$</span>vowel))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># The use of `$` here will be explained in a moment.</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(<span class="fu">factor</span>(vowels<span class="sc">$</span>vowel))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  DRESS  FLEECE    FOOT   GOOSE     KIT     LOT   NURSE   START   STRUT THOUGHT 
    4596    3379     741    1454    3639    2428    1137    1272    3162    2012 
@@ -473,12 +481,12 @@ Warning
 <p>How do we see what values are in a data frame? In RStudio, we can always click on the name of the data frame in the environment pane (recall: the environment pane is at the top right of the RStudio window). This will open the data as a tab in the source pane. It should look like a familiar spreadsheet programme, with the exception that you can’t <em>modify</em> the values.</p>
 <p>You will very frequently see code that looks like this <code>some_name$some_other_name</code>. This allows us to access the object with the name <code>some_other_name</code> <em>from</em> an object with the name <code>some_name</code>. We’ve just loaded a big data frame. This data frame has a name (<code>vowels</code> — which you can see in the environment pane) <strong>and</strong> it has columns which also have names (for instance, <code>participant_age_category</code>). We can get access to these columns using <code>$</code>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>word_frequencies <span class="ot">&lt;-</span> vowels<span class="sc">$</span>word_freq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>word_frequencies <span class="ot">&lt;-</span> vowels<span class="sc">$</span>word_freq</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Look in the environment pane in the ‘Values’ section and you will see a new name (<code>word_frequencies</code>), followed by its type (‘int’ for ‘integer’ — numbers that don’t need a decimal point), how many values it has (<span class="math inline">\(26331\)</span>) and the first few values in the vector. So the <code>$</code> has taken a single column from the data frame we loaded earlier and we have assigned this to the variable <code>word_frequencies</code>). Enter the name <code>word_frequencies</code> in your console, and you will see all of the values from the <code>word_frequencies</code> vector.</p>
 <p>There are a few ways to access values from this vector. We can use square brackets to get a vector which contains a subset of the original vector. If we wanted the first hundred elements from the vector, we would use square brackets and a colon:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>word_frequencies[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>word_frequencies[<span class="dv">1</span><span class="sc">:</span><span class="dv">100</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [1]     38   1606     97   5476   5151    845    797  34640    726   5879
  [11]   2405  24552   1233    556    347   2038   2175     63  24552     24
@@ -494,14 +502,14 @@ Warning
 </div>
 <p>The colon produces a sequence from the number on the left to the number on the right, and the square brackets produce a subset of <code>word_frequencies</code>. We can put a single number inside square brackets. The result is a vector with a single value in it:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>word_frequencies[<span class="dv">7</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>word_frequencies[<span class="dv">7</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 797</code></pre>
 </div>
 </div>
 <p>We can also use negative numbers to <em>exclude</em> the numbered elements. Here we exclude the values from 1 to 26231.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>word_frequencies[<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">26231</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>word_frequencies[<span class="sc">-</span><span class="dv">1</span><span class="sc">:-</span><span class="dv">26231</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [1]  1625   136   136   128  4628   661    10  1938   244  2134  6515   424
  [13] 34640 14049  7749   750   892   384  2178  7749  2178   101  4161 26215
@@ -516,7 +524,7 @@ Warning
 </div>
 <p>This is equivalent to:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>word_frequencies[<span class="dv">26232</span><span class="sc">:</span><span class="dv">26331</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>word_frequencies[<span class="dv">26232</span><span class="sc">:</span><span class="dv">26331</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  [1]  1625   136   136   128  4628   661    10  1938   244  2134  6515   424
  [13] 34640 14049  7749   750   892   384  2178  7749  2178   101  4161 26215
@@ -531,7 +539,7 @@ Warning
 </div>
 <p>The use of the colon (<code>:</code>) creates a vector whose elements make up a numerical sequence. The vector we put inside the square brackets doesn’t need to be a sequence though. If we wanted the 3rd, 6th, 10th, and 750th entries in the vector we would say:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>word_frequencies[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">10</span>, <span class="dv">750</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>word_frequencies[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">10</span>, <span class="dv">750</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]   97  845 5879  644</code></pre>
 </div>
@@ -539,7 +547,7 @@ Warning
 <p>We are again using <code>c()</code> to create a vector.</p>
 <p>You can’t mix negative and positive numbers here:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>word_frequencies[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">6</span>, <span class="sc">-</span><span class="dv">10</span>, <span class="dv">750</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>word_frequencies[<span class="fu">c</span>(<span class="dv">3</span>, <span class="dv">6</span>, <span class="sc">-</span><span class="dv">10</span>, <span class="dv">750</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in word_frequencies[c(3, 6, -10, 750)]: only 0's may be mixed with negative subscripts</code></pre>
 </div>
@@ -547,8 +555,8 @@ Warning
 <p>In this case, the error message is reasonably understandable.</p>
 <p>In addition to numeric vector, we can subset with <strong>logical vectors</strong>. These are vectors which contain the values <code>TRUE</code> and <code>FALSE</code>. This is particularly important for <strong>filtering</strong> data. Let’s look at a simple example. We’ll create a vector of imagined participant ages and then create a logical vector which represents whether the participants are over 18 or not.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>participant_ages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">19</span>, <span class="dv">44</span>, <span class="dv">33</span>, <span class="dv">2</span>, <span class="dv">90</span>, <span class="dv">4</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>participant_ages <span class="sc">&gt;</span> <span class="dv">18</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>participant_ages <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">10</span>, <span class="dv">19</span>, <span class="dv">44</span>, <span class="dv">33</span>, <span class="dv">2</span>, <span class="dv">90</span>, <span class="dv">4</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>participant_ages <span class="sc">&gt;</span> <span class="dv">18</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] FALSE  TRUE  TRUE  TRUE FALSE  TRUE FALSE</code></pre>
 </div>
@@ -556,14 +564,14 @@ Warning
 <p>The first participant is <strong>not</strong> older than <span class="math inline">\(18\)</span>, so their value is <code>FALSE</code>.</p>
 <p>Now, say we want the actual ages of those participants who are older than 18 we can combine the two lines above</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>participant_ages[participant_ages <span class="sc">&gt;</span> <span class="dv">18</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>participant_ages[participant_ages <span class="sc">&gt;</span> <span class="dv">18</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 19 44 33 90</code></pre>
 </div>
 </div>
 <p>If you want a single element from a vector, then you use double square brackets (<code>[[]]</code>). So, for instance, the following will not work because it attempts to get two elements using double square brackets:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>participant_ages[[<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>)]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>participant_ages[[<span class="fu">c</span>(<span class="dv">2</span>, <span class="dv">3</span>)]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in participant_ages[[c(2, 3)]]: attempt to select more than one element in vectorIndex</code></pre>
 </div>
@@ -571,14 +579,14 @@ Warning
 <p>While this may seem like a very small difference, it can be a source of errors in practice. Some functions care about the difference between, say, a <em>single</em> number and a <em>list</em> containing a single number.</p>
 <p>We can use square brackets with data frames too. The only differences comes from the fact that data frames are two dimensional whereas vectors are one dimensional. If we want the entry in the second row and the third column of the <code>vowels</code> data, we do this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>vowels[<span class="dv">2</span>, <span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>vowels[<span class="dv">2</span>, <span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 440</code></pre>
 </div>
 </div>
 <p>We can again use sequences or vectors. For instance:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>vowels[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>vowels[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="dv">4</span><span class="sc">:</span><span class="dv">6</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 3
   F2_50 participant_age_category participant_gender
@@ -591,8 +599,8 @@ Warning
 <p>Here we get the values for the first three rows of the data frame from the fourth, fifth, and sixth columns.</p>
 <p>If we want to specify <em>just</em> rows, or <em>just</em> columns, we can leave a blank space inside the square brackets:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rows only:</span></span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>vowels[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="co"># rows only:</span></span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>vowels[<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 14
   speaker     vowel F1_50 F2_50 participant_age_category participant_gender
@@ -606,8 +614,8 @@ Warning
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># columns only:</span></span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>vowels[, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="co"># columns only:</span></span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>vowels[, <span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 26,331 × 3
    speaker     vowel F1_50
@@ -627,15 +635,15 @@ Warning
 </div>
 <p>The filtering code we looked at above is now a little more useful. What if we want to explore just the data from the female participants? We can use a logical vector again and the names of the columns.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>vowels_f <span class="ot">&lt;-</span> vowels[vowels<span class="sc">$</span>participant_gender <span class="sc">==</span> <span class="st">"F"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>vowels_f <span class="ot">&lt;-</span> vowels[vowels<span class="sc">$</span>participant_gender <span class="sc">==</span> <span class="st">"F"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We have just filtered <em>the entire data frame</em> using the values of a single column. Look at the environment pain and you should now see two data frames: <code>vowels</code> and <code>vowels_f</code>. You should also see that one has many fewer rows than the other.</p>
 <p><strong>NB:</strong> Don’t confuse <code>==</code> and <code>=</code>! The double <code>==</code> is used to test whether the left side and the right side are equal. The single <code>=</code> behaves like <code>&lt;-</code>. Here’s the kind of error you will see if you confused them:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This code is incorrect</span></span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>vowels_f <span class="ot">&lt;-</span> vowels[vowels<span class="sc">$</span>participant_gender <span class="ot">=</span> <span class="st">"F"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This code is incorrect</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>vowels_f <span class="ot">&lt;-</span> vowels[vowels<span class="sc">$</span>participant_gender <span class="ot">=</span> <span class="st">"F"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
-<pre><code>Error: &lt;text&gt;:2:46: unexpected '='
+<pre><code>Error in parse(text = input): &lt;text&gt;:2:46: unexpected '='
 1: # This code is incorrect
 2: vowels_f &lt;- vowels[vowels$participant_gender =
                                                 ^</code></pre>
@@ -644,39 +652,39 @@ Warning
 <p>It says <code>unexpected '='</code>. Usually this is a good sign that you should use <code>==</code>.</p>
 <p>We can also use <em>names</em> to filter. We know already that columns have names. We can give their names inside the square brackets. For instance:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>vowels_formants <span class="ot">&lt;-</span> vowels[, <span class="fu">c</span>(<span class="st">"F1_50"</span>, <span class="st">"F2_50"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>vowels_formants <span class="ot">&lt;-</span> vowels[, <span class="fu">c</span>(<span class="st">"F1_50"</span>, <span class="st">"F2_50"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The above creates a data frame called <code>vowels_formants</code> containing <em>all rows</em> of the vowel data but only the columns with the names “F1_50” and “F2_50”.</p>
 <p>With data frames, you can also just enter the names without the comma.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>vowels_formants <span class="ot">&lt;-</span> vowels[<span class="fu">c</span>(<span class="st">"F1_50"</span>, <span class="st">"F2_50"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>vowels_formants <span class="ot">&lt;-</span> vowels[<span class="fu">c</span>(<span class="st">"F1_50"</span>, <span class="st">"F2_50"</span>)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This code has the same effect as the previous code.</p>
 <p>To get access to a single column, you can use a name with double square brackets. e.g.:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>word_frequencies <span class="ot">&lt;-</span> vowels[[<span class="st">"word_freq"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>word_frequencies <span class="ot">&lt;-</span> vowels[[<span class="st">"word_freq"</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>In fact, <code>some_name$some_other_name</code> is a shorthand form of <code>some_name[["some_other_name"]]</code>. A single element of a list or vector returned by <code>$</code> and <code>[[]]</code>, whereas <code>[]</code> returns a list or vector which may contain multiple elements.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div class="webex-check webex-box">
 If <code>data_frame</code> is a data frame, what will <code>data_frame[5:6, ]</code> return?
-<div id="radio_SQMILHUCDR" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_SQMILHUCDR" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_SQMILHUCDR" value="answer"> <span>The fifth and sixth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_SQMILHUCDR" value=""> <span>The fifth and sixth columns of the data frame</span></label>
+<div id="radio_PMLNHGMTZP" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_PMLNHGMTZP" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_PMLNHGMTZP" value="answer"> <span>The fifth and sixth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_PMLNHGMTZP" value=""> <span>The fifth and sixth columns of the data frame</span></label>
 </div>
 If <code>data_frame</code> is a data frame, what will <code>data_frame[, c(3, 6, 9)]</code> return?
-<div id="radio_VKIUSTEVKD" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_VKIUSTEVKD" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_VKIUSTEVKD" value=""> <span>The third, sixth, and ninth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_VKIUSTEVKD" value="answer"> <span>The third, sixth, and ninth column of the data frame.</span></label>
+<div id="radio_NCFYDVTPTW" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_NCFYDVTPTW" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_NCFYDVTPTW" value=""> <span>The third, sixth, and ninth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_NCFYDVTPTW" value="answer"> <span>The third, sixth, and ninth column of the data frame.</span></label>
 </div>
 <p>Imagine you save a vector to the variable <code>vector_name</code>, as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>vector_name <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>vector_name <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 What would be the output of <code>vector_name &gt; 2</code>?
-<div id="radio_NDPKWVXQWL" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_NDPKWVXQWL" value="answer"> <span><code>[1]  TRUE FALSE  TRUE  TRUE FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_NDPKWVXQWL" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_NDPKWVXQWL" value=""> <span><code>FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_NDPKWVXQWL" value=""> <span><code>[1] TRUE TRUE TRUE TRUE TRUE</code></span></label>
+<div id="radio_POXRYKKFUQ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_POXRYKKFUQ" value="answer"> <span><code>[1]  TRUE FALSE  TRUE  TRUE FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_POXRYKKFUQ" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_POXRYKKFUQ" value=""> <span><code>FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_POXRYKKFUQ" value=""> <span><code>[1] TRUE TRUE TRUE TRUE TRUE</code></span></label>
 </div>
 What would be the output of <code>vector_name[3, 5]</code>?
-<div id="radio_TVOIKWCGLL" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_TVOIKWCGLL" value=""> <span><code>[1] 7 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_TVOIKWCGLL" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_TVOIKWCGLL" value="answer"> <span><code>Error in vector_name[3, 5] : incorrect number of dimensions</code></span></label>
+<div id="radio_KQGELTBQPB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KQGELTBQPB" value=""> <span><code>[1] 7 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_KQGELTBQPB" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_KQGELTBQPB" value="answer"> <span><code>Error in vector_name[3, 5] : incorrect number of dimensions</code></span></label>
 </div>
 </div>
 </section>
@@ -685,13 +693,13 @@ What would be the output of <code>vector_name[3, 5]</code>?
 <p>We’ve learned how to get <em>access</em> to data. But how to we <em>change</em> it? Usually this is as simple as an application of the <code>&lt;-</code>, which we have already seen.</p>
 <p>The following block of code creates a new column in <code>vowels</code> which contains a log transformation of the word frequency column. Often this is a sensible thing to do with word frequency data.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>vowels<span class="sc">$</span>word_freq_ln <span class="ot">&lt;-</span> <span class="fu">log</span>(vowels<span class="sc">$</span>word_freq <span class="sc">+</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>vowels<span class="sc">$</span>word_freq_ln <span class="ot">&lt;-</span> <span class="fu">log</span>(vowels<span class="sc">$</span>word_freq <span class="sc">+</span> <span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>This statement uses a few things we have already seen. Reading from the inside out, we see that the column with the name <code>word_freq</code> is being referenced from the <code>vowels</code> data frame (<code>vowels$word_freq</code>), and every element in the column is being increased by <span class="math inline">\(1\)</span>. Why? Well the logarithm of <span class="math inline">\(0\)</span> is not defined and there are some <span class="math inline">\(0\)</span>’s in this column. We take the log using the <code>log()</code> function (have a look at the documentation to see what the default behaviour of the function is). Finally, we use the <code>&lt;-</code> to put this data into a new column in the <code>vowels</code> data frame which we call <code>word_freq_ln</code>.</p>
 <p>We can do this to individual elements as well. For instance, if we want to change the third entry in the <code>participant_ages</code> vector to <span class="math inline">\(65\)</span>, we would write <code>participant_ages[3] &lt;- 65</code>.</p>
 <p>If we want to change the age of all participants with ages below 18 to <span class="math inline">\(0\)</span>, for whatever reason, we could say:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>participant_ages[participant_ages <span class="sc">&lt;</span> <span class="dv">18</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>participant_ages[participant_ages <span class="sc">&lt;</span> <span class="dv">18</span>] <span class="ot">&lt;-</span> <span class="dv">0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>We can also overwrite existing data in a data frame, including whole columns, this way.</p>
 </section>
@@ -699,17 +707,17 @@ What would be the output of <code>vector_name[3, 5]</code>?
 <section id="processing-data-in-the-tidyverse" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="processing-data-in-the-tidyverse"><span class="header-section-number">2.2</span> Processing Data in the <code>tidyverse</code></h2>
 <p>There are (at least) two interacting dialects of R: the style associated with the <code>tidyverse</code> and the ‘base R’ approach. The <code>tidyverse</code> is a collection of packages which work well together and share a design philosophy. The most famous of these packages is <code>ggplot</code>, which implements a flexible approach to producing plots. This package will be the subject of a future workshop. We will focus instead on <code>dplyr</code>, a package which implements a set of ‘verbs’ for use with data frames. For more information see <a href="https://www.tidyverse.org/">https://www.tidyverse.org/</a>.</p>
-<p>Many scripts and markdowns will start with <code>library(tidyverse)</code>, which loads <em>all</em> of the core tidyverse packages. To emphasise the modular nature of the <code>tidyverse</code>, this chapter only loads <code>dplyr</code> and <code>readr</code>.</p>
+<p>Many scripts and markdowns will start with <code>library(tidyverse)</code>, which loads <em>all</em> of the core tidyverse packages. To emphasise the modular nature of the <code>tidyverse</code>, this chapter only loads <code>dplyr</code>, <code>tidyr</code>, and <code>readr</code>.</p>
 <p>For example, one verb is <code>rename()</code>. This function renames existing columns of a data frame. Another is <code>mutate()</code>. The <code>mutate()</code> function changes the data frame, typically by modifying existing columns or adding new ones. Moreover, these functions can be strung together in step-by-step chains of data manipulation using ‘pipes’. Here is an example of data processing in the tidyverse style using these functions:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>vowels <span class="ot">&lt;-</span> vowels <span class="sc">%&gt;%</span></span>
-<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">word_freq_ln =</span> <span class="fu">log</span>(word_freq <span class="sc">+</span> <span class="dv">1</span>)</span>
-<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
-<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">F1_midpoint =</span> F1_50,</span>
-<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">F2_midpoint =</span> F2_50</span>
-<span id="cb46-8"><a href="#cb46-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>vowels <span class="ot">&lt;-</span> vowels <span class="sc">%&gt;%</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">word_freq_ln =</span> <span class="fu">log</span>(word_freq <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">F1_midpoint =</span> F1_50,</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">F2_midpoint =</span> F2_50</span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The pipe works by taking the object on the left of the pipe and feeding it to the function on the right side of the pipe as the first argument. So, e.g. <code>2 %&gt;% log()</code> is the same as <code>log(2)</code>. In this case, the data frame <code>vowels</code> becomes the first argument to <code>mutate()</code>, the following arguments then modify the data frame. Notice that we only need to say <code>word_freq</code> to refer to the column (rather than <code>vowels$word_freq</code>). This is because <code>mutate()</code> knows the names of the columns in the data frame it receives. Once the ‘mutation’ has happened, the modified data frame is pased to the <code>rename</code> function, which renames the columns <code>F1_50</code> and <code>F2_50</code> to <code>F1_midpoint</code> and <code>F2_midpoint</code> respectively. To see that this has happened, double click on <code>vowels</code> in the environment pane.</p>
 <p>There are ongoing interactions between base R and the tidyverse. One particularly prominent instance is the inclusion of a ‘pipe’ operator in base R (<code>|&gt;</code>) which behaves in a very similar way to the tidyverse pipe (<code>%&gt;%</code>). I now prefer to use the base R pipe (<code>|&gt;</code>). In practice, I always use the shortcut <code>ctrl + shift + M</code>/<code>command + shift + M</code> to insert the pipe. RStudio has an option to choose whether the result of this is the tidyverse pipe or the base R pipe. I prefer to use the base R pipe now.</p>
@@ -724,7 +732,7 @@ What would be the output of <code>vector_name[3, 5]</code>?
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="reading-in-data-again"><span class="header-section-number">2.2.1</span> Reading in Data (again!)</h3>
 <p>Before we look in more detail at the data manipulation techniques which come with the <code>dplyr</code> package, we should look again at reading data. The <code>readr</code> package comes with modifications to the base R methods for reading in csv and similar files. <code>readr</code> includes the function <code>read_csv</code> (note the use of an underscore rather than dots, as in the base R function).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a>vowels <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'qb_vowels.csv'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>vowels <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'qb_vowels.csv'</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>Rows: 26331 Columns: 14
 ── Column specification ────────────────────────────────────────────────────────
@@ -746,13 +754,13 @@ dbl (7): F1_50, F2_50, word_freq, time, vowel_duration, articulation_rate, a...
 <p>If we want to filter a data frame, we use <code>filter()</code>. The first argument to <code>filter()</code> is a data frame. This argument is usually filled by the use of a pipe function. The remaining arguments are a series of logical statements which say which rows you want to keep and which you want to remove.</p>
 <p>We can put multiple filtering statements inside the <code>filter()</code> function. Look at this code, which I will explain after the block:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>vowels_filtered <span class="ot">&lt;-</span> vowels <span class="sc">|&gt;</span> </span>
-<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
-<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a>    following_segment_category <span class="sc">==</span> <span class="st">"other"</span>,</span>
-<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(amplitude),</span>
-<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">between</span>(F1_50, <span class="dv">300</span>, <span class="dv">1000</span>),</span>
-<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a>    vowel_duration <span class="sc">&gt;</span> <span class="fl">0.01</span> <span class="sc">|</span> word_freq <span class="sc">&lt;</span> <span class="dv">1000</span></span>
-<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>vowels_filtered <span class="ot">&lt;-</span> vowels <span class="sc">|&gt;</span> </span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    following_segment_category <span class="sc">==</span> <span class="st">"other"</span>,</span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>    <span class="sc">!</span><span class="fu">is.na</span>(amplitude),</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">between</span>(F1_50, <span class="dv">300</span>, <span class="dv">1000</span>),</span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a>    vowel_duration <span class="sc">&gt;</span> <span class="fl">0.01</span> <span class="sc">|</span> word_freq <span class="sc">&lt;</span> <span class="dv">1000</span></span>
+<span id="cb50-7"><a href="#cb50-7" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>There are four statements being used to filter. Each is on a new line, but this is a stylistic choice, rather than one required for the code to work. You don’t need to use <code>$</code> with column names inside <code>tidyverse</code> verbs.</p>
 <ol type="1">
@@ -763,10 +771,10 @@ dbl (7): F1_50, F2_50, word_freq, time, vowel_duration, articulation_rate, a...
 </ol>
 <p>We have seen <code>mutate()</code> and <code>rename()</code> already. <code>mutate()</code> is used to create new columns and to modify existing columns. The statements in a <code>mutate()</code> function are all of the form <code>column_name =</code>, with an R statement defining the values which the column will take. These can be either a single value, if you want <em>every</em> row of the column to have the same value (e.g. <code>version = 1</code> would create a column called <code>version</code> which always has the value <span class="math inline">\(1\)</span>), <em>or</em> a vector with a value for each row of the data frame. If you get this wrong it will look like this:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>vowels <span class="sc">|&gt;</span> </span>
-<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">bad_column =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
-<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>vowels <span class="sc">|&gt;</span> </span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">bad_column =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>)</span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-error">
 <pre><code>Error in `mutate()`:
 ℹ In argument: `bad_column = c(1, 2, 3, 4)`.
@@ -776,12 +784,12 @@ Caused by error:
 </div>
 <p>If you want a subset of the columns, you can use <code>select()</code>. Here is an example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>participant_metadata <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span> </span>
-<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb52-3"><a href="#cb52-3" aria-hidden="true" tabindex="-1"></a>    speaker,</span>
-<span id="cb52-4"><a href="#cb52-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">contains</span>(<span class="st">'participant_'</span>)</span>
-<span id="cb52-5"><a href="#cb52-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb52-6"><a href="#cb52-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>participant_metadata <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span> </span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>    speaker,</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">contains</span>(<span class="st">'participant_'</span>)</span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">unique</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The <code>select()</code> verb here has two arguments. The first is just the name <code>speaker</code>. This, unsurprisingly, selects the column <code>speaker</code>. The second, <code>contains('participant_')</code> uses the function <code>contains()</code> (also from <code>dplyr</code>) to pick out columns containing the string <code>'participant_'</code> in their names.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> After selecting these columns, there are many duplicate rows, so we pass the result into the base R function <code>unique()</code> with a pipe. The result is a data frame with the meta data for each participant in the data. Look in the environment pane to see how many rows and columns there are in the data frame <code>participant_metadata</code>.</p>
 <p>The <code>relocate()</code> function is sometimes useful with the <code>nzilbb.vowels</code> package and other packages where the order of the columns is important. It <em>relocates</em> columns within a data frame. See for instance,</p>
@@ -800,29 +808,29 @@ Caused by error:
 <p>This is most clear by example. In the data frame we have been looking at, we have a series of readings for a collection of speakers. There are only 77 speakers in the data frame, from which we get more than 20,000 rows. What if we want to get the mean values of these observations <em>for each speaker</em>? That is, we treat the data frame as one which is grouped <em>by speaker</em>.</p>
 <p>In order to group data we use the <code>group_by()</code> function. In order to remove groups we use the <code>ungroup()</code> function. Let’s see this in action:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>vowels_filtered <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span> </span>
-<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(speaker) <span class="sc">|&gt;</span> </span>
-<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_F1 =</span> <span class="fu">mean</span>(F1_50),</span>
-<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_amplitude =</span> <span class="fu">mean</span>(amplitude)</span>
-<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>vowels_filtered <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span> </span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(speaker) <span class="sc">|&gt;</span> </span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_F1 =</span> <span class="fu">mean</span>(F1_50),</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_amplitude =</span> <span class="fu">mean</span>(amplitude)</span>
+<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The above code groups the data, then uses <code>mutate()</code>, in the same way as we did above, to create two new columns. These use the <code>mean()</code> function, from base R, to calculate the mean value <em>for each speaker</em>. Have a look at the data, using one of the methods for accessing data we discussed above, to convince yourself that each speaker is given a different mean value. The same points apply to <code>amplitude</code>. Note, by the way, that the <code>mean()</code> function returns <code>NA</code> if there are any <code>NA</code> values in the column. This is a common issue. If you see <code>NA</code> when you expect a sensible mean, you can add <code>na.rm = TRUE</code> to the arguments of <code>mean()</code> or filter out any rows with missing information before you apply <code>mean()</code>.</p>
 <p>Sometimes we want summary information for each group. In this case, it is useful to have a data frame with a single row for each group. To do this, we use <code>summarise</code> rather than <code>mutate</code>. We can combine the output of the code block we have just looked at with the participant metadata as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>vowels_summary <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span> </span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(speaker) <span class="sc">|&gt;</span> </span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_F1 =</span> <span class="fu">mean</span>(F1_50),</span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_amplitude =</span> <span class="fu">mean</span>(amplitude),</span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">gender =</span> <span class="fu">first</span>(participant_gender),</span>
-<span id="cb54-8"><a href="#cb54-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">age_category =</span> <span class="fu">first</span>(participant_age_category)</span>
-<span id="cb54-9"><a href="#cb54-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb54-10"><a href="#cb54-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb54-11"><a href="#cb54-11" aria-hidden="true" tabindex="-1"></a>vowels_summary <span class="sc">|&gt;</span> </span>
-<span id="cb54-12"><a href="#cb54-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>vowels_summary <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span> </span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(speaker) <span class="sc">|&gt;</span> </span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_F1 =</span> <span class="fu">mean</span>(F1_50),</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_amplitude =</span> <span class="fu">mean</span>(amplitude),</span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">gender =</span> <span class="fu">first</span>(participant_gender),</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">age_category =</span> <span class="fu">first</span>(participant_age_category)</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>vowels_summary <span class="sc">|&gt;</span> </span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 6
   speaker         n mean_F1 mean_amplitude gender age_category
@@ -836,6 +844,83 @@ Caused by error:
 </div>
 </div>
 <p>The code above has two statements. We create a data frame called <code>vowels_summary</code>, which uses <code>summarise()</code> instead of <code>mutate()</code>. The second statement outputs the first six rows of <code>vowels_summary</code> using the <code>head()</code> function. Each row is for a different speaker and each column is defined by the grouping structure and <code>summarise()</code>. There is a column for each group (in this case just <code>speaker</code>), and then one for each argument to <code>summarise()</code>. The first, <code>n</code>, uses the <code>n()</code> function to count how many rows there are for each speaker. The second and third columns contain the mean value for the speaker for two variables. We then use the function <code>first()</code> to pull out the first value for the speaker for a given column. This is very useful in cases when every row for the speaker should have the same value. In this case, the speaker’s age category, for instance, does not change within a single recording so we can safely just take the first value for <code>participant_age_category</code> for each speaker.</p>
+</section>
+<section id="pivoting-data" class="level3" data-number="2.2.4">
+<h3 data-number="2.2.4" class="anchored" data-anchor-id="pivoting-data"><span class="header-section-number">2.2.4</span> Pivoting data</h3>
+<p>This is a quick note on <code>pivot_longer()</code> and <code>pivot_wider()</code> from the <code>tidyr</code> package. These enable you to change the repesentation of the data in your data frame so that more information is carried in rows (i.e., you have more rows, therefore a ‘longer’ data frame), or columns (i.e., you have more columns, therefore a ‘wider’ data frame).</p>
+<p>Pivoting is tied up with the idea of a ‘tidy’ data set, which I haven’t written much about in this chapter so far. The basic idea is that we want data where each row is an observation and each column is a variable. Pivoting is useful for getting to this point (and that’s why the pivot function are in a package called <code>tidyr</code>).</p>
+<p>For our purposes, it’s worth noticing that sometimes we need to shift between different ideas of what our observations are. Sometimes they might be individual formant readings, sometimes they might be individual vowel tokens, and sometimes they might be speakers. Pivoting is useful for shifting between these representations of the data.</p>
+<p>Here’s an example of a shift to a ‘longer’ formant.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Split F1_midpoint and F2_midpoint into distinct rows (now a 'formant reading'</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="do">## is our observation rather than an individual vowel token.) That is, make the</span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="do">## data 'longer'.</span></span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>vowels_long <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span> </span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Which columns do we want to 'lengthen'?</span></span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(F1_50, F2_50),</span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># What do we want to name the column which identifies the kind of formant </span></span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># reading?</span></span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"formant_type"</span>,</span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># What do we want to name the column containing the formant values?</span></span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"formant_value"</span></span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vowels_long <span class="sc">|&gt;</span> <span class="fu">select</span>(speaker, vowel, formant_type, formant_value))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 4
+  speaker     vowel formant_type formant_value
+  &lt;chr&gt;       &lt;chr&gt; &lt;chr&gt;                &lt;dbl&gt;
+1 QB_NZ_F_281 DRESS F1_50                  440
+2 QB_NZ_F_281 DRESS F2_50                 2320
+3 QB_NZ_F_281 NURSE F1_50                  434
+4 QB_NZ_F_281 NURSE F2_50                 1795
+5 QB_NZ_F_281 START F1_50                  851
+6 QB_NZ_F_281 START F2_50                 1810</code></pre>
+</div>
+</div>
+<p>The above code moves us from a data frame with 17240 to one with 34480 rows. The ‘observations’ are now individual formant readings.</p>
+<p>Now look at an example where we pivot ‘wider’:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What is we want a single row for each speaker, with their mean value for each</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="co"># vowel as columns.</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>vowels_wide <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select only relevant data</span></span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>    speaker, vowel, F1_50, F2_50,</span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">contains</span>(<span class="at">match =</span> <span class="st">"participant_"</span>)</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Column names come from 'vowel' column</span></span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> vowel,</span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Values come from both midpoint columns</span></span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> <span class="fu">c</span>(F1_50, F2_50),</span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We aggregate using the `mean` function if there is more than</span></span>
+<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># one value for each cell of the table. i.e., the `F1_midpoint_DRESS`</span></span>
+<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># column will end up with the mean F1 value across *all* the speakers tokens</span></span>
+<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># of DRESS.</span></span>
+<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_fn =</span> mean</span>
+<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vowels_wide <span class="sc">|&gt;</span> <span class="fu">select</span>(speaker, <span class="fu">matches</span>(<span class="st">"F1|F2"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 23
+  speaker     F1_50_DRESS F1_50_NURSE F1_50_START F1_50_STRUT F1_50_GOOSE
+  &lt;chr&gt;             &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;
+1 QB_NZ_F_281        439.        417         858.        606.        389.
+2 QB_NZ_F_377        396.        372.        771.        646.        388 
+3 QB_NZ_F_432        439.        443.        886.        653.        394.
+4 QB_NZ_F_449        439         443.        847.        692.        467.
+5 QB_NZ_F_470        495.        524         926.        816         380 
+6 QB_NZ_F_478        408.        403.        804.        639.        381.
+# ℹ 17 more variables: F1_50_FLEECE &lt;dbl&gt;, F1_50_TRAP &lt;dbl&gt;, F1_50_LOT &lt;dbl&gt;,
+#   F1_50_FOOT &lt;dbl&gt;, F1_50_KIT &lt;dbl&gt;, F1_50_THOUGHT &lt;dbl&gt;, F2_50_DRESS &lt;dbl&gt;,
+#   F2_50_NURSE &lt;dbl&gt;, F2_50_START &lt;dbl&gt;, F2_50_STRUT &lt;dbl&gt;, F2_50_GOOSE &lt;dbl&gt;,
+#   F2_50_FLEECE &lt;dbl&gt;, F2_50_TRAP &lt;dbl&gt;, F2_50_LOT &lt;dbl&gt;, F2_50_FOOT &lt;dbl&gt;,
+#   F2_50_KIT &lt;dbl&gt;, F2_50_THOUGHT &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Here we have switched from a representation of the data in terms of vowel tokens to one in terms of speakers. We have aggregated the data so that each cell contains the mean value for each speaker of each vowel and formant reading. For instance, there is now a column called <code>F1_50_DRESS</code>, which contains the mean midpoint first formant reading for each speaker’s <span class="smallcaps">dress</span> vowel.</p>
 </section>
 </section>
 <section id="further-resources" class="level2" data-number="2.3">

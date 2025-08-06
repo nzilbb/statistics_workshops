@@ -1,5 +1,18 @@
 # Data Processing
 
+::: {.callout-note collapse="true"}
+### Access related workshop materials and data
+If you have followed the [induction instructions](https://nzilbb.github.io/statistics_workshops/#sec-induction) on 
+the homepage, you can access a workshop which is closely related to this 
+chapter, and get access to the data, by entering the following code in the console pane:
+
+```r
+usethis::create_from_github(
+  "https://github.com/nzilbb/ws-data-processing"
+)
+```
+:::
+
 In this chapter, we'll look at some common things you will need to do with data.
 We will also begin to work with a series of packages called the `tidyverse`, 
 which implement a series of data processing and visualising techniques on top
@@ -11,37 +24,24 @@ some base R approaches as these workshops progress, and especially in this
 chapter, but the majority of the code I put in front of you will use at least
 some `tidyverse` methods.
 
-The easiest way to follow the code in this chapter is to run the following code
-in the R console: `usethis::use_course('nzilbb/getting_started_sessions')`.
-This will download a file from GitHub and use it to generate a new RStudio 
-session along with the necessary data. It also contains the beginning of a 
-script for this chapter (in `scripts/session_2.R`). If this line doesn't work,
-the most likely problem is that you need to install the `usethis` package first
-(`install.packages('usethis')`).
+The easiest way to interact with this chapter is to run the code in the callout
+block above. This will set up a new RStudio project and provide all the data you
+need. However, you may wish to set up your own project and avoid GitHub. If so,
+you need to have [this data file](https://github.com/nzilbb/ws-data-processing/blob/6b3babe0505ffde3a3350fdfe04863f54bf4256b/data/qb_vowels.csv) inside a folder called `data` inside your
+project. To download the file after following the link, click the download 
+button at the right of the toolbar.
 
-::: callout-note
-You might have difficulty with `usethis::use_course()` if you have previously
-linked RStudio and GitHub, but your access token has now expired. To fix this,
-follow the instructions at <https://happygitwithr.com/https-pat>. To ignore the
-problem for now and continue with the workshop, just go to
-<https://github.com/nzilbb/getting_started_sessions/>, click the big green
-button, select 'Downloads Zip', unzip the downloaded file somewhere sensible
-(e.g., a folder in your Documents folder for R projects), and double click on
-`getting_started.Rproj`.
-:::
-
-Start a script (or open `scripts/session_2.R`) with the code in the following
-cell. Try to run the code. If R complains, ensure each package is installed. If
-it isn't, run `install.packages("PACKAGE NAME")` where you replace `PACKAGE
-NAME` with the name of the package. Make sure the package name is inside
-quotation marks.
+![The download button on the GitHub toolbar.](images/bar.png)
+Now either make your own new script and enter in the code from each of the
+blocks below, or open `scripts/data_processing.R` to follow along.
 
 ```{r}
-# We load two packages from the 'tidyverse' by name. `dplyr` includes functions
-# for manipulating data. `readr` includes a series of functions for reading
-# data in to R.
+# We load three packages from the 'tidyverse' by name. `dplyr` includes
+# functions for manipulating data. `readr` includes a series of functions for
+# reading data in to R, and `tidyr` to pivot data.
 library(dplyr)
 library(readr)
+library(tidyr)
 
 # This package helps to manage the paths to files.
 library(here)
@@ -439,7 +439,7 @@ for use with data frames. For more information see [https://www.tidyverse.org/](
 
 Many scripts and markdowns will start with `library(tidyverse)`, which loads
 _all_ of the core tidyverse packages. To emphasise the modular nature
-of the `tidyverse`, this chapter only loads `dplyr` and `readr`.
+of the `tidyverse`, this chapter only loads `dplyr`, `tidyr`, and `readr`.
 
 For example, one verb is `rename()`. This function renames existing columns
 of a data frame. Another is `mutate()`. The `mutate()` function changes the
@@ -676,6 +676,81 @@ the speaker should have the same value. In this case, the speaker's age
 category, for instance, does not change within a single recording so we can
 safely just take the first value for `participant_age_category` for each 
 speaker.
+
+### Pivoting data
+
+This is a quick note on `pivot_longer()` and `pivot_wider()` from the `tidyr` 
+package. These enable you to change the repesentation of the data in your 
+data frame so that more information is carried in rows (i.e., you have more
+rows, therefore a 'longer' data frame), or columns (i.e., you have more 
+columns, therefore a 'wider' data frame). 
+
+Pivoting is tied up with the idea of a 'tidy' data set, which I haven't written
+much about in this chapter so far. The basic idea is that we want data where
+each row is an observation and each column is a variable. Pivoting is useful
+for getting to this point (and that's why the pivot function are in a package
+called `tidyr`). 
+
+For our purposes, it's worth noticing that sometimes we need to shift between
+different ideas of what our observations are. Sometimes they might be individual
+formant readings, sometimes they might be individual vowel tokens, and sometimes
+they might be speakers. Pivoting is useful for shifting between these 
+representations of the data.
+
+Here's an example of a shift to a 'longer' formant.
+```{r}
+## Split F1_midpoint and F2_midpoint into distinct rows (now a 'formant reading'
+## is our observation rather than an individual vowel token.) That is, make the
+## data 'longer'.
+vowels_long <- vowels_filtered |> 
+  pivot_longer(
+    # Which columns do we want to 'lengthen'?
+    cols = c(F1_50, F2_50),
+    # What do we want to name the column which identifies the kind of formant 
+    # reading?
+    names_to = "formant_type",
+    # What do we want to name the column containing the formant values?
+    values_to = "formant_value"
+  )
+
+head(vowels_long |> select(speaker, vowel, formant_type, formant_value))
+```
+
+The above code moves us from a data frame with `r nrow(vowels_filtered)` to one
+with `r nrow(vowels_long)` rows. The 'observations' are now individual formant
+readings.
+
+Now look at an example where we pivot 'wider':
+```{r}
+# What is we want a single row for each speaker, with their mean value for each
+# vowel as columns.
+vowels_wide <- vowels_filtered |>
+  # Select only relevant data
+  select(
+    speaker, vowel, F1_50, F2_50,
+    contains(match = "participant_")
+  ) |> 
+  pivot_wider(
+    # Column names come from 'vowel' column
+    names_from = vowel,
+    # Values come from both midpoint columns
+    values_from = c(F1_50, F2_50),
+    # We aggregate using the `mean` function if there is more than
+    # one value for each cell of the table. i.e., the `F1_midpoint_DRESS`
+    # column will end up with the mean F1 value across *all* the speakers tokens
+    # of DRESS.
+    values_fn = mean
+  )
+
+head(vowels_wide |> select(speaker, matches("F1|F2")))
+```
+
+Here we have switched from a representation of the data in terms of vowel
+tokens to one in terms of speakers. We have aggregated the data so that each
+cell contains the mean value for each speaker of each vowel and formant reading.
+For instance, there is now a column called `F1_50_DRESS`, which contains the 
+mean midpoint first formant reading for each speaker's [dress]{.smallcaps} 
+vowel.
 
 ## Further Resources
 
