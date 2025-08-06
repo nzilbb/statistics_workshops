@@ -28,8 +28,8 @@ typography:
       source: bunny
     - family: Merriweather Sans
       source: bunny
-    - family: Fira Code
+    - family: Fira Mono
       source: bunny
   base: Open Sans
   headings: Merriweather Sans
-  monospace: Fira Code
+  monospace: Fira Mono

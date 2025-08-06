@@ -33,7 +33,7 @@
 
 /* other quarto variables */
 :root {
-  --quarto-font-monospace: Fira Code;
+  --quarto-font-monospace: Fira Mono;
 }
 
 pre > code.sourceCode > span {
@@ -202,4 +202,4 @@ code span.kw {
   content: "</";
 }
 
-/*# sourceMappingURL=c519ede7c55b621849aa4a8828d26893.css.map */
+/*# sourceMappingURL=67e5952a59dca17ec3a510ef1261e16f.css.map */
