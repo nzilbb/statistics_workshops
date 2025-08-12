@@ -513,17 +513,56 @@ above work with tibbles and with data frames.
 For more information on importing data see the relevant chapter of 
 [R for Data Science](https://r4ds.hadley.nz/data-import.html).
 
+::: {.webex-check .webex-box}
+
+```{r}
+#| output: asis
+#| echo: false
+
+opts <- c(
+  "`chr`",
+  answer = "`dbl`"
+)
+
+cat(
+  "In the output of `read_csv()` above, F1_50 is listed as a ", 
+  mcq(opts),
+  "column"
+)
+```
+
+```{r}
+#| output: asis
+#| echo: false
+
+opts <- c(
+  answer = "numerical data",
+  "strings",
+  "booleans (i.e. `TRUE` or `FALSE`)"
+)
+
+cat(
+  "Therefore it contains ", 
+  mcq(opts)
+)
+```
+
+:::
+
 ### Some `dplyr` Verbs
 
 What are the main `dplyr` verbs? 
 
-If we want to filter a data frame, we use `filter()`. The first argument
-to `filter()` is a data frame. This argument is usually filled by the 
-use of a pipe function. The remaining arguments are a series of logical 
-statements which say which rows you want to keep and which you want to remove.
+If we want to filter a data frame, we use `filter()`. The first argument to
+`filter()` is a data frame. This argument is usually filled by the use of a pipe
+function (i.e., the `filter()` function usually appears within a pipe). The
+remaining arguments are a series of logical statements which say which rows you
+want to keep and which you want to remove. By 'logical' recall that we mean 
+`TRUE` or `FALSE`. Rows which produce `TRUE` will be kept, those which don't 
+will not.
 
 We can put multiple filtering statements inside the `filter()` function. Look
-at this code, which I will explain after the block:
+at this code:
 
 ```{r}
 vowels_filtered <- vowels |> 
@@ -609,6 +648,27 @@ We have just covered:
   - `filter()`: to filter the rows of a data frame.
   - `select()`: to select a subset of columns of the data. 
   - `relocate()`: to move selected columns within a data frame.
+  
+::: {.webex-check .webex-box}
+
+Consider the following code. Assume that `vowels` has columns called
+`F1_50` and` F2_50`.
+
+```r 
+vowels <- vowels |> 
+  rename(
+    first_formant = F1_50,
+    second_formant = F2_50
+  )
+```
+
+- After running the code, `qb_vowels` will have a column called 
+`first_formant`: `r torf(TRUE)`.
+- After running the code, `qb_vowels` will have a column called 
+`F2 _50`: `r torf(FALSE)`.
+
+
+:::
 
 ### Grouped Data
 
@@ -676,6 +736,45 @@ the speaker should have the same value. In this case, the speaker's age
 category, for instance, does not change within a single recording so we can
 safely just take the first value for `participant_age_category` for each 
 speaker.
+
+::: {.webex-check .webex-box}
+
+Consider the following code:
+
+```r 
+vowels_summary <- vowels |> 
+  group_by(participant_gender, vowel) |> 
+  summarise(
+    n = n(),
+    F1_50 = mean(F1_50),
+    any_loud = any(amplitude > 85, na.rm = TRUE),
+    all_loud = all(amplitude > 85, na.rm = TRUE)
+  )
+```
+
+- There are 11 vowels and 2 genders in `vowels`. How many rows are there in
+`vowel_summary`? `r fitb(22)`
+
+```{r}
+#| output: asis
+#| echo: false
+opts <- c(
+  answer = "To return the number of rows in each group.",
+  "To return the number of rows in the entire data frame.",
+  "To ensure the script is reproducible."
+)
+
+cat(
+  "What is the function of the function `n()` in this code?",
+  longmcq(opts)
+)
+```
+
+- Experiment with the `mean()` functiona. What does the function output if it 
+gets `NA` values (e.g. `mean(c(1, 2, 3, NA, 5))`)? `r mcq(c(answer = "NA", "7.25"))`
+
+
+:::
 
 ### Pivoting data
 

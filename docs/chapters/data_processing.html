@@ -667,24 +667,24 @@ Warning
 <p>In fact, <code>some_name$some_other_name</code> is a shorthand form of <code>some_name[["some_other_name"]]</code>. A single element of a list or vector returned by <code>$</code> and <code>[[]]</code>, whereas <code>[]</code> returns a list or vector which may contain multiple elements.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a></p>
 <div class="webex-check webex-box">
 If <code>data_frame</code> is a data frame, what will <code>data_frame[5:6, ]</code> return?
-<div id="radio_PMLNHGMTZP" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_PMLNHGMTZP" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_PMLNHGMTZP" value="answer"> <span>The fifth and sixth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_PMLNHGMTZP" value=""> <span>The fifth and sixth columns of the data frame</span></label>
+<div id="radio_TOTJLRGDMB" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_TOTJLRGDMB" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_TOTJLRGDMB" value="answer"> <span>The fifth and sixth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_TOTJLRGDMB" value=""> <span>The fifth and sixth columns of the data frame</span></label>
 </div>
 If <code>data_frame</code> is a data frame, what will <code>data_frame[, c(3, 6, 9)]</code> return?
-<div id="radio_NCFYDVTPTW" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_NCFYDVTPTW" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_NCFYDVTPTW" value=""> <span>The third, sixth, and ninth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_NCFYDVTPTW" value="answer"> <span>The third, sixth, and ninth column of the data frame.</span></label>
+<div id="radio_KYSWEHBKXX" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_KYSWEHBKXX" value=""> <span>This code will produce an error.</span></label><label><input type="radio" autocomplete="off" name="radio_KYSWEHBKXX" value=""> <span>The third, sixth, and ninth row of the data frame</span></label><label><input type="radio" autocomplete="off" name="radio_KYSWEHBKXX" value="answer"> <span>The third, sixth, and ninth column of the data frame.</span></label>
 </div>
 <p>Imagine you save a vector to the variable <code>vector_name</code>, as follows:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>vector_name <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">2</span>, <span class="dv">7</span>, <span class="dv">3</span>, <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 What would be the output of <code>vector_name &gt; 2</code>?
-<div id="radio_POXRYKKFUQ" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_POXRYKKFUQ" value="answer"> <span><code>[1]  TRUE FALSE  TRUE  TRUE FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_POXRYKKFUQ" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_POXRYKKFUQ" value=""> <span><code>FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_POXRYKKFUQ" value=""> <span><code>[1] TRUE TRUE TRUE TRUE TRUE</code></span></label>
+<div id="radio_ZKOEIPRMLQ" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_ZKOEIPRMLQ" value="answer"> <span><code>[1]  TRUE FALSE  TRUE  TRUE FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_ZKOEIPRMLQ" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_ZKOEIPRMLQ" value=""> <span><code>FALSE</code></span></label><label><input type="radio" autocomplete="off" name="radio_ZKOEIPRMLQ" value=""> <span><code>[1] TRUE TRUE TRUE TRUE TRUE</code></span></label>
 </div>
 What would be the output of <code>vector_name[3, 5]</code>?
-<div id="radio_KQGELTBQPB" class="webex-radiogroup">
-<label><input type="radio" autocomplete="off" name="radio_KQGELTBQPB" value=""> <span><code>[1] 7 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_KQGELTBQPB" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_KQGELTBQPB" value="answer"> <span><code>Error in vector_name[3, 5] : incorrect number of dimensions</code></span></label>
+<div id="radio_EGSFZJMVXT" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_EGSFZJMVXT" value=""> <span><code>[1] 7 2</code></span></label><label><input type="radio" autocomplete="off" name="radio_EGSFZJMVXT" value=""> <span><code>TRUE</code></span></label><label><input type="radio" autocomplete="off" name="radio_EGSFZJMVXT" value="answer"> <span><code>Error in vector_name[3, 5] : incorrect number of dimensions</code></span></label>
 </div>
 </div>
 </section>
@@ -747,12 +747,16 @@ dbl (7): F1_50, F2_50, word_freq, time, vowel_duration, articulation_rate, a...
 <p>One great advantage of <code>read_csv</code> is that the output tells us something about the way R has interpreted each column of the data and the names which have been given to each column. We see how many rows and columns, what delimited the values (as we expected, <code>","</code>), we also see what type of data R thinks these columns contain. So, <code>chr</code> means text strings. These are mostly participant metadata, such as their gender or ethnic background. We also see <code>dbl</code> columns. These contain <strong>numerical</strong> data.<a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a></p>
 <p>Another change between <code>read.csv()</code> and <code>read_csv()</code> is that the data is now a ‘tibble’ rather than a base R data frame. For current purposes, you don’t need to worry about this distinction. All of the base R methods we introduced above work with tibbles and with data frames.</p>
 <p>For more information on importing data see the relevant chapter of <a href="https://r4ds.hadley.nz/data-import.html">R for Data Science</a>.</p>
+<div class="webex-check webex-box">
+<p>In the output of <code>read_csv()</code> above, F1_50 is listed as a <select class="webex-select"><option value="blank"></option><option value="">chr</option><option value="answer">dbl</option></select> column</p>
+<p>Therefore it contains <select class="webex-select"><option value="blank"></option><option value="answer">numerical data</option><option value="">strings</option><option value="">booleans (i.e.&nbsp;TRUE or FALSE)</option></select></p>
+</div>
 </section>
 <section id="some-dplyr-verbs" class="level3" data-number="2.2.2">
 <h3 data-number="2.2.2" class="anchored" data-anchor-id="some-dplyr-verbs"><span class="header-section-number">2.2.2</span> Some <code>dplyr</code> Verbs</h3>
 <p>What are the main <code>dplyr</code> verbs?</p>
-<p>If we want to filter a data frame, we use <code>filter()</code>. The first argument to <code>filter()</code> is a data frame. This argument is usually filled by the use of a pipe function. The remaining arguments are a series of logical statements which say which rows you want to keep and which you want to remove.</p>
-<p>We can put multiple filtering statements inside the <code>filter()</code> function. Look at this code, which I will explain after the block:</p>
+<p>If we want to filter a data frame, we use <code>filter()</code>. The first argument to <code>filter()</code> is a data frame. This argument is usually filled by the use of a pipe function (i.e., the <code>filter()</code> function usually appears within a pipe). The remaining arguments are a series of logical statements which say which rows you want to keep and which you want to remove. By ‘logical’ recall that we mean <code>TRUE</code> or <code>FALSE</code>. Rows which produce <code>TRUE</code> will be kept, those which don’t will not.</p>
+<p>We can put multiple filtering statements inside the <code>filter()</code> function. Look at this code:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>vowels_filtered <span class="ot">&lt;-</span> vowels <span class="sc">|&gt;</span> </span>
 <span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
@@ -801,6 +805,18 @@ Caused by error:
 <li><code>select()</code>: to select a subset of columns of the data.</li>
 <li><code>relocate()</code>: to move selected columns within a data frame.</li>
 </ul>
+<div class="webex-check webex-box">
+<p>Consider the following code. Assume that <code>vowels</code> has columns called <code>F1_50</code> and<code>F2_50</code>.</p>
+<div class="sourceCode" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>vowels <span class="ot">&lt;-</span> vowels <span class="sc">|&gt;</span> </span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">rename</span>(</span>
+<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">first_formant =</span> F1_50,</span>
+<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">second_formant =</span> F2_50</span>
+<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>After running the code, <code>qb_vowels</code> will have a column called <code>first_formant</code>: <select class="webex-select"><option value="blank"></option><option value="answer">TRUE</option><option value="">FALSE</option></select>.</li>
+<li>After running the code, <code>qb_vowels</code> will have a column called <code>F2 _50</code>: <select class="webex-select"><option value="blank"></option><option value="">TRUE</option><option value="answer">FALSE</option></select>.</li>
+</ul>
+</div>
 </section>
 <section id="grouped-data" class="level3" data-number="2.2.3">
 <h3 data-number="2.2.3" class="anchored" data-anchor-id="grouped-data"><span class="header-section-number">2.2.3</span> Grouped Data</h3>
@@ -808,29 +824,29 @@ Caused by error:
 <p>This is most clear by example. In the data frame we have been looking at, we have a series of readings for a collection of speakers. There are only 77 speakers in the data frame, from which we get more than 20,000 rows. What if we want to get the mean values of these observations <em>for each speaker</em>? That is, we treat the data frame as one which is grouped <em>by speaker</em>.</p>
 <p>In order to group data we use the <code>group_by()</code> function. In order to remove groups we use the <code>ungroup()</code> function. Let’s see this in action:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>vowels_filtered <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span> </span>
-<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(speaker) <span class="sc">|&gt;</span> </span>
-<span id="cb54-3"><a href="#cb54-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb54-4"><a href="#cb54-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_F1 =</span> <span class="fu">mean</span>(F1_50),</span>
-<span id="cb54-5"><a href="#cb54-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_amplitude =</span> <span class="fu">mean</span>(amplitude)</span>
-<span id="cb54-6"><a href="#cb54-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb54-7"><a href="#cb54-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>vowels_filtered <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span> </span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(speaker) <span class="sc">|&gt;</span> </span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_F1 =</span> <span class="fu">mean</span>(F1_50),</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_amplitude =</span> <span class="fu">mean</span>(amplitude)</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ungroup</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>The above code groups the data, then uses <code>mutate()</code>, in the same way as we did above, to create two new columns. These use the <code>mean()</code> function, from base R, to calculate the mean value <em>for each speaker</em>. Have a look at the data, using one of the methods for accessing data we discussed above, to convince yourself that each speaker is given a different mean value. The same points apply to <code>amplitude</code>. Note, by the way, that the <code>mean()</code> function returns <code>NA</code> if there are any <code>NA</code> values in the column. This is a common issue. If you see <code>NA</code> when you expect a sensible mean, you can add <code>na.rm = TRUE</code> to the arguments of <code>mean()</code> or filter out any rows with missing information before you apply <code>mean()</code>.</p>
 <p>Sometimes we want summary information for each group. In this case, it is useful to have a data frame with a single row for each group. To do this, we use <code>summarise</code> rather than <code>mutate</code>. We can combine the output of the code block we have just looked at with the participant metadata as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a>vowels_summary <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span> </span>
-<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(speaker) <span class="sc">|&gt;</span> </span>
-<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
-<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
-<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_F1 =</span> <span class="fu">mean</span>(F1_50),</span>
-<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_amplitude =</span> <span class="fu">mean</span>(amplitude),</span>
-<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">gender =</span> <span class="fu">first</span>(participant_gender),</span>
-<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">age_category =</span> <span class="fu">first</span>(participant_age_category)</span>
-<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>vowels_summary <span class="sc">|&gt;</span> </span>
-<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>vowels_summary <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span> </span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(speaker) <span class="sc">|&gt;</span> </span>
+<span id="cb56-3"><a href="#cb56-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb56-4"><a href="#cb56-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb56-5"><a href="#cb56-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_F1 =</span> <span class="fu">mean</span>(F1_50),</span>
+<span id="cb56-6"><a href="#cb56-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">mean_amplitude =</span> <span class="fu">mean</span>(amplitude),</span>
+<span id="cb56-7"><a href="#cb56-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">gender =</span> <span class="fu">first</span>(participant_gender),</span>
+<span id="cb56-8"><a href="#cb56-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">age_category =</span> <span class="fu">first</span>(participant_age_category)</span>
+<span id="cb56-9"><a href="#cb56-9" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb56-10"><a href="#cb56-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-11"><a href="#cb56-11" aria-hidden="true" tabindex="-1"></a>vowels_summary <span class="sc">|&gt;</span> </span>
+<span id="cb56-12"><a href="#cb56-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">head</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 6
   speaker         n mean_F1 mean_amplitude gender age_category
@@ -844,6 +860,27 @@ Caused by error:
 </div>
 </div>
 <p>The code above has two statements. We create a data frame called <code>vowels_summary</code>, which uses <code>summarise()</code> instead of <code>mutate()</code>. The second statement outputs the first six rows of <code>vowels_summary</code> using the <code>head()</code> function. Each row is for a different speaker and each column is defined by the grouping structure and <code>summarise()</code>. There is a column for each group (in this case just <code>speaker</code>), and then one for each argument to <code>summarise()</code>. The first, <code>n</code>, uses the <code>n()</code> function to count how many rows there are for each speaker. The second and third columns contain the mean value for the speaker for two variables. We then use the function <code>first()</code> to pull out the first value for the speaker for a given column. This is very useful in cases when every row for the speaker should have the same value. In this case, the speaker’s age category, for instance, does not change within a single recording so we can safely just take the first value for <code>participant_age_category</code> for each speaker.</p>
+<div class="webex-check webex-box">
+<p>Consider the following code:</p>
+<div class="sourceCode" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>vowels_summary <span class="ot">&lt;-</span> vowels <span class="sc">|&gt;</span> </span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(participant_gender, vowel) <span class="sc">|&gt;</span> </span>
+<span id="cb58-3"><a href="#cb58-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb58-4"><a href="#cb58-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb58-5"><a href="#cb58-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">F1_50 =</span> <span class="fu">mean</span>(F1_50),</span>
+<span id="cb58-6"><a href="#cb58-6" aria-hidden="true" tabindex="-1"></a>    <span class="at">any_loud =</span> <span class="fu">any</span>(amplitude <span class="sc">&gt;</span> <span class="dv">85</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb58-7"><a href="#cb58-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">all_loud =</span> <span class="fu">all</span>(amplitude <span class="sc">&gt;</span> <span class="dv">85</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb58-8"><a href="#cb58-8" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ul>
+<li>There are 11 vowels and 2 genders in <code>vowels</code>. How many rows are there in <code>vowel_summary</code>? <input class="webex-solveme nospaces" size="2" data-answer="[&quot;22&quot;]"></li>
+</ul>
+What is the function of the function <code>n()</code> in this code?
+<div id="radio_MYHXMGYESW" class="webex-radiogroup">
+<label><input type="radio" autocomplete="off" name="radio_MYHXMGYESW" value="answer"> <span>To return the number of rows in each group.</span></label><label><input type="radio" autocomplete="off" name="radio_MYHXMGYESW" value=""> <span>To return the number of rows in the entire data frame.</span></label><label><input type="radio" autocomplete="off" name="radio_MYHXMGYESW" value=""> <span>To ensure the script is reproducible.</span></label>
+</div>
+<ul>
+<li>Experiment with the <code>mean()</code> functiona. What does the function output if it gets <code>NA</code> values (e.g.&nbsp;<code>mean(c(1, 2, 3, NA, 5))</code>)? <select class="webex-select"><option value="blank"></option><option value="answer">NA</option><option value="">7.25</option></select></li>
+</ul>
+</div>
 </section>
 <section id="pivoting-data" class="level3" data-number="2.2.4">
 <h3 data-number="2.2.4" class="anchored" data-anchor-id="pivoting-data"><span class="header-section-number">2.2.4</span> Pivoting data</h3>
@@ -852,21 +889,21 @@ Caused by error:
 <p>For our purposes, it’s worth noticing that sometimes we need to shift between different ideas of what our observations are. Sometimes they might be individual formant readings, sometimes they might be individual vowel tokens, and sometimes they might be speakers. Pivoting is useful for shifting between these representations of the data.</p>
 <p>Here’s an example of a shift to a ‘longer’ formant.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Split F1_midpoint and F2_midpoint into distinct rows (now a 'formant reading'</span></span>
-<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a><span class="do">## is our observation rather than an individual vowel token.) That is, make the</span></span>
-<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="do">## data 'longer'.</span></span>
-<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a>vowels_long <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span> </span>
-<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
-<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Which columns do we want to 'lengthen'?</span></span>
-<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(F1_50, F2_50),</span>
-<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># What do we want to name the column which identifies the kind of formant </span></span>
-<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># reading?</span></span>
-<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"formant_type"</span>,</span>
-<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># What do we want to name the column containing the formant values?</span></span>
-<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"formant_value"</span></span>
-<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vowels_long <span class="sc">|&gt;</span> <span class="fu">select</span>(speaker, vowel, formant_type, formant_value))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Split F1_midpoint and F2_midpoint into distinct rows (now a 'formant reading'</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="do">## is our observation rather than an individual vowel token.) That is, make the</span></span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a><span class="do">## data 'longer'.</span></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>vowels_long <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span> </span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Which columns do we want to 'lengthen'?</span></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(F1_50, F2_50),</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># What do we want to name the column which identifies the kind of formant </span></span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># reading?</span></span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"formant_type"</span>,</span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># What do we want to name the column containing the formant values?</span></span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"formant_value"</span></span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vowels_long <span class="sc">|&gt;</span> <span class="fu">select</span>(speaker, vowel, formant_type, formant_value))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 4
   speaker     vowel formant_type formant_value
@@ -882,27 +919,27 @@ Caused by error:
 <p>The above code moves us from a data frame with 17240 to one with 34480 rows. The ‘observations’ are now individual formant readings.</p>
 <p>Now look at an example where we pivot ‘wider’:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What is we want a single row for each speaker, with their mean value for each</span></span>
-<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a><span class="co"># vowel as columns.</span></span>
-<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a>vowels_wide <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span></span>
-<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select only relevant data</span></span>
-<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
-<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a>    speaker, vowel, F1_50, F2_50,</span>
-<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">contains</span>(<span class="at">match =</span> <span class="st">"participant_"</span>)</span>
-<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
-<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
-<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Column names come from 'vowel' column</span></span>
-<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> vowel,</span>
-<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Values come from both midpoint columns</span></span>
-<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> <span class="fu">c</span>(F1_50, F2_50),</span>
-<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We aggregate using the `mean` function if there is more than</span></span>
-<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># one value for each cell of the table. i.e., the `F1_midpoint_DRESS`</span></span>
-<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># column will end up with the mean F1 value across *all* the speakers tokens</span></span>
-<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># of DRESS.</span></span>
-<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_fn =</span> mean</span>
-<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a>  )</span>
-<span id="cb59-20"><a href="#cb59-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb59-21"><a href="#cb59-21" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vowels_wide <span class="sc">|&gt;</span> <span class="fu">select</span>(speaker, <span class="fu">matches</span>(<span class="st">"F1|F2"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># What is we want a single row for each speaker, with their mean value for each</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a><span class="co"># vowel as columns.</span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>vowels_wide <span class="ot">&lt;-</span> vowels_filtered <span class="sc">|&gt;</span></span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Select only relevant data</span></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(</span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>    speaker, vowel, F1_50, F2_50,</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">contains</span>(<span class="at">match =</span> <span class="st">"participant_"</span>)</span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_wider</span>(</span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Column names come from 'vowel' column</span></span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_from =</span> vowel,</span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Values come from both midpoint columns</span></span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_from =</span> <span class="fu">c</span>(F1_50, F2_50),</span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We aggregate using the `mean` function if there is more than</span></span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># one value for each cell of the table. i.e., the `F1_midpoint_DRESS`</span></span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a>    <span class="co"># column will end up with the mean F1 value across *all* the speakers tokens</span></span>
+<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a>    <span class="co"># of DRESS.</span></span>
+<span id="cb61-18"><a href="#cb61-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_fn =</span> mean</span>
+<span id="cb61-19"><a href="#cb61-19" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb61-20"><a href="#cb61-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-21"><a href="#cb61-21" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(vowels_wide <span class="sc">|&gt;</span> <span class="fu">select</span>(speaker, <span class="fu">matches</span>(<span class="st">"F1|F2"</span>)))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 6 × 23
   speaker     F1_50_DRESS F1_50_NURSE F1_50_START F1_50_STRUT F1_50_GOOSE
