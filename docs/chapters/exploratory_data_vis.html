@@ -297,7 +297,7 @@ window.Quarto = {
   <li><a href="#word-duration-and-usage-factors" id="toc-word-duration-and-usage-factors" class="nav-link" data-scroll-target="#word-duration-and-usage-factors"><span class="header-section-number">3.3</span> Word Duration and Usage Factors</a></li>
   <li><a href="#getting-started-with-ggplot2" id="toc-getting-started-with-ggplot2" class="nav-link" data-scroll-target="#getting-started-with-ggplot2"><span class="header-section-number">3.4</span> Getting Started with <code>ggplot2</code></a>
   <ul class="collapse">
-  <li><a href="#load-libraries-and-data" id="toc-load-libraries-and-data" class="nav-link" data-scroll-target="#load-libraries-and-data"><span class="header-section-number">3.4.1</span> Load libraries and data</a></li>
+  <li><a href="#load-packages-and-data" id="toc-load-packages-and-data" class="nav-link" data-scroll-target="#load-packages-and-data"><span class="header-section-number">3.4.1</span> Load packages and data</a></li>
   <li><a href="#the-grammar-of-graphics" id="toc-the-grammar-of-graphics" class="nav-link" data-scroll-target="#the-grammar-of-graphics"><span class="header-section-number">3.4.2</span> The ‘grammar of graphics’</a></li>
   <li><a href="#one-dimensional-plots" id="toc-one-dimensional-plots" class="nav-link" data-scroll-target="#one-dimensional-plots"><span class="header-section-number">3.4.3</span> One-Dimensional Plots</a></li>
   <li><a href="#two-dimensional-plots" id="toc-two-dimensional-plots" class="nav-link" data-scroll-target="#two-dimensional-plots"><span class="header-section-number">3.4.4</span> Two-Dimensional Plots</a></li>
@@ -359,7 +359,7 @@ Figure&nbsp;3.1: New project wizard.
 </figcaption>
 </figure>
 </div>
-<p>We will look at the use of <code>git</code> and <code>renv</code> in the future.</p>
+<p>We will look at the use of <code>renv</code> in the near future.</p>
 <p>For now, we need to populate our project with a sensible collection of folders/directories. You will have your own ideas about the best way to do this. For our current purposes, I’ll insist on three: <code>data</code>, <code>plots</code>, and <code>markdown</code>.</p>
 <p>How do you create these? You can do it using the file browser which comes with your operating system or from inside the RStudio window in the <strong>output pane</strong> (recall: at the bottom right of your RStudio window). There is a <code>New Folder</code> bottom at the top of the <code>Files</code> tab.</p>
 <div id="fig-new-fold" class="quarto-float quarto-figure quarto-figure-center anchored">
@@ -417,13 +417,30 @@ format:
       warning: false
     embed-resources: false</code></pre>
 <p>The actual content appears in the body of the Quarto document. In Markdown we use <code>#</code> signs for section headings. Usually, the sections in an html document will start with <code>##</code>. If you want a subsection (i.e., a section <em>within</em> a section) use <code>###</code>, if you want a subsubsection use <code>####</code> etc etc. You will also see code blocks. These start and end with three backticks (<code>```</code>). The language used inside the block is given inside curly brackets (e.g.&nbsp;<code>{r}</code>).</p>
-<p>Options to control the block appear as special comments (e.g.&nbsp;<code>#| echo: false</code>) in the second code block, which means the block will be hidden in the rendered document (but will run in the background). It is often useful to use <code>#| eval: false</code>, which prevents a block from being run when the document is rendered. This is helpful in situations where there is a code block which takes a long time to run.</p>
+<p>Options to control the block appear as special comments (e.g. <code>#| echo: false</code>) in the second code block, which means the block will be hidden in the rendered document (but will run in the background). It is often useful to use <code>#| eval: false</code>, which prevents a block from being run when the document is rendered. This is helpful in situations where there is a code block which takes a long time to run.</p>
 <p>There are many good tutorials on Quarto and Markdown available online. If you like videos, I recommend:</p>
 <ul>
 <li><a href="https://www.youtube.com/watch?v=_f3latmOhew" class="uri">https://www.youtube.com/watch?v=_f3latmOhew</a> (this one introduces the visual editor.)</li>
 <li><a href="https://www.youtube.com/watch?v=yvi5uXQMvu4" class="uri">https://www.youtube.com/watch?v=yvi5uXQMvu4</a></li>
 </ul>
 <p>For a text tutorial, you can’t go past <a href="https://r4ds.hadley.nz/quarto" class="uri">https://r4ds.hadley.nz/quarto</a>.</p>
+<div class="webex-check webex-box">
+<p>Have a look at the <a href="https://quarto.org/docs/reference/formats/html.html">reference page</a> for HTML documents in Quarto. This tells you all the options that can go in the YAML header. It’s worth bookmarking this page.</p>
+<p>Answer the following questions by looking at the reference document and experimenting by changing options and re-rendering.</p>
+<p>The <strong>code</strong> options control some of the behaviour of code blocks.</p>
+<ul>
+<li>What option would you use to ‘fold’ all code blocks (i.e., create a document in which you have to click to show any code blocks)? <input class="webex-solveme nospaces" size="9" data-answer="[&quot;code-fold&quot;]"></li>
+</ul>
+<p>The <strong>figures</strong> options help to control the output of plots. These are often useful.</p>
+<ul>
+<li>I want all figures to be aligned in the centre of the page, how should I finish the following in my YAML header: <code>fig-align:</code> <input class="webex-solveme nospaces" size="6" data-answer="[&quot;center&quot;]">.</li>
+</ul>
+<p>Frustratingly, the default unit for figures generated by code blocks is inches. The defaults for each format are <a href="https://quarto.org/docs/computations/execution-options.html#figure-options">here</a></p>
+<ul>
+<li><p>Say I want the width of all my figures to be 8 inches rather than 7, complete the following entry in my YAML header: <select class="webex-select"><option value="blank"></option><option value="">width</option><option value="answer">fig-width</option><option value="">fig-format</option><option value="">fig-asp</option></select> <code>:</code> <input class="webex-solveme nospaces" size="1" data-answer="[&quot;8&quot;]"></p></li>
+<li><p>What option should I use with <code>df-print</code> to produce paged tables (i.e., tables which allow you divide table output into multiple pages)? <select class="webex-select"><option value="blank"></option><option value="">default</option><option value="answer">paged</option><option value="">kable</option><option value="">tibble</option></select>.</p></li>
+</ul>
+</div>
 </section>
 </section>
 <section id="word-duration-and-usage-factors" class="level2" data-number="3.3">
@@ -450,18 +467,18 @@ Figure&nbsp;3.4: Hamburger menu and download button on osf.io.
 </section>
 <section id="getting-started-with-ggplot2" class="level2" data-number="3.4">
 <h2 data-number="3.4" class="anchored" data-anchor-id="getting-started-with-ggplot2"><span class="header-section-number">3.4</span> Getting Started with <code>ggplot2</code></h2>
-<section id="load-libraries-and-data" class="level3" data-number="3.4.1">
-<h3 data-number="3.4.1" class="anchored" data-anchor-id="load-libraries-and-data"><span class="header-section-number">3.4.1</span> Load libraries and data</h3>
-<p>At the top of your Quarto Document, add a code block which loads the required libraries. A convenient way to do this is to use the keyboard shortcut (Windows and Linux: <code>Ctrl + Alt + I</code>, macOS: <code>Cmd + Option + I</code>).</p>
+<section id="load-packages-and-data" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="load-packages-and-data"><span class="header-section-number">3.4.1</span> Load packages and data</h3>
+<p>At the top of your Quarto Document, add a code block which loads the required packages. A convenient way to do this is to use the keyboard shortcut (Windows and Linux: <code>Ctrl + Alt + I</code>, macOS: <code>Cmd + Option + I</code>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
 <pre><code>── Attaching core tidyverse packages ──────────────────────── tidyverse 2.0.0 ──
 ✔ dplyr     1.1.4     ✔ readr     2.1.5
 ✔ forcats   1.0.0     ✔ stringr   1.5.1
-✔ ggplot2   3.5.1     ✔ tibble    3.2.1
-✔ lubridate 1.9.3     ✔ tidyr     1.3.1
-✔ purrr     1.0.2     
+✔ ggplot2   3.5.2     ✔ tibble    3.3.0
+✔ lubridate 1.9.4     ✔ tidyr     1.3.1
+✔ purrr     1.1.0     
 ── Conflicts ────────────────────────────────────────── tidyverse_conflicts() ──
 ✖ dplyr::filter() masks stats::filter()
 ✖ dplyr::lag()    masks stats::lag()
@@ -469,7 +486,7 @@ Figure&nbsp;3.4: Hamburger menu and download button on osf.io.
 </div>
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(here)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>here() starts at /Users/jbl91/UC Enterprise Dropbox/Joshua Wilson Black/teaching/intro_workshops/statistics_workshops</code></pre>
+<pre><code>here() starts at /Users/jbl91/UC Enterprise Dropbox/Joshua Wilson Black/teaching/statistics_workshops</code></pre>
 </div>
 </div>
 <p>Have a look at the output of this code block. It tells you which packages are included in the ‘core tidyverse packages’ and which version you are loading. Note that <code>ggplot2</code> is included among them. A set of ‘conflicts’ follow: these are all of the form <code>x</code> masks <code>y</code>. The first of these is <code>✖ dplyr::filter() masks stats::filter()</code>. This means that the name <code>filter()</code> previously referred to a function in the <code>stats</code> package called <code>filter()</code>, but <em>now</em> refers to the function of the same name from <code>dplyr</code>. Keep an eye out for clashes between packages in terms of function names.</p>
@@ -492,6 +509,16 @@ Specify the column types or set `show_col_types = FALSE` to quiet this message.
 </div>
 <p>The output of this function tells us how <code>read_csv()</code> has interpreted the columns in the data file, how many rows there are, and any names which it has created for the columns: <code>chr</code> means the column contains text strings, <code>dbl</code> means it carries numbers, and <code>lgl</code> means it carries <code>TRUE</code> or <code>FALSE</code> values.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a></p>
 <p>It is a good idea to have a look in this data by using the RStudio viewer (Recall: <code>View(big_dia)</code> or double click <code>big_dia</code> in the environment pane.)</p>
+<div class="webex-check webex-box">
+<p>Run <code>spec(big_dia)</code> in your console and look at the output. Identify the types of the following columns:</p>
+<ul>
+<li><code>wclass</code>: <select class="webex-select"><option value="blank"></option><option value="answer">character</option><option value="">numerical</option><option value="">logical</option></select></li>
+<li><code>seg.no</code>: <select class="webex-select"><option value="blank"></option><option value="">character</option><option value="answer">numerical</option><option value="">logical</option></select></li>
+<li><code>foll_pred_wf_log</code>: <select class="webex-select"><option value="blank"></option><option value="">character</option><option value="answer">numerical</option><option value="">logical</option></select></li>
+<li><code>repeated.20</code>: <select class="webex-select"><option value="blank"></option><option value="">character</option><option value="">numerical</option><option value="answer">logical</option></select></li>
+<li><code>TargetPhonemes</code>: <select class="webex-select"><option value="blank"></option><option value="answer">character</option><option value="">numerical</option><option value="">logical</option></select></li>
+</ul>
+</div>
 </section>
 <section id="the-grammar-of-graphics" class="level3" data-number="3.4.2">
 <h3 data-number="3.4.2" class="anchored" data-anchor-id="the-grammar-of-graphics"><span class="header-section-number">3.4.2</span> The ‘grammar of graphics’</h3>
@@ -950,8 +977,8 @@ Wilkinson, Leland. 1999. <em>The Grammar of Graphics</em>. Statistics and Comput
 <ol>
 <li id="fn1"><p>Often, in practice, one shares a tidied version of a project without a full history. Perhaps, for instance, your ‘in-house’ data analysis uses the names of participants whereas your public release of data and code has to be anonyimised. There are advantages to getting to the ‘fit for public consumption’ phase as soon as possible and sharing <em>as much</em> of the history of the project as is feasible. I have, so far, failed to live up to this advice myself.<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn2"><p><strong>If</strong> you want to keep your current work in RStudio open, then tick the small box in the bottom left (<code>Open in new session</code>). This will open the project in a new RStudio window.<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn3"><p> You may want to experiment with the ‘visual markdown editor’. I always use the <code>source</code> editor, but you may find the visual editor more user friendly. You can always switch between the two later.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
-<li id="fn4"><p> The strings <code>chr</code>, <code>dbl</code>, and <code>lgl</code> will be more clear in the output if you run this code in RStudio.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>You may want to experiment with the ‘visual markdown editor’. I always use the <code>source</code> editor, but you may find the visual editor more user friendly. You can always switch between the two later.<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>The strings <code>chr</code>, <code>dbl</code>, and <code>lgl</code> will be more clear in the output if you run this code in RStudio.<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn5"><p>For a full list of geoms see the reference to <code>ggplot2</code>: <a href="https://ggplot2.tidyverse.org/reference" class="uri">https://ggplot2.tidyverse.org/reference</a>. The <code>ggplot2</code> cheat sheet is also worth looking at: <a href="https://rstudio.github.io/cheatsheets/html/data-visualization.html" class="uri">https://rstudio.github.io/cheatsheets/html/data-visualization.html</a><a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn6"><p>There are plenty of tools for generating HTML colours, for instance: <a href="https://htmlcolorcodes.com/color-picker/" class="uri">https://htmlcolorcodes.com/color-picker/</a>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn7"><p>See details of predefined themes here: <a href="https://ggplot2.tidyverse.org/reference/ggtheme.html" class="uri">https://ggplot2.tidyverse.org/reference/ggtheme.html</a><a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>

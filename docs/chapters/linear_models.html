@@ -333,8 +333,7 @@ window.Quarto = {
 
 <section id="overview" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="overview"><span class="header-section-number">4.1</span> Overview</h2>
-<p>In this chapter we continue to explore the duration and word frequency data from <span class="citation" data-cites="soskuthyChangingWordUsage2017">Sóskuthy and Hay (<a href="references.html#ref-soskuthyChangingWordUsage2017" role="doc-biblioref">2017</a>)</span>. In the previous chapter we learned how to set up an R project in RStudio and plotted the data in various ways using <code>ggplot2</code>. In this chapter, we turn to <em>modelling</em> the data. In particular,<br>
-we look at a very useful class of models: linear models. We’re going to draw some straight lines.</p>
+<p>In this chapter we continue to explore the duration and word frequency data from <span class="citation" data-cites="soskuthyChangingWordUsage2017">Sóskuthy and Hay (<a href="references.html#ref-soskuthyChangingWordUsage2017" role="doc-biblioref">2017</a>)</span>. In the previous chapter we learned how to set up an R project in RStudio and plotted the data in various ways using <code>ggplot2</code>. In this chapter, we turn to <em>modelling</em> the data. In particular, we look at a very useful class of models: linear models. We’re going to draw some straight lines.</p>
 <p>What is a model? It’s a simplified representation of something. The phenomena we’re interested in in the human sciences, including linguistics, are incredibly complex. We have various strategies for reducing this complexity. Statistical models are an important (but not the only!) tool for this. Such models usually find patterns of association between variables in a data set. These patterns might then be used to <em>predict</em> future data, <em>explain</em> one variable in terms of others, or <em>explore</em> looking for surprising features of the data which might motivate future research.</p>
 <p>This chapter will quickly run through some of the key workflow steps in fitting a linear model. We’ll start with a ‘simple linear regression model’ (<a href="#sec-simple" class="quarto-xref"><span>Section 4.2</span></a>). We’ll use a straight line to represent the relationship between word duration and word frequency. We’ll follow this workflow:</p>
 <ol type="1">
@@ -342,11 +341,11 @@ we look at a very useful class of models: linear models. We’re going to draw s
 <li>Fit a linear model using <code>lm()</code>.</li>
 <li>Check residual plots.</li>
 <li>Look at the model summary (<code>summary()</code>).</li>
-<li>Plot predictions</li>
+<li>Plot predictions.</li>
 </ol>
-<p>There is no need to do things in <em>exactly</em> this order all the time. But this is a nice pattern.</p>
+<p>There is no need to do things in <em>exactly</em> this order all the time. But this is a nice pattern. Certainly, whatever pattern or workflow you do use, you should spend some time thinking about it.</p>
 <p>We’ll then add additional variables to the model (<a href="#sec-multiple" class="quarto-xref"><span>Section 4.3</span></a>), and consider how to fit <em>interactions</em> between variables (<a href="#sec-interactions" class="quarto-xref"><span>Section 4.4</span></a>).</p>
-<p>You will notice, in <a href="#sec-further" class="quarto-xref"><span>Section 4.6</span></a>, that the material covered in this chapter corresponds to <em>eight</em> chapters in <span class="citation" data-cites="winterStatisticsLinguistsIntroduction2019">Winter (<a href="references.html#ref-winterStatisticsLinguistsIntroduction2019" role="doc-biblioref">2019</a>)</span>. We’re moving fast here. As you get in to your own projects, with your own data, you will need to explore these topics in more detail.</p>
+<p>You will notice, in <a href="#sec-further" class="quarto-xref"><span>Section 4.6</span></a>, that the material covered in this chapter corresponds to <em>eight</em> chapters in <span class="citation" data-cites="winterStatisticsLinguistsIntroduction2019">Winter (<a href="references.html#ref-winterStatisticsLinguistsIntroduction2019" role="doc-biblioref">2019</a>)</span>. We’re moving fast here. As you get in to your own projects, with your own data, you will need to explore each of these topics in more detail.</p>
 </section>
 <section id="sec-simple" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="sec-simple"><span class="header-section-number">4.2</span> Simple Linear Regression</h2>
@@ -404,6 +403,13 @@ Figure&nbsp;4.1: A collection of lines with the intercept indicated by a point. 
 </div>
 <p>In <a href="#fig-lines" class="quarto-xref">Figure&nbsp;<span>4.1</span></a>, the intercept is indicated with a large point. We see five distinct intercepts. The slope is indicated by the numbers in labels. Two of these are negative numbers, and the corresponding lines are going <em>down</em> as you look from left to right. The positive slopes correspond to lines which go <em>up</em> as you view from left to right. The larger the magnitude of the slope (i.e., the size of the number, ignoring whether it is positive or negative), the steeper the line.</p>
 <p>Mathematically, a line in two-dimensional space is represented by the equation <span class="math inline">\(y = a + bx\)</span>, where <span class="math inline">\(a\)</span> is the intercept term and <span class="math inline">\(b\)</span> is the slope term. If you increase the intercept term, then <span class="math inline">\(y\)</span> increases across the board. That is, changing the intercept moves the line up and down. The term <span class="math inline">\(b\)</span> represents a relationship between the variables <span class="math inline">\(y\)</span> and <span class="math inline">\(x\)</span>. If <span class="math inline">\(b\)</span> is positive, then as <span class="math inline">\(x\)</span> increases, <span class="math inline">\(y\)</span> will also increase. If it is negative, <span class="math inline">\(y\)</span> will decrease as <span class="math inline">\(x\)</span> increases.</p>
+<div class="webex-check webex-box">
+<ul>
+<li>Which line has the <strong>slope</strong> closest to zero? <select class="webex-select"><option value="blank"></option><option value="answer">Red</option><option value="">Green</option><option value="">Blue</option><option value="">Purple</option><option value="">Brown</option></select></li>
+<li>Which line has the <strong>intercept</strong> closest to zero? <select class="webex-select"><option value="blank"></option><option value="">Red</option><option value="">Green</option><option value="">Blue</option><option value="answer">Purple</option><option value="">Brown</option></select></li>
+<li>What slope value does a horizontal line have? <input class="webex-solveme nospaces" size="1" data-answer="[&quot;0&quot;]"></li>
+</ul>
+</div>
 </section>
 <section id="word-frequency-and-word-duration" class="level3" data-number="4.2.2">
 <h3 data-number="4.2.2" class="anchored" data-anchor-id="word-frequency-and-word-duration"><span class="header-section-number">4.2.2</span> Word Frequency and Word Duration</h3>
@@ -436,7 +442,7 @@ Figure&nbsp;4.2: Scatter plot of word frequency and length.
 </div>
 </div>
 </div>
-<p><a href="#fig-scatter-wf" class="quarto-xref">Figure&nbsp;<span>4.2</span></a> is characteristic of the messy data we find in work with large corpora of linguistic data. The key thing to note here is whether there is a shortage of data anywhere, whether there are any data points which are totally implausible (and perhaps represent measurement errors). Check any such points. You may need to filter them out (using functions we have already looked at in the previous chapter).</p>
+<p><a href="#fig-scatter-wf" class="quarto-xref">Figure&nbsp;<span>4.2</span></a> is characteristic of the messy data we find in work with large corpora of linguistic data. The key thing to note here is whether there is a shortage of data anywhere (here, we would notice, for instance, that the lower frequency areas to the left of the plot are much more sparce than the higher frequency areas), whether there are any data points which are totally implausible (and perhaps represent measurement errors). Check any such points. You may need to filter them out (using functions we have already looked at in the previous chapter).</p>
 <p>The next step is to <strong>fit the model</strong> using <code>lm()</code>. Linear regression typically fits a straight line by ‘least squares’. It finds the line which <em>minimises</em> the sum of the squared differences between the line and the actual data points in the <span class="math inline">\(y\)</span> dimension. Put simply, it finds the slope and intercept which are ‘closest’ to the actual data.</p>
 <p>We specify a model using the <code>formula</code> argument. We can use variable names from our data set. If we do this, we have to specify the data set using the <code>data</code> argument. The formula for a simple linear regression just has the name of the variable to be explained (the ‘response’ variable) on the left of a <code>~</code> sign and the variable which we will use to explain it (the ‘explanatory’ variable) on the right.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a> The following code block fits a simple model and associates it with the name <code>simple_fit</code>.</p>
 <div class="cell">
@@ -482,11 +488,86 @@ Figure&nbsp;4.4: Quantile-quantile plot from our simple linear regression model.
 </div>
 </div>
 <p><a href="#fig-qq" class="quarto-xref">Figure&nbsp;<span>4.4</span></a> should show a series of points in a straight line. This is more or less true in the middle of the curve, but is violated heavily at both ends of the curve. This shows that we are missing something important in our simple model.</p>
-<p>What does this kind of plot show? We assume out residuals are normally distributed. The ‘theoretical quantiles` indicate the value we would expect from a normal distribution, the ’standardised residuals’ are the values we actually observe, but appropriately scaled. The fact that the curve is above the straight line indicates that there are many words which have much longer duration that we would assume given only information about the word frequency, and the assumptions of the linear regression model itself (including, importantly, that the relationship can be captured by a straight line.)</p>
-<p>So, we have some reason to be a bit sceptical that our model is capturing the patterns at the edges of the data. We should keep this in mind as we move to the next phase of our workflow: <strong>look at the model summary</strong>. Violation of model assumptions reduces the confidence we should have when looking at its results.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>What does this kind of plot show? We assume out residuals are normally distributed. The ‘theoretical quantiles` indicate the value we would expect from normally distributed residuals, the ’standardised residuals’ are the values we actually observe, but appropriately scaled. The fact that the curve is above the straight line indicates that there are many words which have much longer duration that we would assume given only information about the word frequency, and the assumptions of the linear regression model itself (including, importantly, that the relationship can be captured by a straight line.)</p>
+<p>So, we have reason to be pretty sceptical that our model is capturing the patterns at the edges of the data. We should keep this in mind as we move to the next phase of our workflow: <strong>look at the model summary</strong>. Violation of model assumptions reduces the confidence we should have when looking at its results.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a></p>
+<p>It can be frustrating for someone to tell you things like ‘be a bit sceptical’, or, ‘this is basically fine, but not perfect’ when looking at this kind of diagnostic plot. You want clear answers to your questions. Unfortunately clear answers don’t always exist. But, in lieu of a perfect criterion for residual plot badness, the following code block produces data which, when modelled by a linear model, produce a very bad residual plot and a dubious QQ plot (<a href="#fig-bad-diagnostic-plots" class="quarto-xref">Figure&nbsp;<span>4.5</span></a>).</p>
+<div class="cell">
+<details class="code-fold">
+<summary>To view the code click here</summary>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>wiggly_data <span class="ot">&lt;-</span> </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">explanatory =</span> <span class="fu">runif</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="at">min =</span> <span class="sc">-</span><span class="dv">4</span>, <span class="at">max =</span> <span class="dv">4</span>)</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>    <span class="at">response =</span> <span class="fu">sin</span>(explanatory <span class="sc">*</span> <span class="dv">10</span>) <span class="sc">+</span> <span class="fu">rt</span>(<span class="at">n =</span> <span class="dv">1000</span>, <span class="fl">1.9</span>)<span class="sc">/</span><span class="dv">10</span> </span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>data_and_fit <span class="ot">&lt;-</span> wiggly_data <span class="sc">|&gt;</span> </span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb6-12"><a href="#cb6-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb6-13"><a href="#cb6-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> explanatory,</span>
+<span id="cb6-14"><a href="#cb6-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> response</span>
+<span id="cb6-15"><a href="#cb6-15" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-16"><a href="#cb6-16" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-17"><a href="#cb6-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb6-18"><a href="#cb6-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method=</span><span class="st">"lm"</span>) <span class="sc">+</span></span>
+<span id="cb6-19"><a href="#cb6-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-20"><a href="#cb6-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Simulated data and linear fit"</span></span>
+<span id="cb6-21"><a href="#cb6-21" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-22"><a href="#cb6-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-23"><a href="#cb6-23" aria-hidden="true" tabindex="-1"></a>lm_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(response <span class="sc">~</span> explanatory, <span class="at">data =</span> wiggly_data)</span>
+<span id="cb6-24"><a href="#cb6-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-25"><a href="#cb6-25" aria-hidden="true" tabindex="-1"></a>fit_data <span class="ot">&lt;-</span></span>
+<span id="cb6-26"><a href="#cb6-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">tibble</span>(</span>
+<span id="cb6-27"><a href="#cb6-27" aria-hidden="true" tabindex="-1"></a>    <span class="st">"residuals"</span> <span class="ot">=</span> <span class="fu">residuals</span>(lm_fit),</span>
+<span id="cb6-28"><a href="#cb6-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">"predictions"</span> <span class="ot">=</span> <span class="fu">predict</span>(lm_fit)</span>
+<span id="cb6-29"><a href="#cb6-29" aria-hidden="true" tabindex="-1"></a>  ) </span>
+<span id="cb6-30"><a href="#cb6-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-31"><a href="#cb6-31" aria-hidden="true" tabindex="-1"></a>resid_plot <span class="ot">&lt;-</span> fit_data <span class="sc">|&gt;</span> </span>
+<span id="cb6-32"><a href="#cb6-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb6-33"><a href="#cb6-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb6-34"><a href="#cb6-34" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> predictions,</span>
+<span id="cb6-35"><a href="#cb6-35" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> residuals</span>
+<span id="cb6-36"><a href="#cb6-36" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-37"><a href="#cb6-37" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-38"><a href="#cb6-38" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb6-39"><a href="#cb6-39" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"Residual plot"</span>)</span>
+<span id="cb6-40"><a href="#cb6-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-41"><a href="#cb6-41" aria-hidden="true" tabindex="-1"></a>qq <span class="ot">&lt;-</span> fit_data <span class="sc">|&gt;</span> </span>
+<span id="cb6-42"><a href="#cb6-42" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb6-43"><a href="#cb6-43" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb6-44"><a href="#cb6-44" aria-hidden="true" tabindex="-1"></a>      <span class="at">sample =</span> residuals</span>
+<span id="cb6-45"><a href="#cb6-45" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb6-46"><a href="#cb6-46" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb6-47"><a href="#cb6-47" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq</span>() <span class="sc">+</span></span>
+<span id="cb6-48"><a href="#cb6-48" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_qq_line</span>() <span class="sc">+</span></span>
+<span id="cb6-49"><a href="#cb6-49" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb6-50"><a href="#cb6-50" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"QQ-plot"</span>,</span>
+<span id="cb6-51"><a href="#cb6-51" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Theoretical quantiles"</span>,</span>
+<span id="cb6-52"><a href="#cb6-52" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Residuals"</span></span>
+<span id="cb6-53"><a href="#cb6-53" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb6-54"><a href="#cb6-54" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb6-55"><a href="#cb6-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-56"><a href="#cb6-56" aria-hidden="true" tabindex="-1"></a>data_and_fit <span class="sc">/</span> (resid_plot <span class="sc">+</span> qq) <span class="sc">+</span> </span>
+<span id="cb6-57"><a href="#cb6-57" aria-hidden="true" tabindex="-1"></a>  <span class="fu">plot_annotation</span>(<span class="at">tag_levels =</span> <span class="st">"A"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<div id="fig-bad-diagnostic-plots" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-bad-diagnostic-plots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="linear_models_files/figure-html/fig-bad-diagnostic-plots-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-bad-diagnostic-plots-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.5: Simulated data with wave pattern. Panel A shows raw data and linear fit, panel B shows the residual plot, with a clear sin wave pattern rather than the (expected) random cluster. Panel C shows a QQ plot indicating residuals with more extreme values than expected from a linear model.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
 <p>The <code>summary()</code> function outputs key features of the model.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a> Let’s look at the output:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(simple_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(simple_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -508,56 +589,57 @@ Multiple R-squared:  0.09091,   Adjusted R-squared:  0.09091
 F-statistic: 2.718e+04 on 1 and 271762 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
-<p>We start with a <code>Call</code> which says what the R statement which generated the model was (including the formula). We then see information about the distribution of the residuals, before the <code>Coefficients:</code> section. This is where we will find the intercept and slope terms of out model. The <code>(Intercept)</code> term tells us what the model predicts when <span class="math inline">\(x\)</span> is <span class="math inline">\(0\)</span>, i.e., when the log word frequency is 0. Is this a useful thing to know? Have a look at the scatter plot and see what this would correspond to in terms of our data (<a href="#fig-scatter-wf" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>). We will consider some alternatives later. We look at the <code>Estimate</code> column to see the estimated value of the coefficients. In this case, we estimate a word duration of <span class="math inline">\(0.04\)</span> when the log word frequency is 0.</p>
-<p>We then look at the <code>unigram.google.gb</code> row. This will tell us the <em>slope</em> of the line. The best straight line through the data has a slope of <span class="math inline">\(-0.028\)</span>.</p>
-<p>What else is in the table? Information which quantifies our uncertainty about the estimates and tests of how consistent the data is with the <em>absence</em> of an effect. That is, we’ve got a series of tests of <strong>null hypotheses</strong>. For the intercept, the null hypothesis is that the intercept is zero. For the slope, the null hypothesis is that the slope is zero. The <code>t value</code> column is a ‘test statistic’ which summarises features of the data set with respect to the hypothesis that there is no effect. The <code>Pr(&gt;|t|)</code> columns gives ‘p values’, which indicate the probability of observing the test statistic, or a more extreme value, if there is no actual effect. Low values, traditionally values less that 0.05, lead us to ‘reject the null hypothesis’. In this case, then, we reject the null hypothesis for both the intercept term and the slope term. The effect of word frequency on word duration is ‘statistically significant’ in this model.</p>
+<p>We start with a <code>Call</code> which says what the R statement which generated the model was (including the formula). We then see information about the distribution of the residuals, before the <code>Coefficients:</code> section. This is where we will find the intercept and slope terms of our model. The <code>(Intercept)</code> term tells us what the model predicts when <span class="math inline">\(x\)</span> is 0. i.e., when the log word frequency is 0. Is this a useful thing to know? Have a look at the scatter plot and see what this would correspond to in terms of our data (<a href="#fig-scatter-wf" class="quarto-xref">Figure&nbsp;<span>4.2</span></a>). We will consider some alternatives later. We look at the <code>Estimate</code> column to see the estimated value of the coefficients. In this case, we estimate a word duration of 0.04 when the log word frequency is 0.</p>
+<p>We then look at the <code>unigram.google.gb</code> row. This will tell us the <em>slope</em> of the line. The best straight line through the data has a slope of -0.028.</p>
+<p>What else is in the table? Information which quantifies our uncertainty about the estimates and tests of how consistent the data is with the <em>absence</em> of an effect. That is, we’ve got a series of tests of <strong>null hypotheses</strong>. For the intercept, the null hypothesis is that the intercept is zero. For the slope, the null hypothesis is that the slope is zero. The <code>t value</code> column contains ‘test statistics’ which summarise features of the data set with respect to the hypothesis that there is no effect. The <code>Pr(&gt;|t|)</code> columns gives ‘p values’, which indicate the probability of observing the test statistic, or a more extreme value, if there is no actual effect. Low values, traditionally values less that 0.05, lead us to ‘reject the null hypothesis’. In this case, then, we reject the null hypothesis for both the intercept term and the slope term. The effect of word frequency on word duration is ‘statistically significant’ in this model.</p>
 <p>The final stage of our workflow is to <strong>plot the predictions</strong>. We get access to the predictions using the <code>predict()</code> function.<a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a> We use the <code>interval</code> argument to specify that we want confidence intervals around the predictions.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>model_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>  simple_fit, </span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">interval =</span> <span class="st">"confidence"</span></span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>simple_preds <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(big_dia, model_preds)</span>
-<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Here's 10 random rows.</span></span>
-<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a>simple_preds <span class="sc">|&gt;</span> </span>
-<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(WordDuration, unigram.google.gb, fit, lwr, upr) <span class="sc">|&gt;</span> </span>
-<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>model_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>  simple_fit, </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">interval =</span> <span class="st">"confidence"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">level =</span> <span class="fl">0.95</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>simple_preds <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(big_dia, model_preds)</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Here's 10 random rows.</span></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>simple_preds <span class="sc">|&gt;</span> </span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(WordDuration, unigram.google.gb, fit, lwr, upr) <span class="sc">|&gt;</span> </span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_sample</span>(<span class="at">n=</span><span class="dv">10</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 10 × 5
    WordDuration unigram.google.gb   fit   lwr   upr
           &lt;dbl&gt;             &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
- 1        0.370             -8.00 0.264 0.264 0.265
- 2        0.44             -10.6  0.336 0.335 0.336
- 3        0.150             -7.93 0.263 0.262 0.263
- 4        0.340             -9.39 0.303 0.303 0.304
- 5        0.310             -7.34 0.246 0.246 0.247
- 6        0.410             -7.86 0.261 0.260 0.261
- 7        0.220             -9.02 0.293 0.292 0.293
- 8        0.230             -8.87 0.289 0.288 0.289
- 9        0.140             -6.87 0.233 0.232 0.234
-10        0.190             -6.99 0.236 0.236 0.237</code></pre>
+ 1        0.310             -7.49 0.250 0.250 0.251
+ 2        0.15              -8.52 0.279 0.279 0.279
+ 3        0.190             -8.22 0.271 0.270 0.271
+ 4        0.360             -8.67 0.283 0.283 0.283
+ 5        0.570             -9.07 0.294 0.294 0.295
+ 6        0.460             -7.73 0.257 0.257 0.258
+ 7        0.465             -8.98 0.292 0.291 0.292
+ 8        0.380             -9.99 0.320 0.319 0.320
+ 9        0.240             -7.80 0.259 0.258 0.259
+10        0.220             -8.71 0.284 0.284 0.285</code></pre>
 </div>
 </div>
 <p>The output above shows the actual word duration scores, word frequencies, model predictions (<code>fit</code>) and lower (<code>lwr</code>) and upper (<code>upr</code>) bounds on the confidence intervals for 10 random rows of the data.</p>
 <p>We can plot this <em>without the original data</em> as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>simple_preds <span class="sc">|&gt;</span> </span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> unigram.google.gb,</span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> fit,</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymin =</span> lwr,</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymax =</span> upr</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="at">colour =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Log word frequency (via. Google)"</span>,</span>
-<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Predicted Word Duration (s)"</span></span>
-<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>simple_preds <span class="sc">|&gt;</span> </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> unigram.google.gb,</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> fit,</span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymin =</span> lwr,</span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymax =</span> upr</span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(<span class="at">colour =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Log word frequency (via. Google)"</span>,</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Predicted Word Duration (s)"</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-plotnodata" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -565,40 +647,41 @@ F-statistic: 2.718e+04 on 1 and 271762 DF,  p-value: &lt; 2.2e-16</code></pre>
 <img src="linear_models_files/figure-html/fig-plotnodata-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plotnodata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.5: Model predictions with 95% confidence intervals.
+Figure&nbsp;4.6: Model predictions with 95% confidence intervals.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
+<p><a href="#fig-plotnodata" class="quarto-xref">Figure&nbsp;<span>4.6</span></a> has an incredibly small confidence interval. This is because of the very large size of the data set!</p>
 <p>And <em>with data</em>:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>simple_preds <span class="sc">|&gt;</span> </span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> unigram.google.gb,</span>
-<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
-<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
-<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Let's add some labels</span></span>
-<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(</span>
-<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> fit,</span>
-<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymin =</span> lwr,</span>
-<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymax =</span> upr</span>
-<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb11-16"><a href="#cb11-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.5</span></span>
-<span id="cb11-17"><a href="#cb11-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb11-18"><a href="#cb11-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
-<span id="cb11-19"><a href="#cb11-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb11-20"><a href="#cb11-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> fit</span>
-<span id="cb11-21"><a href="#cb11-21" aria-hidden="true" tabindex="-1"></a>    ),</span>
-<span id="cb11-22"><a href="#cb11-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
-<span id="cb11-23"><a href="#cb11-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
-<span id="cb11-24"><a href="#cb11-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Log word frequency (via. Google)"</span>,</span>
-<span id="cb11-25"><a href="#cb11-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Word Duration (s)"</span></span>
-<span id="cb11-26"><a href="#cb11-26" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>simple_preds <span class="sc">|&gt;</span> </span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> unigram.google.gb,</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.01</span>) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Let's add some labels</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_ribbon</span>(</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> fit,</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymin =</span> lwr,</span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymax =</span> upr</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">alpha =</span> <span class="fl">0.5</span></span>
+<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_path</span>(</span>
+<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> fit</span>
+<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb12-22"><a href="#cb12-22" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"red"</span>) <span class="sc">+</span></span>
+<span id="cb12-23"><a href="#cb12-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb12-24"><a href="#cb12-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Log word frequency (via. Google)"</span>,</span>
+<span id="cb12-25"><a href="#cb12-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Word Duration (s)"</span></span>
+<span id="cb12-26"><a href="#cb12-26" aria-hidden="true" tabindex="-1"></a>  )</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-plotdata" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -606,7 +689,7 @@ Figure&nbsp;4.5: Model predictions with 95% confidence intervals.
 <img src="linear_models_files/figure-html/fig-plotdata-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-plotdata-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.6: Model predictions with 95% confidence intervals and original data.
+Figure&nbsp;4.7: Model predictions with 95% confidence intervals and original data.
 </figcaption>
 </figure>
 </div>
@@ -646,14 +729,14 @@ Explanation and Correlation
 <p>More generally, we hope that our model is the best depiction of the features of the phenomena we are interested in which we can manage with the data at hand. If we suspect some variable has an independent effect of the response variable, and there is no other downside to including it, it is good to include it in the model.<a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a></p>
 <p>Let’s have a quick visual look at the variable called <code>final</code> in the <code>big_dia</code> dataset. We’ll use a box plot.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> final, </span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> final, </span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-box" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -661,27 +744,27 @@ Explanation and Correlation
 <img src="linear_models_files/figure-html/fig-box-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-box-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.7: Box plot indicating word duration by position in utterance (utterance final vs.&nbsp;non-final).
+Figure&nbsp;4.8: Box plot indicating word duration by position in utterance (utterance final vs.&nbsp;non-final).
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 <p>On the <span class="math inline">\(x\)</span> axis, we distinguish whether an observed word token appears at the end of an utterance or not. On the <span class="math inline">\(y\)</span> axis we see the word duration. The line in the middle of a box plot indicates the median value within the relevant category. So, for instance, the line in the middle of the left box indicates the median word duration in seconds for word tokens which do not appear at the end of an utterance.</p>
-<p><a href="#fig-box" class="quarto-xref">Figure&nbsp;<span>4.7</span></a> suggests that words which appear at the end of an utterance as slightly longer than those which appear at the start of an utterance.</p>
+<p><a href="#fig-box" class="quarto-xref">Figure&nbsp;<span>4.8</span></a> suggests that words which appear at the end of an utterance as slightly longer than those which appear at the start of an utterance.</p>
 <p>In order to include this variation in a linear model, we simply add the variable to the formula using the <code>+</code> sign, as follows:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>multiple_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  WordDuration <span class="sc">~</span> unigram.google.gb <span class="sc">+</span> final,</span>
-<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> big_dia</span>
-<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>multiple_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  WordDuration <span class="sc">~</span> unigram.google.gb <span class="sc">+</span> final,</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> big_dia</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="webex-box">
 <p>Carry out the graphical model checking steps we introduced for simple linear regression above with the <code>multiple_fit</code> model.</p>
 </div>
 <p>What does this look like in the model summary? We will look at the coefficients only. To get at the coefficients table in a convinent way, we can use the <code>tidy()</code> function from the <code>tidymodels</code> package.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(multiple_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tidy</span>(multiple_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code># A tibble: 3 × 5
   term              estimate std.error statistic   p.value
@@ -695,22 +778,22 @@ Figure&nbsp;4.7: Box plot indicating word duration by position in utterance (utt
 <p>As in the previous case, we are given <span class="math inline">\(p\)</span>-values for each of these estimates. The very low <span class="math inline">\(p\)</span>-values in this case indicate that the data at hand is not compatible with these estimates being zero. That is, there is a ‘statistically significant’ associated with each of these coefficients.</p>
 <p>We now want to plot the model predictions. The following code extracts model predictions for some specified points, rather that for every data point in the data frame. We use <code>crossing()</code> from the <code>tidyr</code> package (loaded as part of the <code>tidyverse</code>) to say we want every combination of the values we list. We then feed the result of this to the <code>predict()</code> function using the <code>newdata</code> argument.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify the values we want predictions for.</span></span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>to_predict <span class="ot">&lt;-</span> <span class="fu">crossing</span>(</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"unigram.google.gb"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">15</span>, <span class="sc">-</span><span class="dv">10</span>, <span class="sc">-</span><span class="dv">8</span>, <span class="sc">-</span><span class="dv">7</span>),</span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"final"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get predictions using `predict()`.</span></span>
-<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>multiple_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
-<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>  multiple_fit, </span>
-<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> to_predict,</span>
-<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">interval =</span> <span class="st">"confidence"</span> <span class="co"># The interval argument says we want a confidence</span></span>
-<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># interval for each prediction too.</span></span>
-<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a><span class="co"># combine predictions with the values we specified.</span></span>
-<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>multiple_preds <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(to_predict, multiple_preds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify the values we want predictions for.</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>to_predict <span class="ot">&lt;-</span> <span class="fu">crossing</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"unigram.google.gb"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">15</span>, <span class="sc">-</span><span class="dv">10</span>, <span class="sc">-</span><span class="dv">8</span>, <span class="sc">-</span><span class="dv">7</span>),</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"final"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get predictions using `predict()`.</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>multiple_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  multiple_fit, </span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> to_predict,</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">interval =</span> <span class="st">"confidence"</span> <span class="co"># The interval argument says we want a confidence</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># interval for each prediction too.</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co"># combine predictions with the values we specified.</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>multiple_preds <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(to_predict, multiple_preds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="webex-box">
 <p>Experiment with some ways to plot these model predictions. These should be in a variable called <code>multiple_preds</code>.</p>
@@ -720,29 +803,6 @@ Figure&nbsp;4.7: Box plot indicating word duration by position in utterance (utt
 <h3 data-number="4.3.2" class="anchored" data-anchor-id="adding-a-continuous-variable"><span class="header-section-number">4.3.2</span> Adding a Continuous Variable</h3>
 <p>We don’t have any sense yet of how long we would <em>expect</em> a given word to be. The variable <code>dur.context</code> gives a sense of the length expected given the context of the word in synthesised speech. Here’s what the variable looks like in a scatter plot with word duration:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> dur.context,</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    )</span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div id="fig-scat-context" class="quarto-float quarto-figure quarto-figure-center anchored">
-<figure class="quarto-float quarto-float-fig figure">
-<div aria-describedby="fig-scat-context-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-<img src="linear_models_files/figure-html/fig-scat-context-1.png" class="img-fluid figure-img" width="672">
-</div>
-<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scat-context-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.8: Plot of word duration given expected duration (<code>dur.context</code>).
-</figcaption>
-</figure>
-</div>
-</div>
-</div>
-<p>If you want to see what a simple linear regression looks like on a scatter plot, it can be convenient to use <code>geom_smooth(method = "lm")</code>, as follows:</p>
-<div class="cell">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
@@ -750,8 +810,31 @@ Figure&nbsp;4.8: Plot of word duration given expected duration (<code>dur.contex
 <span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
 <span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>    )</span>
 <span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
-<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
-<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-scat-context" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-scat-context-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="linear_models_files/figure-html/fig-scat-context-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scat-context-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.9: Plot of word duration given expected duration (<code>dur.context</code>).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>If you want to see what a simple linear regression looks like on a scatter plot, it can be convenient to use <code>geom_smooth(method = "lm")</code>, as follows:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>big_dia <span class="sc">|&gt;</span> </span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> dur.context,</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> WordDuration</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.5</span>) <span class="sc">+</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(<span class="at">method =</span> <span class="st">"lm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div id="fig-scat-context-reg" class="quarto-float quarto-figure quarto-figure-center anchored">
 <figure class="quarto-float quarto-float-fig figure">
@@ -759,7 +842,7 @@ Figure&nbsp;4.8: Plot of word duration given expected duration (<code>dur.contex
 <img src="linear_models_files/figure-html/fig-scat-context-reg-1.png" class="img-fluid figure-img" width="672">
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-scat-context-reg-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figure&nbsp;4.9: Plot of word duration given expected duration (<code>dur.context</code>) with simple linear regression.
+Figure&nbsp;4.10: Plot of word duration given expected duration (<code>dur.context</code>) with simple linear regression.
 </figcaption>
 </figure>
 </div>
@@ -768,26 +851,26 @@ Figure&nbsp;4.9: Plot of word duration given expected duration (<code>dur.contex
 <p>The measure of expected duration is positively related to the actual measures of duration. This is an example of a simple visual check that we are on the right track.</p>
 <p>Let’s add this measure to our model. Again, we just use a <code>+</code>. We will reuse the variable name <code>multiple_fit</code>.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>multiple_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I will stop explicitly saying 'formula =' now.</span></span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  WordDuration <span class="sc">~</span> unigram.google.gb <span class="sc">+</span> dur.context <span class="sc">+</span> final,</span>
-<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> big_dia</span>
-<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>multiple_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I will stop explicitly saying 'formula =' now.</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  WordDuration <span class="sc">~</span> unigram.google.gb <span class="sc">+</span> dur.context <span class="sc">+</span> final,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> big_dia</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Are the diagnostic plots any better?</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(multiple_fit, <span class="at">which =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(multiple_fit, <span class="at">which =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="linear_models_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="linear_models_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>This is better than before, but could still be improved. The addition of a variable capturing contextual factors in word duration has helped.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(multiple_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(multiple_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -817,13 +900,13 @@ F-statistic: 3.989e+04 on 3 and 271760 DF,  p-value: &lt; 2.2e-16</code></pre>
 <section id="sec-interactions" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="sec-interactions"><span class="header-section-number">4.4</span> Interactions</h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>interaction_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I will stop explicitly saying 'formula' now.</span></span>
-<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>  WordDuration <span class="sc">~</span> unigram.google.gb <span class="sc">*</span> final <span class="sc">+</span> dur.context,</span>
-<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> big_dia</span>
-<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(interaction_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>interaction_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I will stop explicitly saying 'formula' now.</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  WordDuration <span class="sc">~</span> unigram.google.gb <span class="sc">*</span> final <span class="sc">+</span> dur.context,</span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> big_dia</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(interaction_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:

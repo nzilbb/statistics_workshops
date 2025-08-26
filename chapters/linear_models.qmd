@@ -7,6 +7,7 @@ library(tidymodels)
 library(glue)
 library(here)
 library(ggrepel)
+library(patchwork)
 
 big_dia <- read_csv(here('data', 'big_dia.csv'))
 
@@ -19,7 +20,7 @@ theme_set(theme_bw())
 In this chapter we continue to explore the duration and word frequency data
 from @soskuthyChangingWordUsage2017. In the previous chapter we learned how
 to set up an R project in RStudio and plotted the data in various ways using
-`ggplot2`. In this chapter, we turn to _modelling_ the data. In particular,  
+`ggplot2`. In this chapter, we turn to _modelling_ the data. In particular, 
 we look at a very useful class of models: linear models. We're going to 
 draw some straight lines.
 
@@ -41,10 +42,11 @@ word duration and word frequency. We'll follow this workflow:
 2. Fit a linear model using `lm()`.
 3. Check residual plots.
 4. Look at the model summary (`summary()`).
-5. Plot predictions
+5. Plot predictions.
 
 There is no need to do things in _exactly_ this order all the time. But this is
-a nice pattern.
+a nice pattern. Certainly, whatever pattern or workflow you do use, you should
+spend some time thinking about it.
 
 We'll then add additional variables to the model (@sec-multiple), and consider
 how to fit _interactions_ between variables (@sec-interactions).
@@ -52,7 +54,7 @@ how to fit _interactions_ between variables (@sec-interactions).
 You will notice, in @sec-further, that the material covered in this chapter 
 corresponds to _eight_ chapters in @winterStatisticsLinguistsIntroduction2019.
 We're moving fast here. As you get in to your own projects, with your own data,
-you will need to explore these topics in more detail.
+you will need to explore each of these topics in more detail.
 
 ## Simple Linear Regression {#sec-simple}
 
@@ -121,6 +123,24 @@ represents a relationship between the variables $y$ and $x$. If $b$ is positive,
 then as $x$ increases, $y$ will also increase. If it is negative, $y$ will
 decrease as $x$ increases.
 
+::: {.webex-check .webex-box} 
+
+```{r}
+#| include: false
+opts_s <- c(
+  answer = "Red", "Green", "Blue", "Purple", "Brown"
+)
+opts_i <- c(
+  "Red", "Green", "Blue", answer = "Purple", "Brown"
+)
+```
+
+- Which line has the **slope** closest to zero? `r mcq(opts_s)`
+- Which line has the **intercept** closest to zero? `r mcq(opts_i)`
+- What slope value does a horizontal line have? `r fitb("0")`
+
+:::
+
 ### Word Frequency and Word Duration
 
 In the data set we looked at in the last chapter, we considered explanations
@@ -151,11 +171,13 @@ big_dia |>
 ```
 
 @fig-scatter-wf is characteristic of the messy data we find in work with large
-corpora of linguistic data. The key thing to note here is whether there is a 
-shortage of data anywhere, whether there are any data points which are totally
+corpora of linguistic data. The key thing to note here is whether there is a
+shortage of data anywhere (here, we would notice, for instance, that the lower
+frequency areas to the left of the plot are much more sparce than the higher
+frequency areas), whether there are any data points which are totally
 implausible (and perhaps represent measurement errors). Check any such points.
-You may need to filter them out (using functions we have already looked at
-in the previous chapter).
+You may need to filter them out (using functions we have already looked at in
+the previous chapter).
 
 The next step is to **fit the model** using `lm()`. Linear regression typically
 fits a straight line by 'least squares'. It finds the line which _minimises_ the
@@ -238,21 +260,96 @@ plot(simple_fit, which = 2)
 true in the middle of the curve, but is violated heavily at both ends of the
 curve. This shows that we are missing something important in our simple model.
 
-What does this kind of plot show? We assume out residuals are normally 
-distributed. The 'theoretical quantiles` indicate the value we would expect
-from a normal distribution, the 'standardised residuals' are the values we
-actually observe, but appropriately scaled. The fact that the curve is 
-above the straight line indicates that there are many words which have much
-longer duration that we would assume given only information about the word
-frequency, and the assumptions of the linear regression model itself (including,
+What does this kind of plot show? We assume out residuals are normally
+distributed. The 'theoretical quantiles` indicate the value we would expect from
+normally distributed residuals, the 'standardised residuals' are the values we
+actually observe, but appropriately scaled. The fact that the curve is above the
+straight line indicates that there are many words which have much longer
+duration that we would assume given only information about the word frequency,
+and the assumptions of the linear regression model itself (including,
 importantly, that the relationship can be captured by a straight line.)
 
-So, we have some reason to be a bit sceptical that our model is capturing the
+So, we have reason to be pretty sceptical that our model is capturing the
 patterns at the edges of the data. We should keep this in mind as we move to
 the next phase of our workflow: **look at the model summary**. Violation
 of model assumptions reduces the confidence we should have when looking at
 its results.^[We will continue to improve our model as we go on in these
 workshops.]
+
+It can be frustrating for someone to tell you things like 'be a bit sceptical',
+or, 'this is basically fine, but not perfect' when looking at this kind of 
+diagnostic plot. You want clear answers to your questions. Unfortunately clear
+answers don't always exist. But, in lieu of a perfect criterion for residual 
+plot badness, the following code block produces data which, when modelled by a 
+linear model, produce a very bad residual plot and a dubious QQ plot (@fig-bad-diagnostic-plots).
+
+```{r}
+#| label: fig-bad-diagnostic-plots
+#| fig.cap: |
+#|   Simulated data with wave pattern. Panel A shows raw data and linear fit,
+#|   panel B shows the residual plot, with a clear sin wave pattern rather than
+#|   the (expected) random cluster. Panel C shows a QQ plot indicating residuals
+#|   with more extreme values than expected from a linear model.
+#| code-fold: true
+set.seed(100)
+wiggly_data <- 
+  tibble(
+    explanatory = runif(n = 1000, min = -4, max = 4)
+  ) |> 
+  mutate(
+    response = sin(explanatory * 10) + rt(n = 1000, 1.9)/10 
+  )
+ 
+data_and_fit <- wiggly_data |> 
+  ggplot(
+    aes(
+      x = explanatory,
+      y = response
+    )
+  ) +
+  geom_point() +
+  geom_smooth(method="lm") +
+  labs(
+    title = "Simulated data and linear fit"
+  )
+
+lm_fit <- lm(response ~ explanatory, data = wiggly_data)
+
+fit_data <-
+  tibble(
+    "residuals" = residuals(lm_fit),
+    "predictions" = predict(lm_fit)
+  ) 
+
+resid_plot <- fit_data |> 
+  ggplot(
+    aes(
+      x = predictions,
+      y = residuals
+    )
+  ) +
+  geom_point() +
+  labs(title = "Residual plot")
+
+qq <- fit_data |> 
+  ggplot(
+    aes(
+      sample = residuals
+    )
+  ) +
+  stat_qq() +
+  stat_qq_line() +
+  labs(
+    title = "QQ-plot",
+    x = "Theoretical quantiles",
+    y = "Residuals"
+  )
+  
+
+data_and_fit / (resid_plot + qq) + 
+  plot_annotation(tag_levels = "A")
+```
+
 
 The `summary()` function outputs key features of the model.^[The `summary()`
 function is also a generic function (just like `plot()`). Have a look at
@@ -264,17 +361,17 @@ summary(simple_fit)
 We start with a `Call` which says what the R statement which generated the model
 was (including the formula). We then see information about the distribution of
 the residuals, before the `Coefficients:` section. This is where we will find
-the intercept and slope terms of out model. The `(Intercept)` term tells us what
-the model predicts when $x$ is $0$, i.e., when the log word frequency is 0. Is
+the intercept and slope terms of our model. The `(Intercept)` term tells us what
+the model predicts when $x$ is 0. i.e., when the log word frequency is 0. Is
 this a useful thing to know? Have a look at the scatter plot and see what this
 would correspond to in terms of our data (@fig-scatter-wf). We will consider
 some alternatives later. We look at the `Estimate` column to see the estimated
-value of the coefficients. In this case, we estimate a word duration of $0.04$
+value of the coefficients. In this case, we estimate a word duration of 0.04
 when the log word frequency is 0.
 
 We then look at the `unigram.google.gb` row. This will tell us the _slope_
 of the line. The best straight line through the data has a slope of 
-$-0.028$. 
+-0.028. 
 
 What else is in the table? Information which quantifies our uncertainty about
 the estimates and tests of how consistent the data is with the _absence_ of
@@ -282,7 +379,7 @@ an effect. That is, we've got a series of tests of **null hypotheses**.
 For the 
 intercept, the null hypothesis is that the intercept is zero. For the slope,
 the null hypothesis is that the slope is zero. The 
-`t value` column is a 'test statistic' which summarises features of the data
+`t value` column contains 'test statistics' which summarise features of the data
 set with respect to the hypothesis that there is no effect. The `Pr(>|t|)`
 columns gives 'p values', which indicate the probability of observing the
 test statistic, or a more extreme value, if there is no actual effect. Low
@@ -299,7 +396,8 @@ we want confidence intervals around the predictions.
 ```{r}
 model_preds <- predict(
   simple_fit, 
-  interval = "confidence"
+  interval = "confidence",
+  level = 0.95
 )
 
 simple_preds <- bind_cols(big_dia, model_preds)
@@ -336,6 +434,9 @@ simple_preds |>
     y = "Predicted Word Duration (s)"
   )
 ```
+
+@fig-plotnodata has an incredibly small confidence interval. This is because of
+the very large size of the data set!
 
 And _with data_:
 ``` {r}
