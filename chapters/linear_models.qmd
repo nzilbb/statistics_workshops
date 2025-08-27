@@ -269,12 +269,17 @@ duration that we would assume given only information about the word frequency,
 and the assumptions of the linear regression model itself (including,
 importantly, that the relationship can be captured by a straight line.)
 
-So, we have reason to be pretty sceptical that our model is capturing the
-patterns at the edges of the data. We should keep this in mind as we move to
-the next phase of our workflow: **look at the model summary**. Violation
-of model assumptions reduces the confidence we should have when looking at
-its results.^[We will continue to improve our model as we go on in these
-workshops.]
+Now, it is important to note that word durations cannot be less than 0. The
+right side of the plot represents cases where the model _underestimates_ the
+actual duration. There are more opportunities for data points to have very
+high positive residuals than very high negative residuals.
+
+But, in any case, we have some reason to be sceptical that our model is
+capturing the patterns at the edges of the data. We should keep this in mind as
+we move to the next phase of our workflow: **look at the model summary**.
+Violation of model assumptions reduces the confidence we should have when
+looking at its results.^[We will continue to improve our model as we go on in
+these workshops.]
 
 It can be frustrating for someone to tell you things like 'be a bit sceptical',
 or, 'this is basically fine, but not perfect' when looking at this kind of 
@@ -391,7 +396,8 @@ word duration is 'statistically significant' in this model.
 The final stage of our workflow is to **plot the predictions**. We get 
 access to the predictions using the `predict()` function.^[Yes, you guessed it,
 this is also a generic function.] We use the `interval` argument to specify that
-we want confidence intervals around the predictions.
+we want confidence intervals around the predictions and setting the confidence
+level to 95% (a standard convention).
 
 ```{r}
 model_preds <- predict(
@@ -400,6 +406,7 @@ model_preds <- predict(
   level = 0.95
 )
 
+# We join the predictions to the original data in order to plot them together.
 simple_preds <- bind_cols(big_dia, model_preds)
 
 # Here's 10 random rows.
@@ -502,6 +509,29 @@ being wrong, but we have to assume something to get an experiment or study
 going!
 :::
 
+::: {.webex-check .webex-box}
+
+
+Now, run through the simple linear regression workflow with the variable called
+`prev_pred_wf_log` in the data frame. This variable tells us how probabile
+the word whose duration we are measuring is given the previous word. This may
+take a while.
+
+Looking at the model summary for your simple linear model, using the `summary()`
+function, answer the following questions:
+
+- Which of the following numbers is closest to the intercept coefficient?:
+`r mcq(c(answer="0.2", "0.6", "0", "0.03"))`.
+- Which of the following numbers is closest to the slope coefficient?:
+`r mcq(c("0", "5", "0.2", answer="0.03"))`
+- What is the name of the slope coefficient in the model output?:
+`r mcq(c("(Slope)", answer="prev_pred_wf_log", "p-value"))`
+- Complete this sentence: If `prev_pred_wf_log` is increased by 1, then 
+`WordDuration` `r mcq(c(answer="decreases", "increases"))` by 
+`r mcq(c(answer="0.03", "0.2", "3"))` seconds.
+
+:::
+
 ## Multiple Linear Regression {#sec-multiple}
 
 In simple linear regression, we have a single explanatory variable. In multiple
@@ -538,12 +568,12 @@ _explain_ the variation in the response variable.
 
 There are a few categorical phenomena which affect word duration. For instance,
 whether or not a word appears at the end of an utterance affects its duration.
-We can incorporate this information into our model by adding a variable to the
+We can incorporate this information by adding a variable to the
 model which tracks whether observed word occurs at the end of an utterance or
 not.
 
 Why do we want this information? We might be worried that our sample of low
-frequency words just happens, by random change, to contain a lot of tokens
+frequency words just happens, by random chance, to contain a lot of tokens
 from the end of an utterance. We might then see an effect of word frequency
 which is _actually_ due to where the words in our sample appear in an utterance.
 This is very unlikely in the dataset we are currently using, due to its sheer
@@ -582,8 +612,8 @@ category. So, for instance, the line in the middle of the left box indicates the
 median word duration in seconds for word tokens which do not appear at the end
 of an utterance. 
 
-@fig-box suggests that words which appear at the end of an utterance as slightly
-longer than those which appear at the start of an utterance.
+@fig-box suggests that words which appear at the end of an utterance 
+_are_ slightly longer than those which appear elsewhere in an utterance.
 
 In order to include this variation in a linear model, we simply add the variable
 to the formula using the `+` sign, as follows:
@@ -595,10 +625,16 @@ multiple_fit <- lm(
 )
 ```
 
-::: {.webex-box}
+::: {.webex-box .webex-check}
 
 Carry out the graphical model checking steps we introduced for simple
 linear regression above with the `multiple_fit` model.
+
+True or false?
+- Adding `final` fixes the problem of decreasing residuals as fitted values
+increase in the model without `final` (i.e., @fig-resfit): `r torf(FALSE)`.
+- Adding `final` fixes the violations of normality of the residuals as depicted 
+in @fig-qq: `r torf(FALSE)`.
 
 :::
 
@@ -618,14 +654,27 @@ these sessions.] In this case, `FALSE` is the base level. This means that the
 intercept value for this model is the intercept value _when the word is not_
 _at the end of an utterance_. The estimate of the coefficient `finalTRUE` tells
 us how much longer a word is when it appears at the end of an utterance. In
-this case, the estimate is $0.03$. So, on the whole, words at the end of 
-utterances are estimated to be $0.3$ seconds longer than words which are
+this case, the estimate is 0.03. So, on the whole, words at the end of 
+utterances are estimated to be 0.3 seconds longer than words which are
 not at the end. 
 
 As in the previous case, we are given $p$-values for each of these estimates. 
 The very low $p$-values in this case indicate that the data at hand is not 
 compatible with these estimates being zero. That is, there is a 'statistically
 significant' associated with each of these coefficients.
+
+::: {.webex-check .webex-box}
+
+- To three significant figures, is the slope coefficient for `unigram.google.gb`
+in the `multiple_fit` model different from the slope in `simple_fit`? 
+`r torf(FALSE)`
+- To three significant figures, is the coefficient labelled `(Intercept)` 
+different in the `multiple_fit` and `simple_fit` models?
+`r torf(TRUE)`
+- Do all the $p$-values in the coefficient table for `multiple_fit` indicate 
+statistical significant? `r torf(TRUE)`.
+
+:::
 
 We now want to plot the model predictions. The following code extracts 
 model predictions for some specified points, rather that for every data point
@@ -653,20 +702,47 @@ multiple_preds <- predict(
 multiple_preds <- bind_cols(to_predict, multiple_preds)
 ```
 
+We plot the predictions using distinct colours for utterance final and non-final
+words.
+```{r}
+#| label: fig-multiple-preds
+#| fig.cap: |
+#|   Predictions from model predicting word duration using word frequency and 
+#|   word finality.
+multiple_preds |> 
+  ggplot(
+    aes(
+      x = unigram.google.gb,
+      y = fit,
+      colour = final
+    )
+  ) +
+  geom_ribbon(
+    aes(
+      ymin = lwr,
+      ymax = upr
+    ),
+    alpha = 0.5,
+    linetype = 0
+  ) +
+  geom_line()
+```
 
-::: {.webex-box}
-
-Experiment with some ways to plot these model predictions. These should be
-in a variable called `multiple_preds`.
-
-:::
+There are two things to note in @fig-multiple-preds. First, we see that the
+confidence bars are wider for words which are utterance final. This is simply
+because there are fewer of them in the data set. Second, note that difference
+between the two lines is just how high up they are on the y axis. This is
+because our model does note have any way to vary the slope for each level of 
+the `final` factor. We will see how to add this complexity in @sec-interactions.
 
 ### Adding a Continuous Variable
 
+Let's now look at adding a continuous variable to our simple linear regression.
+
 We don't have any sense yet of how long we would _expect_ a given word to be.
-The variable `dur.context` gives a sense of the length expected given the
-context of the word in synthesised speech. Here's what the variable looks like
-in a scatter plot with word duration:
+The variable `dur.context.avg` gives a sense of the length of a given word,
+averaged across the various contexts in which it appears. Here's what the
+variable looks like in a scatter plot with word duration:
 
 ```{r}
 #| label: fig-scat-context
@@ -691,7 +767,7 @@ it can be convenient to use `geom_smooth(method = "lm")`, as follows:
 big_dia |> 
   ggplot(
     aes(
-      x = dur.context,
+      x = dur.context.avg,
       y = WordDuration
     )
   ) +
@@ -700,37 +776,199 @@ big_dia |>
 ```
 
 The measure of expected duration is positively related to the actual measures of
-duration. This is an example of a simple visual check that we are on the right
-track.
+duration. This is a good check that we are on the right track.
 
 Let's add this measure to our model. Again, we just use a `+`. We will 
 reuse the variable name `multiple_fit`.
 ```{r}
 multiple_fit <- lm(
   # I will stop explicitly saying 'formula =' now.
-  WordDuration ~ unigram.google.gb + dur.context + final,
+  WordDuration ~ unigram.google.gb + dur.context.avg + final,
   data = big_dia
 )
 ```
 
 Are the diagnostic plots any better?
 ```{r}
-plot(multiple_fit, which = 2)
+#| label: fig-resmfit
+#| fig.cap: |
+#|   Residual plot of multiple regression fit using word frequency, expected duration,
+#|   and utterance-finality.
+plot(multiple_fit, which = 1)
 ```
-This is better than before, but could still be improved. The addition of a 
-variable capturing contextual factors in word duration has helped.
+This is a bit better than @fig-refit. There is no systematic loss of performance
+as word durations increase.
 
 ```{r}
-summary(multiple_fit)
+#| label: fig-qqmfit
+#| fig.cap: |
+#|   QQ-plot of multiple regression fit using word frequency, expected duration,
+#|   and utterance-finality.
+plot(multiple_fit, which = 2)
+```
+@fig-qqmfit indicates some improvement in the cases where the model 
+_overestimates_ the duration (i.e., cases where the residual is negative, 
+sitting at the left side of the plot). The model's performance when it
+_underestimates_ is worse. The reason for this is likely to be the
+same as discussed at @fig-qq.
+
+We now look at the coefficients, again using the `tidy()` function.
+
+```{r}
+tidy(multiple_fit)
+```
+We have another coefficient now: `dur.context`, indicating a very small increase
+in word duration for increases in expected duration in context. Note that adding
+a continuous variable has resulted in changes across the board to our
+coefficients. While previously, we estimated that an increase in 
+`unigram.google.gb` or 1 resulted in a reduction in word frequency of around
+0.03 seconds, we now estimate a reduction of 0.008 sections and instead 
+treat `dur.context.avg` as the biggest driver of change in word duration. An
+increase of `dur.context.avg` by 1 is estimated to result in an increase of 
+0.69 seconds in word duration. 
+
+The intercept term and `finalTRUE` also 
+change, in line with the interpretation of these coefficients as estimated
+values for each value of `final` when the other variables are held at 0. 
+That is, the value for `(Intercept)` is for a non-utterance final word when
+both `unigram.google.gb` and `dur.context.avg` are at 0. That is, a word whose
+duration in context is expected to be 0, and whose frequency is 1, that is, it 
+is the *only* word in the corpus from which the frequency data is derived. This
+is *obviously* not a meaningful scenario.^[
+Nor is the intercept value of -0.016 a meaningful duration for a word...
+] We'll find a way to avoid it after we
+plot this models predictions.
+
+We extract predictions in the same way as before.
+```{r}
+# specify the values we want predictions for.
+to_predict <- crossing(
+  "dur.context.avg" = seq(0, 1, 0.1),
+  "unigram.google.gb" = seq(-15, -7, 1),
+  "final" = c(TRUE, FALSE)
+)
+
+# get predictions using `predict()`.
+multiple_preds <- predict(
+  multiple_fit, 
+  newdata = to_predict,
+  interval = "confidence" # The interval argument says we want a confidence
+  # interval for each prediction too.
+)
+
+# combine predictions with the values we specified.
+multiple_preds <- bind_cols(to_predict, multiple_preds)
 ```
 
+This time, we'll start with a kind of heat map using tiles.
+
+```{r}
+#| label: fig-heat
+#| fig.cap: |
+#|   Plot of model predictions for model using word frequency and average 
+#|   predicted duration.
+multiple_preds |> 
+  ggplot(
+    aes(
+      x = unigram.google.gb,
+      y = dur.context.avg,
+      fill = fit
+    )
+  ) +
+  geom_tile() +
+  scale_fill_viridis_c() +
+  facet_grid(rows = vars(final))
+```
+
+@fig-heat is an example of a kind of plto which *can* be useful for models with
+two continuous predictors. In this case, it clearly reveals that the effect of
+predicted baseline duration in simulated speaker overwhealms the effect of word
+frequency.
+
+But, we are often interested in small effects. We can instead, plot the effect
+of word frequency, holding predicted duration constant. 
+
+::: {.webex-box .webex-check}
+
+The following code produces a bad plot of the effect of word frequency on 
+word duration. 
+
+```{r}
+#| label: fig-kaputt
+#| fig.cap: |
+#|   An attempted figure illustrating model predictions of the effect of 
+#|   word frequency on word duration.
+multiple_preds |> 
+  ggplot(
+    aes(
+      x = unigram.google.gb,
+      y = fit,
+      colour = final
+    )
+  ) +
+  geom_ribbon(
+    aes(
+      ymin = lwr,
+      ymax = upr
+    ),
+    alpha = 0.5,
+    linetype = 0
+  ) +
+  geom_line()
+```
+
+- Fix the plot by adding a `filter()` function before the use of the `ggplot()` 
+function to ensure that the plot only includes cases where the baseline duration
+is 0.5 seconds.
+- Complete the required line: `filter(dur.context.avg` `r fitb("==")` `0.5)` 
+
+:::
+
+### Scaling explanatory variables
+
+We've seen above that the `(Intercept)` term is not particularly meaningful if 0
+is not a sensible value for the quantitative explanatory variables in a model.
+This is one of many reasons why it is a good idea to **scale** quantitative
+variables before modelling. Scaled variables have 0 as the mean value. This
+means that we can interpret the `(Intercept)` coefficiant as the predicted value
+when the quantitative variables are at their mean values.
+
+The following code block refits the previous model, but scales the quantitative
+explanatory variables first. It them outputs the coefficients.
+
+```{r}
+big_dia <- big_dia |> 
+  mutate(
+    # Note the '[,1]'. This is because scale() produces a dataframe where only
+    # the first column (the scaled values) is what we want.
+    scaled_freq = scale(unigram.google.gb)[,1],
+    scaled_exp_dur = scale(dur.context.avg)[,1]
+  )
+
+
+multiple_fit <- lm(
+  # I will stop explicitly saying 'formula =' now.
+  WordDuration ~ scaled_freq + scaled_exp_dur + final,
+  data = big_dia
+)
+
+tidy(multiple_fit)
+```
+
+Note that the intercept term is now interpretable as the mean duration for a 
+non-utterance-final word with a mean frequency and mean expected duration. We
+also have the advantage that, for instance, the estimate for `scaled_freq` now
+tells us what happens if we increase the frequency by one standard deviation.
 
 ## Interactions {#sec-interactions}
+
+What if frequency affects utterance-final words more than non-utterance-final 
+words. To deal with this, we need to introduce **interactions**.
 
 ```{r}
 interaction_fit <- lm(
   # I will stop explicitly saying 'formula' now.
-  WordDuration ~ unigram.google.gb * final + dur.context,
+  WordDuration ~ scaled_freq * final + scaled_exp_dur,
   data = big_dia
 )
 
@@ -739,7 +977,7 @@ summary(interaction_fit)
 
 <!-- plots w/ ggplot -->
 
-### Something something scaling
+
 
 ## What's Missing?
 
