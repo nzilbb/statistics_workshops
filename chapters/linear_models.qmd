@@ -975,11 +975,6 @@ interaction_fit <- lm(
 summary(interaction_fit)
 ```
 
-```{r}
-plot(interaction_fit)
-```
-
-
 Here's a plot of predictions derived from the model.
 
 ```{r}
