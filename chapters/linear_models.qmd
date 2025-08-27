@@ -796,7 +796,7 @@ Are the diagnostic plots any better?
 #|   and utterance-finality.
 plot(multiple_fit, which = 1)
 ```
-This is a bit better than @fig-refit. There is no systematic loss of performance
+This is a bit better than @fig-resfit. There is no systematic loss of performance
 as word durations increase.
 
 ```{r}
@@ -967,7 +967,7 @@ words. To deal with this, we need to introduce **interactions**.
 
 ```{r}
 interaction_fit <- lm(
-  # I will stop explicitly saying 'formula' now.
+  # I will stop explicitly saying 'formula =' now.
   WordDuration ~ scaled_freq * final + scaled_exp_dur,
   data = big_dia
 )
@@ -975,9 +975,89 @@ interaction_fit <- lm(
 summary(interaction_fit)
 ```
 
-<!-- plots w/ ggplot -->
+```{r}
+plot(interaction_fit)
+```
 
 
+Here's a plot of predictions derived from the model.
+
+```{r}
+#| label: fig-int-preds
+#| fig.cap: |
+#|   Model predictions from model placing frequency in interaction with 
+#|   utterance-finality.
+# specify the values we want predictions for.
+to_predict <- crossing(
+  "scaled_exp_dur" = seq(-3, 3, 0.5),
+  "scaled_freq" = seq(-5, 5, 0.5),
+  "final" = c(TRUE, FALSE)
+)
+
+# get predictions using `predict()`.
+interaction_preds <- predict(
+  interaction_fit, 
+  newdata = to_predict,
+  interval = "confidence" # The interval argument says we want a confidence
+  # interval for each prediction too.
+)
+
+# combine predictions with the values we specified.
+interaction_preds <- bind_cols(to_predict, interaction_preds)
+
+interaction_preds |>
+  filter(
+    scaled_exp_dur == 0
+  ) |> 
+  ggplot(
+    aes(
+      x = scaled_freq,
+      y = fit,
+      colour = final
+    )
+  ) +
+  geom_ribbon(
+    aes(
+      ymin = lwr,
+      ymax = upr
+    ),
+    alpha = 0.3,
+    linetype = 0
+  ) +
+  geom_line()
+```
+
+@fig-int-preds shows an interaction between utterance-finality and frequency,
+here assuming a word with a mean expected duration. We might say that the effect
+of frequency is moderated by utterance-finality. If a word is at the end of an
+utterance, then the reduction we would expect due to an increase in word
+frequency is reduced compared to non-utterance-final words.
+
+::: {.webex-box .webex-check}
+What on earth is a word with mean expected duration? Use any data transformation
+approach you like to try to find the most average word in this respect.
+
+Unfold the following code block for a hint.
+```{r}
+#| eval: false 
+#| code-fold: true
+
+big_dia |> 
+  filter(
+    between(scaled_exp_dur, -0.01, 0.01)
+  ) |> 
+  select(TargetOrthography, scaled_exp_dur) |> 
+  unique()
+```
+
+- Which word is closest to a `scaled_exp_dur` value of 0?: 
+`r mcq(c("it", "fun", answer="power", "thought", "road", "going"))`
+
+Try the same trick for `scaled_freq`?
+- Which word is closest to a `scaled_freq` value of 0?:
+`r mcq(c(answer = "eyes", "month", "broke", "come", "auckland"))`
+
+:::
 
 ## What's Missing?
 
