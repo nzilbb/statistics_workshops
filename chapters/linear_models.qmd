@@ -260,7 +260,7 @@ plot(simple_fit, which = 2)
 true in the middle of the curve, but is violated heavily at both ends of the
 curve. This shows that we are missing something important in our simple model.
 
-What does this kind of plot show? We assume out residuals are normally
+What does this kind of plot show? We assume our residuals are normally
 distributed. The 'theoretical quantiles` indicate the value we would expect from
 normally distributed residuals, the 'standardised residuals' are the values we
 actually observe, but appropriately scaled. The fact that the curve is above the
@@ -513,7 +513,7 @@ going!
 
 
 Now, run through the simple linear regression workflow with the variable called
-`prev_pred_wf_log` in the data frame. This variable tells us how probabile
+`prev_pred_wf_log` in the data frame. This variable tells us how probable
 the word whose duration we are measuring is given the previous word. This may
 take a while.
 
