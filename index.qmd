@@ -65,7 +65,9 @@ elsewhere.
 
 If you have any troubles with any of the steps, let me know!
 
-1. Install R and R Studio, following the steps here: <https://posit.co/download/rstudio-desktop/> or using the UC Software Centre if you are on a managed UC laptop.
+1. Install R and R Studio, following the steps here: <https://posit.co/download/rstudio-desktop/> or using "UC Self Service" on 
+a UC managed-Mac or "Companty Portal" on a UC-managed Windows computer. If using a UC-managed Windows computer, also install 
+RTools from the same source.
 2. Open RStudio, type `install.packages('usethis')` into the 'Console' (at the bottom left of RStudio) 
 and press enter/return.
 3. Install Git.
