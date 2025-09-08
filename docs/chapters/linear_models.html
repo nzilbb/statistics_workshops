@@ -1078,6 +1078,7 @@ Figure&nbsp;4.15: An attempted figure illustrating model predictions of the effe
 <section id="sec-interactions" class="level2" data-number="4.4">
 <h2 data-number="4.4" class="anchored" data-anchor-id="sec-interactions"><span class="header-section-number">4.4</span> Interactions</h2>
 <p>What if frequency affects utterance-final words more than non-utterance-final words. To deal with this, we need to introduce <strong>interactions</strong>.</p>
+<p>We can specify interactions in a model formula in a few ways. Here’s a very compact way of specifying an interaction between frequency and utterance finality:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>interaction_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I will stop explicitly saying 'formula =' now.</span></span>
@@ -1111,7 +1112,9 @@ Multiple R-squared:  0.3286,    Adjusted R-squared:  0.3286
 F-statistic: 3.326e+04 on 4 and 271759 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
-<p>Here’s a plot of predictions derived from the model.</p>
+<p>We now see a few more coefficients in the model summary. The first is the model intercept. This tells us how what the mean word duration is at the mean value of word frequency and expected duration, and <em>when</em> the word is not utterance-final. We can see all this with the information already given in the previous sections. What’s <em>new</em> here is the entry <code>scaled_freq:finalTRUE</code>. This indicates that we now have a slope term both for when a word is utterance final <em>and</em> when it is not. The term <code>scaled_freq</code> is the slope term for non-utterance-final words and <code>scaled_freq:finalTRUE</code> allows us to work out the slope term for utterance-final words. The slope term for utterance-final words is <code>scaled_freq + scaled_freq:finalTRUE</code> (i.e., -0.011 + 0.006 = -0.005).</p>
+<p>The model formula we used above (with <code>scaled_freq * final</code>) is a short hand for <code>scaled_freq + final + scaled_freq:final + scaled_exp_dur</code>. That is, <code>A * B</code> is the same as <code>A + B + A:B</code>. In the later, it is more explicit that there are ‘main effects’ of A and B (individually, <code>A</code> and <code>B</code>) and an ‘interaction effect’ (<code>A:B</code>). Both ways of writing the model formula are fine.</p>
+<p>The following code generates predictions from the interaction model:</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># specify the values we want predictions for.</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>to_predict <span class="ot">&lt;-</span> <span class="fu">crossing</span>(</span>
@@ -1184,12 +1187,89 @@ Figure&nbsp;4.16: Model predictions from model placing frequency in interaction 
 </ul>
 <p>Try the same trick for <code>scaled_freq</code>? - Which word is closest to a <code>scaled_freq</code> value of 0?: <select class="webex-select"><option value="blank"></option><option value="answer">eyes</option><option value="">month</option><option value="">broke</option><option value="">come</option><option value="">auckland</option></select></p>
 </div>
+<p>It is somewhat harder to interpret interactions between two continuous variables. Let’s look at an example:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>cont_interaction_fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I will stop explicitly saying 'formula =' now.</span></span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>  WordDuration <span class="sc">~</span> scaled_freq <span class="sc">*</span> scaled_exp_dur,</span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> big_dia</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(cont_interaction_fit)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = WordDuration ~ scaled_freq * scaled_exp_dur, data = big_dia)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.46041 -0.07102 -0.01396  0.05621  0.98928 
+
+Coefficients:
+                             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)                 0.2743847  0.0002089 1313.36   &lt;2e-16 ***
+scaled_freq                -0.0104965  0.0002121  -49.48   &lt;2e-16 ***
+scaled_exp_dur              0.0632630  0.0002206  286.84   &lt;2e-16 ***
+scaled_freq:scaled_exp_dur -0.0077147  0.0001919  -40.21   &lt;2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.1011 on 271760 degrees of freedom
+Multiple R-squared:  0.331, Adjusted R-squared:  0.331 
+F-statistic: 4.482e+04 on 3 and 271760 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<p>The interaction coefficient, <code>scaled_freq:scaled_exp_dur</code> tells us that for each increase of <code>scaled_freq</code> by one standard deviation, the effect of <code>scaled_exp_dur</code> reduces by <code>0.0077</code>. We will look at a visualisation in a moment. It is worth noting that scaling the variables has made it much easier to interpret the main effect coefficients. The <code>scaled_freq</code> coefficient tells us what the effect of <code>scaled_freq</code> is when <code>scaled_exp_dur</code> is at its mean value.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>to_predict <span class="ot">&lt;-</span> <span class="fu">crossing</span>(</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"scaled_exp_dur"</span> <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">3</span>, <span class="dv">3</span>, <span class="fl">0.5</span>),</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"scaled_freq"</span> <span class="ot">=</span> <span class="fu">seq</span>(<span class="sc">-</span><span class="dv">5</span>, <span class="dv">5</span>, <span class="fl">0.5</span>),</span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"final"</span> <span class="ot">=</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co"># get predictions using `predict()`.</span></span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a>cont_interaction_preds <span class="ot">&lt;-</span> <span class="fu">predict</span>(</span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a>  cont_interaction_fit, </span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">newdata =</span> to_predict,</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">interval =</span> <span class="st">"confidence"</span> <span class="co"># The interval argument says we want a confidence</span></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>  <span class="co"># interval for each prediction too.</span></span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a><span class="co"># combine predictions with the values we specified.</span></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>cont_interaction_preds <span class="ot">&lt;-</span> <span class="fu">bind_cols</span>(to_predict, cont_interaction_preds)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>This time, we’ll start with a kind of heat map using tiles.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>cont_interaction_preds <span class="sc">|&gt;</span> </span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> scaled_freq,</span>
+<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> scaled_exp_dur,</span>
+<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">fill =</span> fit</span>
+<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>() <span class="sc">+</span></span>
+<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>() <span class="sc">+</span></span>
+<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_grid</span>(<span class="at">rows =</span> <span class="fu">vars</span>(final))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="fig-heat-interaction" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-heat-interaction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="linear_models_files/figure-html/fig-heat-interaction-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-heat-interaction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4.17: Plot of model predictions for model using word frequency and average predicted duration in interaction.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-heat-interaction" class="quarto-xref">Figure&nbsp;<span>4.17</span></a> shows that the highest duration values come when frequency is low and expected duration is high. One useful tip for reading this kind of plot is that you can take vertical or horizontal cross sections one at a time. For instance, if you want to know what the effect of expected duration is when frequency is high, you can look for a high value on the x-axis, and look up and down the plot along the line for, say, x = 3. Or, alternatively, you could ask what the effect of frequency is when expected duration is low, looking along the horizontal line where y = -2.</p>
 </section>
 <section id="whats-missing" class="level2" data-number="4.5">
 <h2 data-number="4.5" class="anchored" data-anchor-id="whats-missing"><span class="header-section-number">4.5</span> What’s Missing?</h2>
-<!-- This content needs to be moved -->
 <p>There are a series of <em>assumptions</em> that are made when building a mathematical model. These are the assumptions which come along with the mathematical machinery used to back up the models. These are <em>always</em> violated in the real world. Some statistics texts become obsessed with checking assumptions. This can become excessive. In cases with multiple continuous variables, it is worth checking for colinearity because it can lead to very unstable coefficients. In so far as these coefficients tell us how big an effect is, unstable coefficients have a significant impact on the scientific conclusions we draw from a model. But the primary thing to check is for normality <em>of the residuals</em>, as we did in the diagnostic plots above.</p>
-<p>The primary assumption of linear regression which we have considered above is <em>normality of the residuals</em>. We want the variation which is left behind by our model to have no obvious structure. But these is another very important assumption of linear regression models: that each data point is <em>independent</em>. A simple way to think of this, is that every data point provides just as much information to the model as any other. But this is not true in many cases.</p>
+<p>The primary assumption of linear regression which we have considered above is <em>normality of the residuals</em>. We want the variation which is left behind by our model to have no obvious structure. But there is another very important assumption of linear regression models: that each data point is <em>independent</em>. A simple way to think of this, is that every data point provides just as much information to the model as any other. But this is not true in many cases.</p>
 <p>When using corpora or carrying out experiments, we take multiple measurements from individual listeners or speakers. Each of these listeners or speakers has idiosyncratic features which influence the measurements we take from them. There is a <em>dependence</em> between measurements taken from the same individual.</p>
 <p>There are mathematical tools to handle this problem: <strong>mixed effects models</strong>. We will look at these in the next chapter.</p>
 </section>

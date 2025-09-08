@@ -965,6 +965,10 @@ tells us what happens if we increase the frequency by one standard deviation.
 What if frequency affects utterance-final words more than non-utterance-final 
 words. To deal with this, we need to introduce **interactions**.
 
+We can specify interactions in a model formula in a few ways. Here's a very
+compact way of specifying an interaction between frequency and utterance
+finality:
+
 ```{r}
 interaction_fit <- lm(
   # I will stop explicitly saying 'formula =' now.
@@ -974,9 +978,24 @@ interaction_fit <- lm(
 
 summary(interaction_fit)
 ```
+We now see a few more coefficients in the model summary. The first is the model 
+intercept. This tells us how what the mean word duration is at the mean value
+of word frequency and expected duration, and _when_ the word is not 
+utterance-final. We can see all this with the information already given in the
+previous sections. What's _new_ here is the entry `scaled_freq:finalTRUE`. This
+indicates that we now have a slope term both for when a word is utterance final
+_and_ when it is not. The term `scaled_freq` is the slope term for 
+non-utterance-final words and `scaled_freq:finalTRUE` allows us to work out
+the slope term for utterance-final words. The slope term for utterance-final
+words is `scaled_freq + scaled_freq:finalTRUE` (i.e., -0.011 + 0.006 = -0.005).
 
-Here's a plot of predictions derived from the model.
+The model formula we used above (with `scaled_freq * final`) is a short hand
+for `scaled_freq + final + scaled_freq:final + scaled_exp_dur`. That is,
+`A * B` is the same as `A + B + A:B`. In the later, it is more explicit that 
+there are 'main effects' of A and B (individually, `A` and `B`) and an 'interaction effect' (`A:B`). Both ways of writing the model formula are
+fine.
 
+The following code generates predictions from the interaction model:
 ```{r}
 #| label: fig-int-preds
 #| fig.cap: |
@@ -1054,9 +1073,77 @@ Try the same trick for `scaled_freq`?
 
 :::
 
+It is somewhat harder to interpret interactions between two continuous
+variables. Let's look at an example:
+
+```{r}
+cont_interaction_fit <- lm(
+  # I will stop explicitly saying 'formula =' now.
+  WordDuration ~ scaled_freq * scaled_exp_dur,
+  data = big_dia
+)
+
+summary(cont_interaction_fit)
+```
+
+The interaction coefficient, `scaled_freq:scaled_exp_dur` tells us that for 
+each increase of `scaled_freq` by one standard deviation, the effect of 
+`scaled_exp_dur` reduces by `0.0077`. We will look at a visualisation in a 
+moment. It is worth noting that scaling the variables has made it much easier
+to interpret the main effect coefficients. The `scaled_freq` coefficient
+tells us what the effect of `scaled_freq` is when `scaled_exp_dur` is at its
+mean value.
+
+```{r}
+to_predict <- crossing(
+  "scaled_exp_dur" = seq(-3, 3, 0.5),
+  "scaled_freq" = seq(-5, 5, 0.5),
+  "final" = c(TRUE, FALSE)
+)
+
+# get predictions using `predict()`.
+cont_interaction_preds <- predict(
+  cont_interaction_fit, 
+  newdata = to_predict,
+  interval = "confidence" # The interval argument says we want a confidence
+  # interval for each prediction too.
+)
+
+# combine predictions with the values we specified.
+cont_interaction_preds <- bind_cols(to_predict, cont_interaction_preds)
+```
+
+This time, we'll start with a kind of heat map using tiles.
+
+```{r}
+#| label: fig-heat-interaction
+#| fig.cap: |
+#|   Plot of model predictions for model using word frequency and average 
+#|   predicted duration in interaction.
+cont_interaction_preds |> 
+  ggplot(
+    aes(
+      x = scaled_freq,
+      y = scaled_exp_dur,
+      fill = fit
+    )
+  ) +
+  geom_tile() +
+  scale_fill_viridis_c() +
+  facet_grid(rows = vars(final))
+```
+@fig-heat-interaction shows that the highest duration values come when 
+frequency is low and expected duration is high. One useful tip for reading this
+kind of plot is that you can take vertical or horizontal cross sections one 
+at a time. For instance, if you want to know what the effect of expected 
+duration is when frequency is high, you can look for a high value on the x-axis,
+and look up and down the plot along the line for, say, x = 3. Or, alternatively,
+you could ask what the effect of frequency is when expected duration is low, 
+looking along the horizontal line where y = -2. 
+
+
 ## What's Missing?
 
-<!-- This content needs to be moved -->
 There are a series of _assumptions_ that are made when building a mathematical
 model. These are the assumptions which come along with the mathematical
 machinery used to back up the models. These are _always_ violated in the real
@@ -1070,7 +1157,7 @@ as we did in the diagnostic plots above.
 
 The primary assumption of linear regression which we have considered above is
 _normality of the residuals_. We want the variation which is left behind by 
-our model to have no obvious structure. But these is another very important 
+our model to have no obvious structure. But there is another very important 
 assumption of linear regression models: that each data point is _independent_.
 A simple way to think of this, is that every data point provides just as much
 information to the model as any other. But this is not true in many cases.
