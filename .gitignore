@@ -8,3 +8,5 @@
 /chapters/*_files/
 
 private_*
+
+**/*.quarto_ipynb

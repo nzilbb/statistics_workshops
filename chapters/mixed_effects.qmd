@@ -1,9 +1,14 @@
-# Mixed Effects
+# Linear Mixed Effects Models
+
+## Overview
+
+This chapter motivates and explains the idea of linear mixed effects models and
+shows how to implement them.
 
 ## Exercises
 
 I assume you are using the project from the previous chapters. If you don't have
-this, start from the 'Exploratory Data Visualisation' chapter.
+this set up yet, start from the 'Exploratory Data Visualisation' chapter.
 
 Start a new script or markdown file and load the following libraries. Install
 them if they are not available to you using `install.packages()`.
@@ -33,9 +38,9 @@ big_dia <- read_csv(here('data', 'big_dia.csv'))
 
 ### Simpson's Paradox
 
-We looked at ['Simpson's paradox'](https://en.wikipedia.org/wiki/Simpson%27s_paradox) in the workshop presentation. This paradox can
-be used to motivate both control variables and random effects. We're looking
-from the perspective of random effects.
+['Simpson's paradox'](https://en.wikipedia.org/wiki/Simpson%27s_paradox) can be
+used to motivate the use of both control variables and random effects. We're 
+using it to motivate random effects.
 
 First simulate some data. You can change `n` or `groups` as you like.
 ```{r}
@@ -62,15 +67,16 @@ simpson_data |>
 
 ::: webex-box
 
-Modify the plot so each group is coloured differently and has its own linear
-trend line.
+Recall the material on `ggplot2` from earlier chapters. Modify the plot so each
+group is coloured differently and has its own linear trend line. You'll have to 
+figure out which variable in the data frame `simpson_data` tells you which 
+group and observation comes from.
 
 :::
 
 The plot you have made, if you succeeded in the exercise, shows multiple
 independent regressions (one for each group). This is not the same as mixed
 effects, which can pool information together across the different groups.
-
 
 ::: {.webex-box}
 
