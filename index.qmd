@@ -5,48 +5,15 @@ R, Stats, and Open Science workshops. The workshops began late in the first
 semester of 2024. As time goes on, this book will expand in both content and
 contributors. 
 
-## Sessions in Semester 2, 2025
+## Sessions in Semester 1, 2026
 
-In Semester 2, 2025 we will work through the "Foundations" sections of this 
-book with occasional one-off sessions interspersed throughout.
+In Semester 1, 2026 we'll be looking at Bayesian methods.
 
-All sessions will be held in the **Brain Box**, Elsie Locke 203 on **Thursdays**
-at **10am**.
+All sessions will be held in the **Brain Box**, Elsie Locke 203 on **Wednesday**
+at **12pm**.
 
 Announcements are made on the NZILBB Rocket Chat in the #r-stats-open-sci-workshops
 channel. If you don't know how to access this, email me at <joshua.black@canterbury.ac.nz>.
-
-### Programmed Workshops
-
-Workshop sessions consist of a short presentation and a chance for some hands-on
-practice. The series as a whole is for complete beginners, but the sessions are
-cumulative.
-
-If you need to catch up, check out the material in the 'Foundations' section
-of this website and don't hesitate to contact me for a one-on-one session to
-discuss any difficulties.
-
-The first session will be on Thurs 20th Feb, at 11am.,
-
-### Drop-in Sessions
-
-I will remain in the Brain Box for an hour after the NZILBB research seminar for
-anyone who wishes to discuss any coding or stats problems.
-
-The first drop-in session will be on Thurs 27th Feb at 11am, with subsequent
-sessions fortnightly.
-
-### Wednesday Sessions
-
-Our theme for this semester will be **variable selection** in statistical
-models. Typically, there are many possible variables which we might include in a
-model. There are many (strong!) opinions about the variable selection process.
-We'll look at the options, their pros and cons, and implement them with our own
-data. This will help you both with your own research and when reading (and
-peer-reviewing!) other people's work.
-
-The first Wednesday session will be on Wed 26th Feb at 1pm, with subsequent sessions
-at the same time fortnightly.
 
 ## One-on-one help
 

@@ -23,6 +23,7 @@ book:
     - chapters/rstudio_server.qmd
     - chapters/qualtrics.qmd
     - chapters/gamms_1.qmd
+    - chapters/bayesian_intro.qmd
   - chapters/references.qmd
   sidebar:
     logo: global_images/nzilbb-logo.svg
