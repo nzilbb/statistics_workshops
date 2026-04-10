@@ -1,0 +1,1054 @@
+# Bayesian Data Analysis
+
+This chapter presents a short introduction to Bayesian Data Analysis for
+linguistics with sections corresponding to the first four intro
+workshops offered during NZILBB R, Stats and Open Science sessions.
+
+@sec-orientation provides some orientation to Bayesian methods by first fitting
+a frequentist version of a simple model then switching it to a model fit using
+the `brms` package. There's a few details about what distinguishes Bayesian 
+and frequentists methods in a callout block.
+We then turn to the 'posterior distribution' (@sec-post), i.e., to the 
+question of **model interpretation.** We look at how to determine what a 
+Bayesian model tells us after it has seen the data. We then turn to the
+'prior distribution', which allows the researcher to incorporate relevant 
+information to the model _before_ the model sees the data (@sec-prior). This
+is a significant difference between Bayesian and non-Bayesian approaches.
+Finally, we consider various metrics of model health (including, for instance,
+'trace plots) (@sec-health). 
+
+Further, and more detailed, resources are set out in @sec-bayes-resources
+
+## Orientation {#sec-orientation}
+
+::: callout-note
+This section corresponds to the slides [here](nzilbb.github.io/ws-bayes-1).
+
+One easy way to get access to the data used in this section is to start an
+R project in RStudio, select 'version control', and use the GitHub repository
+<https://github.com/nzilbb/ws-bayes-1>.
+:::
+
+### A Silly Model
+
+People from Christchurch are (in)famous for asking people what secondary school
+they attended. This is typically, I suppose, taken to be an obsession with
+social status and class. But is there identifiable linguistic variation between
+people who went to different schools? 
+
+Let's look at data from the QuakeBox corpus which bears on this question [@clarkKiaOraThis2016; @walshUCQuakeBoxProject2013].
+
+We'll first load a few packages and some data.
+
+```{r}
+library(tidyverse)
+library(here)
+
+library(brms)
+
+theme_set(theme_bw(base_size=20))
+
+qb2 <- read_rds(here('data', 'session_1.rds'))
+```
+
+@fig-school-trap shows [trap{.smallcaps}] F1 realisations, normalised _via_
+Labanov normalisation, for all schools which have three or more students in our
+dataset.
+
+```{r}
+#| label: fig-school-trap
+#| fig-cap: |
+#|   Normalised TRAP F1 realisation for schools with three or more participants 
+#|   in QuakeBox 2. 
+qb2 |> 
+  group_by(school) |> 
+  mutate(
+    student_n = length(unique(part_id))
+  ) |> 
+  filter(student_n >= 3) |> 
+  ungroup() |> 
+  group_by(part_id) |> 
+  summarise(
+    F1_lob2 = mean(F1_lob2, na.rm=T),
+    school = first(school)
+  ) |> 
+  ggplot(
+    aes(
+      y = F1_lob2,
+      x = reorder(school, F1_lob2)
+    )
+  ) +
+  geom_boxplot() +
+  scale_y_reverse() +
+  theme(
+    axis.text.x = element_text(size=12, angle = 45, hjust = 1)
+  ) +
+  labs(
+    y = "TRAP F1 (Lobanov)",
+    x = "High school"
+  )
+```
+
+The patterns in @fig-school-trap are something like what would be expected given
+social stereotypes. Avonside Girls' is a state school in the, typically less
+well-off east side of the city, while St Margaret's is a private school for
+girls in a very well-off part of the city. Lower [trap]{.smallcaps} realisation
+are, in turn, indicative of more conservative NZE (note flipped y-axis).
+
+Suppose we wanted to fit a model to determine whether the [trap]{.smallcaps} 
+F1 realisations of St Margaret's and Avonside really are different.^[
+In a real data analysis project, it would be a bad idea to jump straight to a 
+model here. Ignore this for the moment!
+]
+Let's do this is in a standard, non-Bayesian (i.e. 'frequentist'), way:
+
+```{r}
+# Create subset of data with only Avonside and St Margaret's
+trap_sub <- qb2 |> 
+  filter(
+    school %in% c(
+      "Avonside Girls' High School", 
+      "St Margaret's College"
+    )
+  ) |> 
+  select(
+    age, school, F1_lob2, part_id
+  )
+
+trap_fit <- lm(
+  F1_lob2 ~ school,  
+  data = trap_sub
+)
+```
+
+Let's have a look at the model summary:
+```{r}
+summary(trap_fit)
+```
+This is a fairly standard analysis of variance model. We're attempting to 
+determine if there is a difference in the mean [trap]{.smallcaps} F1 between
+people who attended one or other of these schools. Looking first to the 
+coefficients table, our `(Intercept)` estimate,
+`0.25`, indicates the estimated mean value for Avonside alumnae, while 
+the estimate for `schoolSt Margaret's College` indicates the difference in means
+between Avonside and St Margaret's alumnae. Since this is positive, the model
+says that the [trap]{.smallcaps} F1 value for St Margaret's is _higher_ than for
+Avonsiders, and thus that their [trap]{.smallcaps} realisation is _lower_ in the
+vowel space. This is conservative for New Zealand English. 
+
+The coefficients section also gives an indication of 'error' (the `Std. Error`
+column) and information about statistical hypothesis tests corresponding to 
+each coefficient (the `t value` and `Pr(>|t|)` columns). In this case, we would
+say that the difference between Avonside and St Margaret's alumnae, in terms of
+mean [trap]{.smallcaps} production is _statistically significant_. We'll see
+shortly that this is not a core idea when we switch to a Bayesian approach.
+
+Finally, we see some important information about the residuals (i.e., the 
+variation not explained by the model) above the coefficients and some global
+information, including another statistical test, below the coefficients.
+
+::: {.webex-box}
+**A side quest:** this subsection is called 'a silly model'. One way in which it
+is silly is that the data does not allow us to exclude some very plausible
+alternative explanations for this difference in [trap]{.smallcaps} F1. You can
+convince yourself of this using the techniques from the [Exploratory Data
+Visualisation
+chapter](https://nzilbb.github.io/statistics_workshops/chapters/exploratory_data_vis.html).
+Consider, especially, the distribution of ages across schools.
+:::
+
+How do we make this model Bayesian? It's very easy with the `brms` package.
+```{r}
+#| output: false
+library(brms)
+trap_fit_b <- brm(
+  F1_lob2 ~ school,  
+  data = trap_sub
+)
+```
+
+In a very narrow sense, becoming Bayesian is often as easy as switching whatever
+modelling function you are currently using (`lm()`, `lme4::lmer()`, 
+`mgcv::gam()` etc) to `brms::brm()`. Often this has the nice consequence of 
+removing any convergence issues you might have been having (especially with
+complex random effects modules using the `lme4` package).^[
+This practical benefit is a significant motivation for many to switch to
+Bayesian methods.
+] It is important to 
+**be careful** here. There are no free rides!
+
+If you run the code block above you will see a series of messages about 
+'compiling' a 'Stan program', and 'sampling' across a variety of 'chains'. We'll
+discuss the meaning of these outputs later. These messages are the first 
+indication that something quite different is going on when we fit a Bayesian
+model.
+
+Let's start by looking at the model summary:
+```{r}
+summary(trap_fit_b)
+```
+
+The coefficients table here is almost identical to the table for `trap_fit`.
+There are the same two coefficients, with the same estimates and error (just
+rounded to two decimal places). The 95% "CI"s are the same as the 95% "CI"s
+which would be generated by the error terms in the non-Bayesian model.^[My scare
+quotes here will be explained in a moment.]  
+But some differences already emerge: there's some new language about 'chains', 
+'iter', 'warmup', and 'draws'. There's also columns with names containing 
+'ESS', or 'Effective Sample Size'. Finally, note the absence of any statistical
+tests.
+
+The model summary undersells some of the key differences between Bayesian and
+non-Bayesian methods. Two are worth focusing on here: 
+
+1. Bayesian methods produce _distributions_ for model coefficients rather than
+point estimates.
+2. Bayesian "CI"s, variously named 'credible intervals' or 'compatibility 
+intervals', are interpreted differently from frequentist 'confidence intervals'.
+
+Let's consider each of these in turn.
+
+@fig-avon-dist shows the probability distribution for the intercept coefficient,
+i.e., the estimated mean value for Avonside alumnae. From this distribution, we
+can work out the probability, according to the model and data, that the true 
+mean value is in a given range. The probability distribution is the real 
+estimate derived from the model. The decision to summarise the distribution with
+a single value is entirely optional and the choice of a summary value is up to
+us. We can use the median, the mean, the 10% quartile, or whatever else might be
+useful for a given problem. The summary we have just looked at gives the mean
+value in the `Estimate` column.
+
+```{r}
+#| label: fig-avon-dist
+#| fig.cap: |
+#|   Probability distribution for mean normalised TRAP F1 for Avonside alumnae.
+library(tidybayes) # Tidybayes will be discussed in more detail below.
+
+trap_fit_b |> 
+  spread_draws(b_Intercept) |> 
+  rename(
+    Avonside = b_Intercept
+  ) |> 
+  ggplot(
+    aes(
+      x = Avonside
+    )
+  ) +
+  geom_density(alpha=0.4, colour="darkgreen", fill="darkgreen") +
+  labs(
+    x = "Avonside coefficient (intercept)"
+  )
+```
+
+Bayesian CIs, or 'credible intervals' naturally emerge from this way of thinking
+about model estimates. Credible intervals are another way of summarising the 
+probability distributions generated by Bayesian models. In this case, we might
+want a 95% credible interval centred on the median (i.e., the interval between
+the 2.5% and the 97.5% quantiles of the distribution). We interpret this 
+interval as having a 95% probability of containing the true mean [trap]{.smallcaps}
+production for Avonsiders. 
+
+There is no particular reason to insist on 95% credible intervals, and in
+practice a series of 'widths' are often reported. One way to do this visually
+is as follows:
+
+```{r}
+#| label: fig-avon-halfeye
+#| fig.cap: |
+#|   Probability distribution for mean normalised TRAP F1 for Avonside alumnae
+#|   with 50%, 70%, and 90% credible intervals.
+trap_fit_b |> 
+  spread_draws(b_Intercept) |> 
+  rename(
+    Avonside = b_Intercept
+  ) |> 
+  ggplot(
+    aes(
+      x = Avonside
+    )
+  ) +
+  stat_halfeye(
+    slab_alpha = 0.4,
+    fill = "darkgreen",
+    slab_colour = "darkgreen",
+    .width = c(0.5, 0.7, 0.9),
+    point_interval = "mean_qi",
+    interval_size_range = c(2, 4)
+  ) +
+  labs(
+    x = "Avonside coefficient (intercept)"
+  )
+```
+
+@fig-avon-halfeye displays both the distribution for the coefficient and an 
+'interval plot' identifying the mean value of the distribution and a series of
+quantile intervals of different widths centred on the median. The thickest line
+shows the 50% interval, the next thickest shows the 70% and the thinnest line
+shows the 90% interval.
+
+Suppose, now, that we are interested in whether Avonside and St Margaret's 
+alumnae have distinct productions of [trap]{.smallcaps}. We can get at this
+by sampling [trap]{.smallcaps} values from our model for both schools and 
+looking at the distribution of the difference between the two.^[
+For this simple model, the resulting distribution is just the distribution of the `schoolStMargaretsCollege` coefficient. An exercise below asks you to show this. 
+]
+@fig-diff shows this and adds a vertical dashed line at 0. This allows a visual
+indication of the compatibility of the model and data with the hypothesis that
+the difference between schools is 0.
+
+```{r}
+#| label: fig-diff
+#| fig.cap: | 
+#|   Difference between normalised TRAP productions for Avonside and St 
+#|   Margaret's alumnae.
+predictions <- tibble(
+    school = unique(trap_sub$school)
+  ) |> 
+  add_epred_draws(trap_fit_b) 
+
+predictions |> 
+  pivot_wider(
+    names_from = school,
+    values_from = .epred,
+    id_cols = .draw
+  ) |> 
+  mutate(
+    Difference = `St Margaret's College` -  `Avonside Girls' High School`
+  ) |> 
+  ggplot(
+    aes(
+      x = Difference
+    )
+  ) +
+  geom_density(alpha = 0.4, fill = "grey") +
+  geom_vline(xintercept = 0, linetype="dashed")
+```
+
+The difference in @fig-diff is positibe when St Margaret's alumnae have higher
+[trap]{.smallcaps} F1 than Avonside (i.e., more conservative productions). 
+Rather than a statistical hypothesis check with a p-value, as in the initial
+model, we have a visual 
+indication of compatibility between a hypothesis we are interested in and the
+combination of the model and data.^[If the model or the data are bad, the 
+distributions estimated by our Bayesian model will also be bad.]
+
+::: {.callout-tip collapse="true"}
+### Probability, Bayesianism and Frequentism
+
+It might seem strange that there are (at least) two 'schools' of statistics. 
+This callout block is a short discussion of why with an emphasis on how the
+two approaches differ in their use of probability.
+
+Put simply: For _frequentism_ (the main alternative to Bayesianism), probability
+quantifies the reliability _of the method_. For Bayesians probability quantifies
+uncertainty. Both of these ideas are well motivated and are unlikely to go away
+any time soon. Which approach to probability one prefers is largely a matter of
+ones philosophical orientation.
+
+'Frequentist' and 'Bayesian' are terms applied directly to interpretations of
+probability.^[For a lot of detail see @hajekInterpretationsProbability2023.] 
+Frequentist understandings of probability emphasise, in one way or another, 
+the frequency with which events of a certain type occur in a sample. So, 
+for instance, a frequentist understands the claim that there is a 5% probability
+of drawing a red ball from this bag of balls in terms of the frequency with 
+which red balls are actually (or would be) drawn from the bag. 
+Probability is tied to the practice of sampling and is, according to the 
+frequentist, not a subjective notion. It's about what does or would happen were
+you to sample from the relevant population.
+
+Probability statements which are naturally interpreted in frequentist terms
+appear often in sociolinguistics. If, for instance, I fit a model to some New
+Zealand English data, I might find that, say', "The probability of starting a
+conversational interaction with "kia ora" is 10% for female speakers born in the
+1970s". A frequentist understanding of this statement is that if I went out and
+sampled female speakers born in the 1970s, I would find that 10% of the sample
+of conversational interactions would begin with "kia ora". 
+
+A 'Bayesian' about probability understands probability as expressing degrees of
+belief, or uncertainty, or something of that sort. Some Bayesians treat this
+as a subjective notion --- i.e., a measure of how strong this or that 
+individual's beliefs are. But there are more and less 'subjective' versions of
+Bayesianism. 
+
+Claims which are naturally interpreted in Bayesian terms are also present in
+linguistics. For instance, if I am working on language phylogenies I might make
+a claim like "the probability that language X and language Y are in the same
+family is 65%". There is no plausible way to understand this on frequentist
+terms. What would you sample? You'd have to be able to sample 'universes' in
+which the two languages exist and find that in 65% of universes the two
+languages are in the same family. It _is_ understandable as a claim about how
+certain we should be that the two families are related given our current 
+knowledge (in practice for data analysis, by 'current knowledge' we mean
+our model and data).^[Acordding to the arch-frequentist, Charles Peirce, 
+the Bayesian interpretation of probability could only work "if universes were
+as plenty as blackberries".]
+
+Frequentist statisticians use probability to measure the reliability of a 
+statistical method. They ask: how often would I be wrong if I applied this
+method over and over again? This is where p-values come from. The p-value tells
+us how often a certain kind of result occurs in applications of a given method.
+We can then, say, pick a p-value cut off of 0.05 as a decision that we accept
+that we will wrongly identify an effect in cases where there is no effect 5%
+of the time. The point is that the probability attaches to _applications of the
+method_. 
+
+This helps to interpret frequentist confidence intervals. These are often
+wrongly interpreted as providing, say, a region in which there is a 95%
+probability of finding the true value. This _is_ what Bayesian 'credible
+intervals' provide, but it is not the frequentist approach. A frequentist
+confidence interval says that in 95% of cases of in which we apply the method of
+generating confidence intervals, the true value will be inside the interval.
+This is claim about repeated applications of the method. When we do this, the
+actual interval we are talking about will change (i.e., with a slightly
+different sample you'll get different confidence intervals). The 95% probability
+does not apply to the particular interval we generate from our data, but to the
+whole range of intervals we might get from applying the same method to different
+samples. The Bayesian credible interval, on the other hand, attaches the 
+probability to _this specific interval_.
+
+Bayesian methods are often defended on the basis that they are less 
+counter-intuitive than frequentist methods. This may be so. But it is important
+to note that this is only done by changing the topic. We are not longer talking
+about the reliability of a general method but rather about the compatibility
+of this specific data set and model with a range of parameter values.
+
+One common charge against Bayesian statistics is that there is something
+essentially 'subjective' about Bayesian methods. It is true that there is
+something _in some sense_ subjective about Bayesian interpretations of
+probability and in the use of a 'prior' distribution (more later). But
+frequentist approaches are also subjective, in the sense of requiring researcher
+judgement in the selection of assumptions or the decision that model diagnostics
+are 'good enough' etc. They just don't use _probability_ as a way of capturing
+these features of modelling. For more on the idea of 'subjectivity' in 
+statistics see @gelmanSubjectiveObjectiveStatistics2017a.
+
+All this to say, Bayesianism is not 'statistics 2.0'. It's an orientation to 
+data analysis which you might find appealing and is likely to be increasingly
+popular, such that you ought at least to be able to understand it.
+
+:::
+
+Before getting deep into Bayesian methods, it's worth getting comfortable with
+the simple models we've looked at so far.
+
+::: {.webex-box}
+
+1. **Exploratory visualisation refresh:** load the data and do some exploratory
+visualisation. Are there any variables apart from `school` which might be 
+important?
+
+2. **Make sure you're set up:** Run the code blocks above on your own machine. 
+
+3. **Data wrangling refresh:** Fit a Bayesian model which distinguishes 
+
+4. Modify the code which generated @fig-avon-halfeye with different values
+for `.width` (i.e., different width credible intervals).
+
+5. Plot the distribution for the `schoolStMargretsCollege` coefficient. Is this
+the same distribution as in @fig-diff. If so, why?
+
+:::
+
+
+## Posterior {#sec-post}
+
+::: callout-note
+This section corresponds to the slides [here](nzilbb.github.io/ws-bayes-2).
+
+One easy way to get access to the data used in this section is to start an
+R project in RStudio, select 'version control', and use the GitHub repository
+<https://github.com/nzilbb/ws-bayes-2>.
+:::
+
+Bayesian models produce probability distributions for every ingredient of
+the model. The probability distribution *after* the model has been updated by
+the data is called the posterior distribution. When we use the posterior
+distribution to make predictions about what we would see if we looked at 
+new data, we get the posterior _predictive_ distribution. The primary
+ways to determine what a Bayesian model says about your research question is to
+explore these posterior distributions.
+
+Let's start by looking at a case study from a recent _LabPhon_ paper
+[@marshallVariationChangeTime2024], entitled "Variation and change over time in
+British choral singing (1925–2019)". For our purposes, we only need to know a
+handful of things about the paper. 
+
+Front vowels in Southern
+Standard British English (SSBE) have lowered over the 20th century. On the
+assumption that British choral singing is closely related to SSBE, Marshall et
+al. (2024) investigated whether front vowels lower in choral singing in both
+SSBE (Cambridge) and non-SSBE (Glasgow) areas, using Bayesian linear mixed
+effects models.
+
+Formant values from a Glasgow choir (really two related choirs) and the choir of
+King's College, Cambridge were modelled, with the following formula:
+```r
+Vowel Formant ~ Vowel + Time + Duration + FollowingSegment +
+  Genre + Vowel:Time + Vowel:Duration + Time:Duration +
+  Genre:Duration + (1|Album) + (1|Song) + (1|Word) +
+  (1|Album:Song) + (1|Song:Word)
+```
+where the vowels are [fleece, kit, dress]{.smallcaps}, and [trap]{.smallcaps},
+and time is identified in terms of the term of musical directors. The `Duration`
+variable represents the duration of the vowel segment. There are random effects 
+for the specific word, song, and album from which each token has been extracted.
+
+### Drawing from the Posterior Distribution
+
+One bit of magic in Bayesian inference is that we can draw samples from a 
+probability distribution even if we don't have a perfect mathematical 
+representation of the distribution. This gives us a nice method for summarising
+complex distributions: we just take a lot of samples and depict the resulting
+patterns. 
+
+This is how we learn about our model parameters and, indeed, about whatever
+values we wish to derive from the posterior distribution.^[**NB**: this means
+there isn't really a distinction between model parameters and 'post-hoc'
+comparisons. This language comes from a frequentist orientation. The 'post'
+here, is 'post' some statistical test on a paramter. Use of this way of framing
+the statistics is my one significant complaint about the discussion by
+@marshallVariationChangeTime2024. Note that this complaint does not bear on
+their actual _results_.]
+
+We will load this model directly from their [OSF page](https://osf.io/965tu).
+
+::: callout-warning
+Workshop participants with Windows computers could not load this model.
+The slightly inconvenient solution is to download the data and refit the model
+yourself. This is not a bad exercise! 
+
+You can download the data and the original modelling script in R by following
+the steps here: `https://github.com/nzilbb/ws-bayes-2/blob/main/analysis.R`.
+:::
+
+```{r}
+## Model (1.1GB!)
+# Uncomment the following lines to download the model.
+# download.file(
+#   "https://osf.io/hzr6k/download",
+#   here('osf', 'f1_mod.rds')
+# )
+
+f1_mod <- read_rds(
+  here('data', 'f1_mod.rds')
+)
+```
+
+The `tidybayes` package provides some nice functions for getting samples from
+the posterior distribution, summarising, and plotting. The most useful sampling
+functions are `gather_draws()` and `spread_draws()`. The former,
+`gather_draws()`, produces a long dataframe with a column named `.variable` 
+which identifies which parameter is being sampled and a `.value` column with the
+sampled value. It also has the capacity to collect all parameters which match a
+regular expression (NB: the regular expression is not given inside a string.
+Rather, we use backticks.)
+
+To illustrate this, lets look at where [kit]{.smallcaps}, [dress]{.smallcaps},
+and [trap]{.smallcaps} sit _via_ `gather_draws()` and a regular expression.^[
+Where's [fleece]{.smallcaps}? Hold your horses.
+]
+
+```{r}
+# Get all parameters matching `b_vowel[A-Z]+` in long format
+vowel_post <- f1_mod |> 
+  gather_draws(regex = TRUE, `b_vowel[A-Z]+`) 
+```
+
+The parameters which match this pattern are `r unique(vowel_post$.variable)`. 
+To see the other parameters available, you can use `get_variables(model_name)`. 
+In models such as this one, with a complex random effects structure, the number
+of parameters gets very large and just scrolling thorugh the output of 
+`get_variables()` is less useful. 
+
+Long format draws from the posterior can be quite convenient for plotting. 
+@fig-vowel-parameters shows the distributions for each of these parameters
+in a quite straightforward way, along with 50%, 70%, and 95% credible intervals.
+Note that `stat_halfeye()` is one of the plotting functions from `tidybayes`.
+
+```{r}
+#| label: fig-vowel-parameters
+#| fig.cap: |
+#|   Distributions from posterior distribution on parameter values for each 
+#|   vowel.
+vowel_post |> 
+  ggplot(
+    aes(
+      y = .variable,
+      x = .value
+    )
+  ) +
+  stat_halfeye(.width = c(0.5, 0.7, 0.95))
+```
+
+What do these values mean? And where is [fleece]{.smallcaps}? The answer is 
+clear in the paper and its associated scripts: the model uses sum coding for
+the factor variables. That is, parameter values represent differences from the
+mean of means. So, in this case, the most likely difference from the mean of
+means for [dress]{.smallcaps} is 0.5. That is, we expect the F1 value for 
+[dress]{.smallcaps} to be around 0.5 greater than the mean of means and thus
+_lower_ in the vowel space than [kit]{.smallcaps}, but not [trap]{.smallcaps}.
+
+Because this is a mean of means, the distribution for [fleece]{.smallcaps} can
+actually be calculated from the values for [trap]{.smallcaps},
+[kit]{.smallcaps}, and [dress]{.smallcaps}. The most convenient way to do this
+with `tidybayes` is to instead use the `spread_draws()` function, which will
+give use a column for each parameter.
+```{r}
+vowel_post <- f1_mod |> 
+  # I spell out each variable rather than using regex for illustration only.
+  # You could just as easily use `spread_draws(regex = TRUE, `b_vowel[A-Z]+`)`
+  spread_draws(c(b_vowelKIT, b_vowelDRESS, b_vowelTRAP)) |> 
+  # Then calculate the fleece value: it is the negative of the sum of all 
+  # the other values (this is how the 'missing' value is represented in sum
+  # coding).
+  mutate(
+    b_vowelFLEECE = - (b_vowelKIT + b_vowelDRESS + b_vowelTRAP)
+  )
+```
+
+Of course, it's easier to plot this in long format, so we'll pivot and then 
+plot, but this time with [fleece]{.smallcaps}.
+
+```{r}
+#| label: fig-vowel-parameters-fleece
+#| fig.cap: |
+#|   Distributions from posterior distribution on parameter values for each 
+#|   vowel, including FLEECE.
+vowel_post <- vowel_post |> 
+  pivot_longer(
+    cols = b_vowelKIT:b_vowelFLEECE,
+    names_to = ".variable",
+    values_to = ".value"
+  )
+
+vowel_post |> 
+  ggplot(
+    aes(
+      y = .variable,
+      x = .value
+    )
+  ) +
+  stat_halfeye(.width = c(0.5, 0.7, 0.95))
+```
+
+The other aspect of `tidybayes` which we have not discussed in any detail is the
+point interval summary functions: these start with `mean_`, `median_`, or
+`mode_` and end with `qi` or `hdi`.^[There are some others too, see
+`?point_interval`.] These take a grouped dataframe with draws to summarise 
+(most conveniently, you can feed the result of `gather_draws()` straight into
+these functions. Let's first look at the `median_qi()` function.
+
+```{r}
+vowel_post |> 
+  # We have to 'group' this dataframe to get a row for each parameter.
+  group_by(.variable) |> 
+  median_qi(.width = 0.9)
+```
+
+The output above gives us a `.value`, i.e., in this case, the median, for 
+each parameter's distribution. It also gives us a `.lower` and `.upper` value
+for a quantile interval with a width of 90%. That is, the output above is the
+median value for each vowel along with the 5% and 95% quantiles for each
+parameter distribution. This gives us reportable values representing both the
+centre and the tails of each each distribution.
+
+::: {.webex-box}
+
+1. Try some alternative point summaries (e.g. `mode_qi()`).
+2. Try `median_hdi()`. Is the 'HDI' (or 'highest density interval') distinct
+from the quantile interval? Look up 'highest density interval' and work out what
+it is. 
+
+:::
+
+There is no privileged width or point summary for these distributions. When
+reporting your analysis, the most important thing is to make it clear what the
+numbers you are reporting are. In this case, the three questions are: 
+
+1. What is the point summary?
+2. What kind of interval summary are you using?
+3. What width(s) is(are) the interval(s)?
+
+Before turning to more complex draws from the posterior, I want to emphasise 
+that _everything_ has a distribution in these models. So, for instance, if you
+wanted a distribution on the effect of the word 'lowing' in 'Away in a Manger',
+you can get one:^[That is, we're looking at any effect of the word 'lowing' on
+tokens derived from the line 'The Cattle are Lowing' in our data set. That is,
+we're looking at a few tokens of [kit]{.smallcaps}.]
+
+```{r}
+#| label: fig-lowing
+#| fig.cap: |
+#|   Distribution for the random intercept value for the word 'lowing' in
+#|   'Away in the Manger'.
+a_word_post <- f1_mod |> 
+  gather_draws(`r_song:text[away.in.a.manger_lowing,Intercept]`)
+  
+a_word_post |> 
+  ggplot(
+    aes(
+      x = .value
+    )
+  ) +
+  stat_halfeye(.width = c(0.5, 0.7, 0.95))
+```
+
+@fig-lowing suggests that the [kit]{.smallcaps}
+in 'lowing' is produced lower in the vowel space than would be expected from the
+rest of the model. Looking at the 70% width point interval plot under the
+distribution suggests that our credence on the difference being somewhere
+between 0.2 and 0.5 in normalised space should be around 70%.
+
+### Exploring an Interaction
+
+To explore the vowel-by-director interaction, Marshall et al. plot marginal
+means estimated from the posterior. The following code uses
+`modelbased::estimate_means()` to do this. `modelbased` is a nice package which
+provides a consistent interface to a series of other packages to enable
+model interpretation and inference from models. In this case, we are interfacing
+with the `emmeans` package.^[See the OSF page, linked above, for the direct
+use of `emmeans` in the original script.]
+
+```{r}
+#| label: fig-interaction
+#| fig.cap: |
+#|  Interaction between director and vowel. This figure corresponds to Figure 4
+#|  of Marshall et al. (2024). In order to emphasise, again, the arbitrariness
+#|  of widths, I have plotted 90% credible intervals instead of 95% credible
+#|  intervals.
+library(modelbased)
+f1_means <- estimate_means(
+  f1_mod, by = c("vowel", "director"),
+  backend = "emmeans",
+  ci = 0.9
+)
+
+f1_means |>
+  # Create a 'region' variable for plotting.
+  mutate(
+    region = if_else(
+      str_detect(director, "BO|DW|PL|SC"), "Cambridge", "Glasgow"
+    )
+  ) |>
+  ggplot(
+    aes(
+      x = vowel,
+      y = Mean,
+      ymin = CI_low,
+      ymax = CI_high,
+      colour = director,
+      shape = region
+    )
+  ) +
+  geom_errorbar(position = position_dodge(width = 0.6)) +
+  geom_point(position = position_dodge(width = 0.6)) +
+  scale_y_reverse() +
+  labs(
+    x = NULL,
+    y = "F1",
+    colour = "Director",
+    shape = "Region"
+  )
+```
+
+@fig-interaction, for the most part, indicates lowering front vowels in 
+both Glasgow and Cambridge, in choral singing, overtime.^[The 'for the most
+part' hedge here covers the case of BO (Boris Ord), whose choir's produced 
+lower front vowels in (1945-1958) before the apparently more conservative
+DW (David Wilcocks) took over.]
+For actual discussion of the significance of these results, you should of course
+see @marshallVariationChangeTime2024.
+The key point here is that these are just summaries of the posterior 
+distribution!
+
+Note that there is no statistical test here. We can set our own cut off value
+for taking a feature of the posterior distribution seriously. In the paper,
+Marshall et al. use 95% CIs which exclude 0 as their cut off for taking a
+parameter of the model seriously [see @marshallVariationChangeTime2024, Table
+6]. The interaction plot in @fig-interaction can then be used to visually
+describe the changes from one director to another. If we wanted to, we could
+produce distributions of the _difference_ between two directors of interest (say
+BO and SC or DW and SC).
+
+### Posterior Predictive Distribution
+
+The posterior distribution tells us what we should expect of the model
+parameters given the data. We can use this information to generate new data
+using the model. Each new datum is generated by sampling a value for all
+parameters from the posterior distribution, including the error parameter, and
+applying the model formula. Taking lots of samples gives us a lot of flexibility
+for describing the posterior predictive distribution.
+
+You may already be familiar with the `predict()` function in various contexts.
+Predictions are by default generated for each row of the data frame used to fit
+the model. But we can also decide on a set of values of interest for which we
+want predictions (e.g., what range vocalic productions should we expect from 
+an album of carols directed by Stephen Cleobury?).
+
+Here, I'll use the `estimate_prediction()` function, again from the 
+`modelbased` package. This will summarise the predictions into a point and
+interval range (see if you can figure out what the range type, width, and 
+point are in the code below).
+
+```{r}
+sc_preds <- estimate_prediction(
+  f1_mod,
+  by = c(
+    # I fix some variable values here
+    "director = 'SC (1984-2019)'", 
+    "genre = 'Carols'", 
+    # If I just give the variable name, it will give a range of values for the
+    # variable. In the case of factor variables (i.e., in this case!), it'll
+    # give all levels of the factor
+    "vowel"
+  ),
+  iterations = 500,
+  include_random = FALSE,
+  ci = 0.9,
+  ci_method = "quantile",
+  centrality_function = stats::median
+)
+```
+
+Looking at this dataframe shows a bit more of what is happening under the hood.
+```{r}
+sc_preds
+```
+Note the message below the data, which indicates the conditions which are built
+in to the predictions. We are predicting for a mean duration vowel which is 
+followed by /p/. These values where chosen automatically (/p/ is, presumably,
+the modal value of following segment in this data).
+
+We can plot these predictions nicely using `ggplot2`.
+```{r}
+#| label: fig-sc-preds
+#| fig.cap: |
+#|   Predicted values for front vowels for Stephen Cleobury with prediction
+#|   credible intervals. 
+sc_preds |> 
+  ggplot(
+    aes(
+      x = vowel,
+      y = Predicted,
+      ymin = CI_low,
+      ymax = CI_high
+    )
+  ) +
+  geom_errorbar() +
+  geom_point() +
+  scale_y_reverse()
+```
+
+Let's quickly show that the prediction intervals, generated from the posterior
+_predictive_ distribution are wider than those for the posterior distribution.
+All will be the same as the code block above, except with
+`estimate_expectation()` rather than `estimate_prediction()`.
+```{r}
+#| label: fig-sc
+#| fig.cap: |
+#|   Predicted values from posterior predictive distribution vs. expected
+#|   values from posterior distribution. 
+sc_exp <- estimate_expectation(
+  f1_mod,
+  by = c(
+    "director = 'SC (1984-2019)'", 
+    "genre = 'Carols'", 
+    "vowel"
+  ),
+  iterations = 500,
+  include_random = FALSE,
+  ci = 0.9,
+  ci_method = "quantile",
+  centrality_function = stats::median
+)
+
+sc <- bind_rows(
+  "Prediction" = sc_preds,
+  "Expectation" = sc_exp,
+  .id = "interval_type"
+)
+
+sc |> 
+  ggplot(
+    aes(
+      x = vowel,
+      y = Predicted,
+      ymin = CI_low,
+      ymax = CI_high,
+      colour = interval_type
+    )
+  ) +
+  geom_errorbar(position = position_dodge(width = 0.5)) +
+  geom_point(position = position_dodge(width = 0.5)) +
+  scale_y_reverse()
+```
+
+For @fig-sc, the expectation interval (red) tells us how confident we should be
+in the location of the median for the vowel in question (we're 90% sure that
+it's within the red bars). The prediction interval gives us an interval in which
+we're 90% sure any new vowel tokens. Because we want to cover 90% of the
+_tokens_, this interval is much wider. In both cases, we are looking at values
+for Stephen Cleobury directed albums of carols which precede /p/.
+
+If we want to go deeper, and incorporate more uncertainty from our model, it
+is convenient to return to the `tidybayes` package and its 
+`add_predicted_draws()` function. Here I'll add predictions for all of the
+data points from Stephen Cleobury, but we'll take advantage of the random 
+effect structure as well. Here we are trying to get at the full range of formant
+values we might expect from an entirely new album, song, and text, across
+the full range of token durations and linguistic environments present in our
+original data.
+```{r}
+sc_new_re_preds <- f1_mod$data |> # note I'm accessing the original data
+  # through the brms model which I have loaded in from OSF. I have not 
+  # separately had to download the original data.
+  filter(
+    director == 'SC (1984-2019)'
+  ) |> 
+  mutate(
+    text = "hi",
+    album = "how",
+    song = "you?"
+  ) |> 
+  add_predicted_draws(
+    f1_mod,
+    allow_new_levels = TRUE,
+    sample_new_levels = "gaussian",
+    ndraws = 500
+  )
+```
+
+Let's plot these predictions:
+```{r}
+#| label: fig-sc-re-preds
+#| fig.cap: |
+#|   Predicted values for front vowels for Stephen Cleobury with prediction
+#|   credible intervals taking into account variance in random effects, token
+#|   duration and genre.
+sc_new_re_preds |>
+  group_by(vowel) |> 
+  median_qi(.prediction, .width = 0.9) |> 
+  ggplot(
+    aes(
+      x = vowel,
+      y = .prediction,
+      ymin = .lower,
+      ymax = .upper
+    )
+  ) +
+  geom_errorbar() +
+  geom_point() +
+  scale_y_reverse()
+```
+
+@fig-sc-re-preds have even wider intervals than @fig-sc-preds. This is because
+it incorporates even more uncertainty. This tells us that where we should 
+expect new token readings to fall given an unknown album, song, and text, across
+the full range of variation in token duration and linguistic environments 
+found in the original data for Stephen Cleobury.
+
+As is frequently the case, the key point here is to be aware of what you are
+deriving from your models and to accurately report it!
+
+### Posterior Predictive Checks
+
+The posterior predictive distribution is used by a very important class of 
+model checks: posterior predictives checks.
+
+The core idea behind posterior predictive checks is simple: compare your model's predictions to the actual data. If the predictions look nothing like the data, the model is in trouble, and this is a signal to either discard it or improve it. These checks are intentionally visual and informal.
+
+One basic check is to overlay the distribution of predicted values against the actual response variable, using `brms`'s built-in `pp_check()` function:
+
+```{r}
+#| label: fig-pp-check
+pp_check(f1_mod, type = "dens_overlay", ndraws = 100)
+```
+@fig-pp-check shows the distribution of response values for the actual data
+in dark blue and the responses of data generated from the posterior predictive
+distribution in light blue. This allows us to see some systematic 
+incompatibilities between the data and the model. At the right tails, the
+real data and the simulated data align very closely, while at the left tail,
+there is some divergence. This kind of plot would be in most cases 
+acceptable.
+
+Supposing we are just interested in whether we're getting the central 
+tendency for each vowel right, this time using the mean as our central
+tendency measure rather than the median, we can do the following:
+```{r}
+#| label: fig-stat-check
+#| fig.cap: |
+#|   Mean values for each vowel in real data (solid dark blue) and across
+#|   samples of the posterior predictive distribution (light blue).
+pp_check(
+  f1_mod,
+  type = "stat_grouped",
+  group = "vowel",
+  stat = "mean",
+  ndraws = 100
+)
+```
+
+@fig-stat-check does not suggest any systematic problems in the relationship
+between the model and the actual data. Note how narrow the x-axis is in each
+pane.
+
+Beyond the checks built in to `pp_check()`, you can design checks around
+whatever is most important for your model to capture. For example, if you wonder
+whether the effect of log duration might be non-linear, you can plot the model's
+linear predictions^[ They're linear predictions because log duration appears in
+the model as a linear term.] against the observed relationship:
+
+```{r}
+#| label: fig-dur-effect
+#| fig.cap: |
+#|   Predicted values of log duration vs. values found in original data.
+# take a set of predictions from a 'grid' of representative values.
+mod_preds <- estimate_prediction(f1_mod, data="grid", iterations=100)
+f1_mod$data |>
+  ggplot(
+    aes(
+      x = log_vdur,
+      y = f1_lob
+    )
+  ) +
+  geom_point(alpha = 0.1, colour = "grey") +
+  geom_smooth() +
+  geom_smooth(
+    aes(
+      x = log_vdur,
+      y = Predicted
+    ),
+    data = mod_preds,
+    method = "lm",
+    colour = "black"
+  ) +
+  facet_wrap(vars(vowel))
+```
+
+@fig-dur-effect suggests some reduction in F1 at the extremes of log duration
+for [dress]{.smallcaps} and [trap]{.smallcaps}, and for high duration tokens of
+[fleece]{.smallcaps}. This is just an impressionistic judgment on the basis of
+the blue lines (a smooth on the original data) and the straight black lines (a
+linear interpolation of the predicted values). Within span of durations in which
+the vast majority of the data appears, this looks good enough! 
+
+The overall point here is that you can probe whatever features of the posterior
+predictive distribution you like and compare them to your actual data. The trick
+is to figure out exactly what features of the model you need to match the
+data and which you don't. This will depend very much on your specific 
+research question. 
+
+## Prior {#sec-prior}
+
+<!-- I have left discussing the prior to much later in the day than is standard. In -->
+<!-- part, this is because it's one of the features of Bayesian modelling that people -->
+<!-- get stressed about. But, in practice, it is not a big deal. -->
+
+
+![](http://textfiles.com/underconstruction/HoHollywoodHills5836under_construction.gif)
+
+## Model Health {#sec-health}
+
+
+## Resources {#sec-bayes-resources}
+

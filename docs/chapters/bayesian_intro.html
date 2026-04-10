@@ -278,7 +278,13 @@ div.csl-indent {
   <ul class="collapse">
   <li><a href="#a-silly-model" id="toc-a-silly-model" class="nav-link" data-scroll-target="#a-silly-model"><span class="header-section-number">9.1.1</span> A Silly Model</a></li>
   </ul></li>
-  <li><a href="#sec-post" id="toc-sec-post" class="nav-link" data-scroll-target="#sec-post"><span class="header-section-number">9.2</span> Posterior</a></li>
+  <li><a href="#sec-post" id="toc-sec-post" class="nav-link" data-scroll-target="#sec-post"><span class="header-section-number">9.2</span> Posterior</a>
+  <ul class="collapse">
+  <li><a href="#drawing-from-the-posterior-distribution" id="toc-drawing-from-the-posterior-distribution" class="nav-link" data-scroll-target="#drawing-from-the-posterior-distribution"><span class="header-section-number">9.2.1</span> Drawing from the Posterior Distribution</a></li>
+  <li><a href="#exploring-an-interaction" id="toc-exploring-an-interaction" class="nav-link" data-scroll-target="#exploring-an-interaction"><span class="header-section-number">9.2.2</span> Exploring an Interaction</a></li>
+  <li><a href="#posterior-predictive-distribution" id="toc-posterior-predictive-distribution" class="nav-link" data-scroll-target="#posterior-predictive-distribution"><span class="header-section-number">9.2.3</span> Posterior Predictive Distribution</a></li>
+  <li><a href="#posterior-predictive-checks" id="toc-posterior-predictive-checks" class="nav-link" data-scroll-target="#posterior-predictive-checks"><span class="header-section-number">9.2.4</span> Posterior Predictive Checks</a></li>
+  </ul></li>
   <li><a href="#sec-prior" id="toc-sec-prior" class="nav-link" data-scroll-target="#sec-prior"><span class="header-section-number">9.3</span> Prior</a></li>
   <li><a href="#sec-health" id="toc-sec-health" class="nav-link" data-scroll-target="#sec-health"><span class="header-section-number">9.4</span> Model Health</a></li>
   <li><a href="#sec-bayes-resources" id="toc-sec-bayes-resources" class="nav-link" data-scroll-target="#sec-bayes-resources"><span class="header-section-number">9.5</span> Resources</a></li>
@@ -322,7 +328,7 @@ Note
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>This section material corresponds to the slides <a href="nzilbb.github.io/ws-bayes-1">here</a>.</p>
+<p>This section corresponds to the slides <a href="nzilbb.github.io/ws-bayes-1">here</a>.</p>
 <p>One easy way to get access to the data used in this section is to start an R project in RStudio, select ‘version control’, and use the GitHub repository <a href="https://github.com/nzilbb/ws-bayes-1" class="uri">https://github.com/nzilbb/ws-bayes-1</a>.</p>
 </div>
 </div>
@@ -456,15 +462,15 @@ Formula: F1_lob2 ~ school
 
 Regression Coefficients:
                          Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS
-Intercept                    0.25      0.03     0.19     0.30 1.00     3518
-schoolStMargaretsCollege     0.48      0.05     0.37     0.59 1.00     3405
+Intercept                    0.25      0.03     0.19     0.30 1.00     4058
+schoolStMargaretsCollege     0.48      0.05     0.37     0.58 1.00     3698
                          Tail_ESS
-Intercept                    2744
-schoolStMargaretsCollege     2568
+Intercept                    3039
+schoolStMargaretsCollege     2955
 
 Further Distributional Parameters:
       Estimate Est.Error l-95% CI u-95% CI Rhat Bulk_ESS Tail_ESS
-sigma     0.82      0.02     0.79     0.86 1.00     4687     2727
+sigma     0.82      0.02     0.79     0.86 1.00     3992     2979
 
 Draws were sampled using sampling(NUTS). For each parameter, Bulk_ESS
 and Tail_ESS are effective sample size measures, and Rhat is the potential
@@ -625,19 +631,507 @@ Figure&nbsp;9.4: Difference between normalised TRAP productions for Avonside and
 </section>
 <section id="sec-post" class="level2" data-number="9.2">
 <h2 data-number="9.2" class="anchored" data-anchor-id="sec-post"><span class="header-section-number">9.2</span> Posterior</h2>
-<p><img src="http://textfiles.com/underconstruction/ipn_filemanagerimageneswebanimUnderConstruction_001.gif" class="img-fluid"></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>This section corresponds to the slides <a href="nzilbb.github.io/ws-bayes-2">here</a>.</p>
+<p>One easy way to get access to the data used in this section is to start an R project in RStudio, select ‘version control’, and use the GitHub repository <a href="https://github.com/nzilbb/ws-bayes-2" class="uri">https://github.com/nzilbb/ws-bayes-2</a>.</p>
+</div>
+</div>
+<p>Bayesian models produce probability distributions for every ingredient of the model. The probability distribution <em>after</em> the model has been updated by the data is called the posterior distribution. When we use the posterior distribution to make predictions about what we would see if we looked at new data, we get the posterior <em>predictive</em> distribution. The primary ways to determine what a Bayesian model says about your research question is to explore these posterior distributions.</p>
+<p>Let’s start by looking at a case study from a recent <em>LabPhon</em> paper <span class="citation" data-cites="marshallVariationChangeTime2024">(<a href="references.html#ref-marshallVariationChangeTime2024" role="doc-biblioref">Marshall et al. 2024</a>)</span>, entitled “Variation and change over time in British choral singing (1925–2019)”. For our purposes, we only need to know a handful of things about the paper.</p>
+<p>Front vowels in Southern Standard British English (SSBE) have lowered over the 20th century. On the assumption that British choral singing is closely related to SSBE, Marshall et al.&nbsp;(2024) investigated whether front vowels lower in choral singing in both SSBE (Cambridge) and non-SSBE (Glasgow) areas, using Bayesian linear mixed effects models.</p>
+<p>Formant values from a Glasgow choir (really two related choirs) and the choir of King’s College, Cambridge were modelled, with the following formula:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Vowel Formant <span class="sc">~</span> Vowel <span class="sc">+</span> Time <span class="sc">+</span> Duration <span class="sc">+</span> FollowingSegment <span class="sc">+</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  Genre <span class="sc">+</span> Vowel<span class="sc">:</span>Time <span class="sc">+</span> Vowel<span class="sc">:</span>Duration <span class="sc">+</span> Time<span class="sc">:</span>Duration <span class="sc">+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  Genre<span class="sc">:</span>Duration <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Album) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Song) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Word) <span class="sc">+</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  (<span class="dv">1</span><span class="sc">|</span>Album<span class="sc">:</span>Song) <span class="sc">+</span> (<span class="dv">1</span><span class="sc">|</span>Song<span class="sc">:</span>Word)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>where the vowels are <span class="smallcaps">fleece, kit, dress</span>, and <span class="smallcaps">trap</span>, and time is identified in terms of the term of musical directors. The <code>Duration</code> variable represents the duration of the vowel segment. There are random effects for the specific word, song, and album from which each token has been extracted.</p>
+<section id="drawing-from-the-posterior-distribution" class="level3" data-number="9.2.1">
+<h3 data-number="9.2.1" class="anchored" data-anchor-id="drawing-from-the-posterior-distribution"><span class="header-section-number">9.2.1</span> Drawing from the Posterior Distribution</h3>
+<p>One bit of magic in Bayesian inference is that we can draw samples from a probability distribution even if we don’t have a perfect mathematical representation of the distribution. This gives us a nice method for summarising complex distributions: we just take a lot of samples and depict the resulting patterns.</p>
+<p>This is how we learn about our model parameters and, indeed, about whatever values we wish to derive from the posterior distribution.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a></p>
+<p>We will load this model directly from their <a href="https://osf.io/965tu">OSF page</a>.</p>
+<div class="callout callout-style-default callout-warning callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Warning
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Workshop participants with Windows computers could not load this model. The slightly inconvenient solution is to download the data and refit the model yourself. This is not a bad exercise!</p>
+<p>You can download the data and the original modelling script in R by following the steps here: <code>https://github.com/nzilbb/ws-bayes-2/blob/main/analysis.R</code>.</p>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="do">## Model (1.1GB!)</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Uncomment the following lines to download the model.</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co"># download.file(</span></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co">#   "https://osf.io/hzr6k/download",</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="co">#   here('osf', 'f1_mod.rds')</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a><span class="co"># )</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>f1_mod <span class="ot">&lt;-</span> <span class="fu">read_rds</span>(</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">here</span>(<span class="st">'data'</span>, <span class="st">'f1_mod.rds'</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The <code>tidybayes</code> package provides some nice functions for getting samples from the posterior distribution, summarising, and plotting. The most useful sampling functions are <code>gather_draws()</code> and <code>spread_draws()</code>. The former, <code>gather_draws()</code>, produces a long dataframe with a column named <code>.variable</code> which identifies which parameter is being sampled and a <code>.value</code> column with the sampled value. It also has the capacity to collect all parameters which match a regular expression (NB: the regular expression is not given inside a string. Rather, we use backticks.)</p>
+<p>To illustrate this, lets look at where <span class="smallcaps">kit</span>, <span class="smallcaps">dress</span>, and <span class="smallcaps">trap</span> sit <em>via</em> <code>gather_draws()</code> and a regular expression.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Get all parameters matching `b_vowel[A-Z]+` in long format</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>vowel_post <span class="ot">&lt;-</span> f1_mod <span class="sc">|&gt;</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="at">regex =</span> <span class="cn">TRUE</span>, <span class="st">`</span><span class="at">b_vowel[A-Z]+</span><span class="st">`</span>) </span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>The parameters which match this pattern are b_vowelKIT, b_vowelDRESS, b_vowelTRAP. To see the other parameters available, you can use <code>get_variables(model_name)</code>. In models such as this one, with a complex random effects structure, the number of parameters gets very large and just scrolling thorugh the output of <code>get_variables()</code> is less useful.</p>
+<p>Long format draws from the posterior can be quite convenient for plotting. <a href="#fig-vowel-parameters" class="quarto-xref">Figure&nbsp;<span>9.5</span></a> shows the distributions for each of these parameters in a quite straightforward way, along with 50%, 70%, and 95% credible intervals. Note that <code>stat_halfeye()</code> is one of the plotting functions from <code>tidybayes</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>vowel_post <span class="sc">|&gt;</span> </span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> .variable,</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> .value</span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">.width =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.7</span>, <span class="fl">0.95</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-vowel-parameters" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vowel-parameters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="bayesian_intro_files/figure-html/fig-vowel-parameters-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vowel-parameters-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.5: Distributions from posterior distribution on parameter values for each vowel.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>What do these values mean? And where is <span class="smallcaps">fleece</span>? The answer is clear in the paper and its associated scripts: the model uses sum coding for the factor variables. That is, parameter values represent differences from the mean of means. So, in this case, the most likely difference from the mean of means for <span class="smallcaps">dress</span> is 0.5. That is, we expect the F1 value for <span class="smallcaps">dress</span> to be around 0.5 greater than the mean of means and thus <em>lower</em> in the vowel space than <span class="smallcaps">kit</span>, but not <span class="smallcaps">trap</span>.</p>
+<p>Because this is a mean of means, the distribution for <span class="smallcaps">fleece</span> can actually be calculated from the values for <span class="smallcaps">trap</span>, <span class="smallcaps">kit</span>, and <span class="smallcaps">dress</span>. The most convenient way to do this with <code>tidybayes</code> is to instead use the <code>spread_draws()</code> function, which will give use a column for each parameter.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>vowel_post <span class="ot">&lt;-</span> f1_mod <span class="sc">|&gt;</span> </span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># I spell out each variable rather than using regex for illustration only.</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># You could just as easily use `spread_draws(regex = TRUE, `b_vowel[A-Z]+`)`</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">spread_draws</span>(<span class="fu">c</span>(b_vowelKIT, b_vowelDRESS, b_vowelTRAP)) <span class="sc">|&gt;</span> </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Then calculate the fleece value: it is the negative of the sum of all </span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="co"># the other values (this is how the 'missing' value is represented in sum</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>  <span class="co"># coding).</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">b_vowelFLEECE =</span> <span class="sc">-</span> (b_vowelKIT <span class="sc">+</span> b_vowelDRESS <span class="sc">+</span> b_vowelTRAP)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Of course, it’s easier to plot this in long format, so we’ll pivot and then plot, but this time with <span class="smallcaps">fleece</span>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>vowel_post <span class="ot">&lt;-</span> vowel_post <span class="sc">|&gt;</span> </span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> b_vowelKIT<span class="sc">:</span>b_vowelFLEECE,</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">".variable"</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">".value"</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>vowel_post <span class="sc">|&gt;</span> </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> .variable,</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> .value</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">.width =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.7</span>, <span class="fl">0.95</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-vowel-parameters-fleece" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-vowel-parameters-fleece-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="bayesian_intro_files/figure-html/fig-vowel-parameters-fleece-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-vowel-parameters-fleece-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.6: Distributions from posterior distribution on parameter values for each vowel, including FLEECE.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>The other aspect of <code>tidybayes</code> which we have not discussed in any detail is the point interval summary functions: these start with <code>mean_</code>, <code>median_</code>, or <code>mode_</code> and end with <code>qi</code> or <code>hdi</code>.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> These take a grouped dataframe with draws to summarise (most conveniently, you can feed the result of <code>gather_draws()</code> straight into these functions. Let’s first look at the <code>median_qi()</code> function.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>vowel_post <span class="sc">|&gt;</span> </span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># We have to 'group' this dataframe to get a row for each parameter.</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(.variable) <span class="sc">|&gt;</span> </span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median_qi</span>(<span class="at">.width =</span> <span class="fl">0.9</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 7
+  .variable     .value .lower .upper .width .point .interval
+  &lt;chr&gt;          &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;  &lt;chr&gt;    
+1 b_vowelDRESS   0.497  0.460  0.534    0.9 median qi       
+2 b_vowelFLEECE -0.856 -0.893 -0.819    0.9 median qi       
+3 b_vowelKIT    -0.625 -0.654 -0.596    0.9 median qi       
+4 b_vowelTRAP    0.983  0.941  1.03     0.9 median qi       </code></pre>
+</div>
+</div>
+<p>The output above gives us a <code>.value</code>, i.e., in this case, the median, for each parameter’s distribution. It also gives us a <code>.lower</code> and <code>.upper</code> value for a quantile interval with a width of 90%. That is, the output above is the median value for each vowel along with the 5% and 95% quantiles for each parameter distribution. This gives us reportable values representing both the centre and the tails of each each distribution.</p>
+<div class="webex-box">
+<ol type="1">
+<li>Try some alternative point summaries (e.g.&nbsp;<code>mode_qi()</code>).</li>
+<li>Try <code>median_hdi()</code>. Is the ‘HDI’ (or ‘highest density interval’) distinct from the quantile interval? Look up ‘highest density interval’ and work out what it is.</li>
+</ol>
+</div>
+<p>There is no privileged width or point summary for these distributions. When reporting your analysis, the most important thing is to make it clear what the numbers you are reporting are. In this case, the three questions are:</p>
+<ol type="1">
+<li>What is the point summary?</li>
+<li>What kind of interval summary are you using?</li>
+<li>What width(s) is(are) the interval(s)?</li>
+</ol>
+<p>Before turning to more complex draws from the posterior, I want to emphasise that <em>everything</em> has a distribution in these models. So, for instance, if you wanted a distribution on the effect of the word ‘lowing’ in ‘Away in a Manger’, you can get one:<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>a_word_post <span class="ot">&lt;-</span> f1_mod <span class="sc">|&gt;</span> </span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather_draws</span>(<span class="st">`</span><span class="at">r_song:text[away.in.a.manger_lowing,Intercept]</span><span class="st">`</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>a_word_post <span class="sc">|&gt;</span> </span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> .value</span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_halfeye</span>(<span class="at">.width =</span> <span class="fu">c</span>(<span class="fl">0.5</span>, <span class="fl">0.7</span>, <span class="fl">0.95</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-lowing" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-lowing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="bayesian_intro_files/figure-html/fig-lowing-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-lowing-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.7: Distribution for the random intercept value for the word ‘lowing’ in ‘Away in the Manger’.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-lowing" class="quarto-xref">Figure&nbsp;<span>9.7</span></a> suggests that the <span class="smallcaps">kit</span> in ‘lowing’ is produced lower in the vowel space than would be expected from the rest of the model. Looking at the 70% width point interval plot under the distribution suggests that our credence on the difference being somewhere between 0.2 and 0.5 in normalised space should be around 70%.</p>
+</section>
+<section id="exploring-an-interaction" class="level3" data-number="9.2.2">
+<h3 data-number="9.2.2" class="anchored" data-anchor-id="exploring-an-interaction"><span class="header-section-number">9.2.2</span> Exploring an Interaction</h3>
+<p>To explore the vowel-by-director interaction, Marshall et al.&nbsp;plot marginal means estimated from the posterior. The following code uses <code>modelbased::estimate_means()</code> to do this. <code>modelbased</code> is a nice package which provides a consistent interface to a series of other packages to enable model interpretation and inference from models. In this case, we are interfacing with the <code>emmeans</code> package.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a></p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(modelbased)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>f1_means <span class="ot">&lt;-</span> <span class="fu">estimate_means</span>(</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>  f1_mod, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"vowel"</span>, <span class="st">"director"</span>),</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">backend =</span> <span class="st">"emmeans"</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci =</span> <span class="fl">0.9</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>f1_means <span class="sc">|&gt;</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Create a 'region' variable for plotting.</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>    <span class="at">region =</span> <span class="fu">if_else</span>(</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>      <span class="fu">str_detect</span>(director, <span class="st">"BO|DW|PL|SC"</span>), <span class="st">"Cambridge"</span>, <span class="st">"Glasgow"</span></span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> vowel,</span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> Mean,</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymin =</span> CI_low,</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymax =</span> CI_high,</span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>      <span class="at">colour =</span> director,</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>      <span class="at">shape =</span> region</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.6</span>)) <span class="sc">+</span></span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.6</span>)) <span class="sc">+</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>() <span class="sc">+</span></span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"F1"</span>,</span>
+<span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"Director"</span>,</span>
+<span id="cb21-32"><a href="#cb21-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">shape =</span> <span class="st">"Region"</span></span>
+<span id="cb21-33"><a href="#cb21-33" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-interaction" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-interaction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="bayesian_intro_files/figure-html/fig-interaction-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-interaction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.8: Interaction between director and vowel. This figure corresponds to Figure 4 of Marshall et al.&nbsp;(2024). In order to emphasise, again, the arbitrariness of widths, I have plotted 90% credible intervals instead of 95% credible intervals.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-interaction" class="quarto-xref">Figure&nbsp;<span>9.8</span></a>, for the most part, indicates lowering front vowels in both Glasgow and Cambridge, in choral singing, overtime.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a> For actual discussion of the significance of these results, you should of course see <span class="citation" data-cites="marshallVariationChangeTime2024">Marshall et al. (<a href="references.html#ref-marshallVariationChangeTime2024" role="doc-biblioref">2024</a>)</span>. The key point here is that these are just summaries of the posterior distribution!</p>
+<p>Note that there is no statistical test here. We can set our own cut off value for taking a feature of the posterior distribution seriously. In the paper, Marshall et al.&nbsp;use 95% CIs which exclude 0 as their cut off for taking a parameter of the model seriously <span class="citation" data-cites="marshallVariationChangeTime2024">(see <a href="references.html#ref-marshallVariationChangeTime2024" role="doc-biblioref">Marshall et al. 2024</a>, Table 6)</span>. The interaction plot in <a href="#fig-interaction" class="quarto-xref">Figure&nbsp;<span>9.8</span></a> can then be used to visually describe the changes from one director to another. If we wanted to, we could produce distributions of the <em>difference</em> between two directors of interest (say BO and SC or DW and SC).</p>
+</section>
+<section id="posterior-predictive-distribution" class="level3" data-number="9.2.3">
+<h3 data-number="9.2.3" class="anchored" data-anchor-id="posterior-predictive-distribution"><span class="header-section-number">9.2.3</span> Posterior Predictive Distribution</h3>
+<p>The posterior distribution tells us what we should expect of the model parameters given the data. We can use this information to generate new data using the model. Each new datum is generated by sampling a value for all parameters from the posterior distribution, including the error parameter, and applying the model formula. Taking lots of samples gives us a lot of flexibility for describing the posterior predictive distribution.</p>
+<p>You may already be familiar with the <code>predict()</code> function in various contexts. Predictions are by default generated for each row of the data frame used to fit the model. But we can also decide on a set of values of interest for which we want predictions (e.g., what range vocalic productions should we expect from an album of carols directed by Stephen Cleobury?).</p>
+<p>Here, I’ll use the <code>estimate_prediction()</code> function, again from the <code>modelbased</code> package. This will summarise the predictions into a point and interval range (see if you can figure out what the range type, width, and point are in the code below).</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>sc_preds <span class="ot">&lt;-</span> <span class="fu">estimate_prediction</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  f1_mod,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">c</span>(</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>    <span class="co"># I fix some variable values here</span></span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"director = 'SC (1984-2019)'"</span>, </span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"genre = 'Carols'"</span>, </span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>    <span class="co"># If I just give the variable name, it will give a range of values for the</span></span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># variable. In the case of factor variables (i.e., in this case!), it'll</span></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>    <span class="co"># give all levels of the factor</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>    <span class="st">"vowel"</span></span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">iterations =</span> <span class="dv">500</span>,</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_random =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci =</span> <span class="fl">0.9</span>,</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci_method =</span> <span class="st">"quantile"</span>,</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  <span class="at">centrality_function =</span> stats<span class="sc">::</span>median</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Looking at this dataframe shows a bit more of what is happening under the hood.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>sc_preds</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 4 × 12
+  director genre vowel log_vdur followingSeg_f text  song  album Predicted    SE
+  &lt;fct&gt;    &lt;fct&gt; &lt;fct&gt;    &lt;dbl&gt; &lt;fct&gt;          &lt;fct&gt; &lt;fct&gt; &lt;fct&gt;     &lt;dbl&gt; &lt;dbl&gt;
+1 SC (198… Caro… FLEE…   -0.874 p              &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;     -0.588 0.540
+2 SC (198… Caro… KIT     -0.874 p              &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;     -0.334 0.552
+3 SC (198… Caro… DRESS   -0.874 p              &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      0.766 0.519
+4 SC (198… Caro… TRAP    -0.874 p              &lt;NA&gt;  &lt;NA&gt;  &lt;NA&gt;      1.25  0.498
+# ℹ 2 more variables: CI_low &lt;dbl&gt;, CI_high &lt;dbl&gt;</code></pre>
+</div>
+</div>
+<p>Note the message below the data, which indicates the conditions which are built in to the predictions. We are predicting for a mean duration vowel which is followed by /p/. These values where chosen automatically (/p/ is, presumably, the modal value of following segment in this data).</p>
+<p>We can plot these predictions nicely using <code>ggplot2</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>sc_preds <span class="sc">|&gt;</span> </span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> vowel,</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> Predicted,</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymin =</span> CI_low,</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymax =</span> CI_high</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>() <span class="sc">+</span></span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-sc-preds" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sc-preds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="bayesian_intro_files/figure-html/fig-sc-preds-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sc-preds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.9: Predicted values for front vowels for Stephen Cleobury with prediction credible intervals.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Let’s quickly show that the prediction intervals, generated from the posterior <em>predictive</em> distribution are wider than those for the posterior distribution. All will be the same as the code block above, except with <code>estimate_expectation()</code> rather than <code>estimate_prediction()</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>sc_exp <span class="ot">&lt;-</span> <span class="fu">estimate_expectation</span>(</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>  f1_mod,</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">by =</span> <span class="fu">c</span>(</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a>    <span class="st">"director = 'SC (1984-2019)'"</span>, </span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"genre = 'Carols'"</span>, </span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a>    <span class="st">"vowel"</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>  ),</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">iterations =</span> <span class="dv">500</span>,</span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">include_random =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci =</span> <span class="fl">0.9</span>,</span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">ci_method =</span> <span class="st">"quantile"</span>,</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">centrality_function =</span> stats<span class="sc">::</span>median</span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-15"><a href="#cb26-15" aria-hidden="true" tabindex="-1"></a>sc <span class="ot">&lt;-</span> <span class="fu">bind_rows</span>(</span>
+<span id="cb26-16"><a href="#cb26-16" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Prediction"</span> <span class="ot">=</span> sc_preds,</span>
+<span id="cb26-17"><a href="#cb26-17" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Expectation"</span> <span class="ot">=</span> sc_exp,</span>
+<span id="cb26-18"><a href="#cb26-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">.id =</span> <span class="st">"interval_type"</span></span>
+<span id="cb26-19"><a href="#cb26-19" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-20"><a href="#cb26-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-21"><a href="#cb26-21" aria-hidden="true" tabindex="-1"></a>sc <span class="sc">|&gt;</span> </span>
+<span id="cb26-22"><a href="#cb26-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb26-23"><a href="#cb26-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb26-24"><a href="#cb26-24" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> vowel,</span>
+<span id="cb26-25"><a href="#cb26-25" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> Predicted,</span>
+<span id="cb26-26"><a href="#cb26-26" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymin =</span> CI_low,</span>
+<span id="cb26-27"><a href="#cb26-27" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymax =</span> CI_high,</span>
+<span id="cb26-28"><a href="#cb26-28" aria-hidden="true" tabindex="-1"></a>      <span class="at">colour =</span> interval_type</span>
+<span id="cb26-29"><a href="#cb26-29" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb26-30"><a href="#cb26-30" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb26-31"><a href="#cb26-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb26-32"><a href="#cb26-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">position =</span> <span class="fu">position_dodge</span>(<span class="at">width =</span> <span class="fl">0.5</span>)) <span class="sc">+</span></span>
+<span id="cb26-33"><a href="#cb26-33" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-sc" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="bayesian_intro_files/figure-html/fig-sc-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sc-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.10: Predicted values from posterior predictive distribution vs.&nbsp;expected values from posterior distribution.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>For <a href="#fig-sc" class="quarto-xref">Figure&nbsp;<span>9.10</span></a>, the expectation interval (red) tells us how confident we should be in the location of the median for the vowel in question (we’re 90% sure that it’s within the red bars). The prediction interval gives us an interval in which we’re 90% sure any new vowel tokens. Because we want to cover 90% of the <em>tokens</em>, this interval is much wider. In both cases, we are looking at values for Stephen Cleobury directed albums of carols which precede /p/.</p>
+<p>If we want to go deeper, and incorporate more uncertainty from our model, it is convenient to return to the <code>tidybayes</code> package and its <code>add_predicted_draws()</code> function. Here I’ll add predictions for all of the data points from Stephen Cleobury, but we’ll take advantage of the random effect structure as well. Here we are trying to get at the full range of formant values we might expect from an entirely new album, song, and text, across the full range of token durations and linguistic environments present in our original data.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>sc_new_re_preds <span class="ot">&lt;-</span> f1_mod<span class="sc">$</span>data <span class="sc">|&gt;</span> <span class="co"># note I'm accessing the original data</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>  <span class="co"># through the brms model which I have loaded in from OSF. I have not </span></span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>  <span class="co"># separately had to download the original data.</span></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a>    director <span class="sc">==</span> <span class="st">'SC (1984-2019)'</span></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a>    <span class="at">text =</span> <span class="st">"hi"</span>,</span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a>    <span class="at">album =</span> <span class="st">"how"</span>,</span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>    <span class="at">song =</span> <span class="st">"you?"</span></span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">add_predicted_draws</span>(</span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a>    f1_mod,</span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>    <span class="at">allow_new_levels =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>    <span class="at">sample_new_levels =</span> <span class="st">"gaussian"</span>,</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">ndraws =</span> <span class="dv">500</span></span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Let’s plot these predictions:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>sc_new_re_preds <span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(vowel) <span class="sc">|&gt;</span> </span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">median_qi</span>(.prediction, <span class="at">.width =</span> <span class="fl">0.9</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb28-4"><a href="#cb28-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb28-5"><a href="#cb28-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb28-6"><a href="#cb28-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> vowel,</span>
+<span id="cb28-7"><a href="#cb28-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> .prediction,</span>
+<span id="cb28-8"><a href="#cb28-8" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymin =</span> .lower,</span>
+<span id="cb28-9"><a href="#cb28-9" aria-hidden="true" tabindex="-1"></a>      <span class="at">ymax =</span> .upper</span>
+<span id="cb28-10"><a href="#cb28-10" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb28-11"><a href="#cb28-11" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb28-12"><a href="#cb28-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_errorbar</span>() <span class="sc">+</span></span>
+<span id="cb28-13"><a href="#cb28-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb28-14"><a href="#cb28-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_y_reverse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-sc-re-preds" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-sc-re-preds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="bayesian_intro_files/figure-html/fig-sc-re-preds-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-sc-re-preds-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.11: Predicted values for front vowels for Stephen Cleobury with prediction credible intervals taking into account variance in random effects, token duration and genre.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-sc-re-preds" class="quarto-xref">Figure&nbsp;<span>9.11</span></a> have even wider intervals than <a href="#fig-sc-preds" class="quarto-xref">Figure&nbsp;<span>9.9</span></a>. This is because it incorporates even more uncertainty. This tells us that where we should expect new token readings to fall given an unknown album, song, and text, across the full range of variation in token duration and linguistic environments found in the original data for Stephen Cleobury.</p>
+<p>As is frequently the case, the key point here is to be aware of what you are deriving from your models and to accurately report it!</p>
+</section>
+<section id="posterior-predictive-checks" class="level3" data-number="9.2.4">
+<h3 data-number="9.2.4" class="anchored" data-anchor-id="posterior-predictive-checks"><span class="header-section-number">9.2.4</span> Posterior Predictive Checks</h3>
+<p>The posterior predictive distribution is used by a very important class of model checks: posterior predictives checks.</p>
+<p>The core idea behind posterior predictive checks is simple: compare your model’s predictions to the actual data. If the predictions look nothing like the data, the model is in trouble, and this is a signal to either discard it or improve it. These checks are intentionally visual and informal.</p>
+<p>One basic check is to overlay the distribution of predicted values against the actual response variable, using <code>brms</code>’s built-in <code>pp_check()</code> function:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(f1_mod, <span class="at">type =</span> <span class="st">"dens_overlay"</span>, <span class="at">ndraws =</span> <span class="dv">100</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-pp-check" class="quarto-float quarto-figure quarto-figure-center anchored" width="672">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-pp-check-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="bayesian_intro_files/figure-html/fig-pp-check-1.png" id="fig-pp-check" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-pp-check-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.12
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-pp-check" class="quarto-xref">Figure&nbsp;<span>9.12</span></a> shows the distribution of response values for the actual data in dark blue and the responses of data generated from the posterior predictive distribution in light blue. This allows us to see some systematic incompatibilities between the data and the model. At the right tails, the real data and the simulated data align very closely, while at the left tail, there is some divergence. This kind of plot would be in most cases acceptable.</p>
+<p>Supposing we are just interested in whether we’re getting the central tendency for each vowel right, this time using the mean as our central tendency measure rather than the median, we can do the following:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pp_check</span>(</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>  f1_mod,</span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"stat_grouped"</span>,</span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">group =</span> <span class="st">"vowel"</span>,</span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">stat =</span> <span class="st">"mean"</span>,</span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">ndraws =</span> <span class="dv">100</span></span>
+<span id="cb30-7"><a href="#cb30-7" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-stat-check" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-stat-check-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="bayesian_intro_files/figure-html/fig-stat-check-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-stat-check-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.13: Mean values for each vowel in real data (solid dark blue) and across samples of the posterior predictive distribution (light blue).
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-stat-check" class="quarto-xref">Figure&nbsp;<span>9.13</span></a> does not suggest any systematic problems in the relationship between the model and the actual data. Note how narrow the x-axis is in each pane.</p>
+<p>Beyond the checks built in to <code>pp_check()</code>, you can design checks around whatever is most important for your model to capture. For example, if you wonder whether the effect of log duration might be non-linear, you can plot the model’s linear predictions<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a> against the observed relationship:</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># take a set of predictions from a 'grid' of representative values.</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>mod_preds <span class="ot">&lt;-</span> <span class="fu">estimate_prediction</span>(f1_mod, <span class="at">data=</span><span class="st">"grid"</span>, <span class="at">iterations=</span><span class="dv">100</span>)</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>f1_mod<span class="sc">$</span>data <span class="sc">|&gt;</span></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> log_vdur,</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> f1_lob</span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">alpha =</span> <span class="fl">0.1</span>, <span class="at">colour =</span> <span class="st">"grey"</span>) <span class="sc">+</span></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>() <span class="sc">+</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_smooth</span>(</span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">aes</span>(</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>      <span class="at">x =</span> log_vdur,</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>      <span class="at">y =</span> Predicted</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a>    ),</span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">data =</span> mod_preds,</span>
+<span id="cb31-18"><a href="#cb31-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">method =</span> <span class="st">"lm"</span>,</span>
+<span id="cb31-19"><a href="#cb31-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">colour =</span> <span class="st">"black"</span></span>
+<span id="cb31-20"><a href="#cb31-20" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb31-21"><a href="#cb31-21" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(vowel))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div id="fig-dur-effect" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-dur-effect-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="bayesian_intro_files/figure-html/fig-dur-effect-1.png" class="img-fluid figure-img" width="672">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-dur-effect-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9.14: Predicted values of log duration vs.&nbsp;values found in original data.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p><a href="#fig-dur-effect" class="quarto-xref">Figure&nbsp;<span>9.14</span></a> suggests some reduction in F1 at the extremes of log duration for <span class="smallcaps">dress</span> and <span class="smallcaps">trap</span>, and for high duration tokens of <span class="smallcaps">fleece</span>. This is just an impressionistic judgment on the basis of the blue lines (a smooth on the original data) and the straight black lines (a linear interpolation of the predicted values). Within span of durations in which the vast majority of the data appears, this looks good enough!</p>
+<p>The overall point here is that you can probe whatever features of the posterior predictive distribution you like and compare them to your actual data. The trick is to figure out exactly what features of the model you need to match the data and which you don’t. This will depend very much on your specific research question.</p>
+</section>
 </section>
 <section id="sec-prior" class="level2" data-number="9.3">
 <h2 data-number="9.3" class="anchored" data-anchor-id="sec-prior"><span class="header-section-number">9.3</span> Prior</h2>
-<p><img src="http://textfiles.com/underconstruction/AtAthensAtrium4933underconstruction1.gif" class="img-fluid"></p>
+<!-- I have left discussing the prior to much later in the day than is standard. In -->
+<!-- part, this is because it's one of the features of Bayesian modelling that people -->
+<!-- get stressed about. But, in practice, it is not a big deal. -->
+<p><img src="http://textfiles.com/underconstruction/HoHollywoodHills5836under_construction.gif" class="img-fluid"></p>
 </section>
 <section id="sec-health" class="level2" data-number="9.4">
 <h2 data-number="9.4" class="anchored" data-anchor-id="sec-health"><span class="header-section-number">9.4</span> Model Health</h2>
-<p><img src="http://textfiles.com/underconstruction/AtAthens6321underconstruction_lemmings.gif" class="img-fluid"></p>
 </section>
 <section id="sec-bayes-resources" class="level2" data-number="9.5">
 <h2 data-number="9.5" class="anchored" data-anchor-id="sec-bayes-resources"><span class="header-section-number">9.5</span> Resources</h2>
-<p><img src="http://textfiles.com/underconstruction/HoHollywoodHills5836under_construction.gif" class="img-fluid"></p>
 
 
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
@@ -649,6 +1143,9 @@ Gelman, Andrew, and Christian Hennig. 2017. <span>“Beyond <span>Subjective</sp
 </div>
 <div id="ref-hajekInterpretationsProbability2023" class="csl-entry" role="listitem">
 Hájek, Alan. 2023. <span>“Interpretations of <span>Probability</span>.”</span> In <em>The <span>Stanford Encyclopedia</span> of <span>Philosophy</span></em>, edited by Edward N. Zalta and Uri Nodelman, Winter 2023. Metaphysics Research Lab, Stanford University. <a href="https://plato.stanford.edu/archives/win2023/entries/probability-interpret/">https://plato.stanford.edu/archives/win2023/entries/probability-interpret/</a>.
+</div>
+<div id="ref-marshallVariationChangeTime2024" class="csl-entry" role="listitem">
+Marshall, Edward J., Jane Stuart-Smith, John Butt, and Timothy Dean. 2024. <span>“Variation and Change over Time in <span>British</span> Choral Singing (1925–2019).”</span> <em>Laboratory Phonology</em> 15 (1). <a href="https://doi.org/10.16995/labphon.10125">https://doi.org/10.16995/labphon.10125</a>.
 </div>
 <div id="ref-walshUCQuakeBoxProject2013" class="csl-entry" role="listitem">
 Walsh, Liam G., J. Hay, Derek Bent, J. King, P. Millar, V. Papp, and Kevin Watson. 2013. <span>“The <span>UC QuakeBox Project</span>: <span>Creation</span> of a Community-Focused Research Archive.”</span> <em>New Zealand English Journal</em> 27. <a href="https://www.semanticscholar.org/paper/The-UC-QuakeBox-Project%3A-Creation-of-a-research-Walsh-Hay/326c66aeaeb3a41ed8aa071c83d2d13d17ecd8e5">https://www.semanticscholar.org/paper/The-UC-QuakeBox-Project%3A-Creation-of-a-research-Walsh-Hay/326c66aeaeb3a41ed8aa071c83d2d13d17ecd8e5</a>.
@@ -665,6 +1162,13 @@ Walsh, Liam G., J. Hay, Derek Bent, J. King, P. Millar, V. Papp, and Kevin Watso
 <li id="fn5"><p>If the model or the data are bad, the distributions estimated by our Bayesian model will also be bad.<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn6"><p>For a lot of detail see <span class="citation" data-cites="hajekInterpretationsProbability2023">Hájek (<a href="references.html#ref-hajekInterpretationsProbability2023" role="doc-biblioref">2023</a>)</span>.<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 <li id="fn7"><p>Acordding to the arch-frequentist, Charles Peirce, the Bayesian interpretation of probability could only work “if universes were as plenty as blackberries”.<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p><strong>NB</strong>: this means there isn’t really a distinction between model parameters and ‘post-hoc’ comparisons. This language comes from a frequentist orientation. The ‘post’ here, is ‘post’ some statistical test on a paramter. Use of this way of framing the statistics is my one significant complaint about the discussion by <span class="citation" data-cites="marshallVariationChangeTime2024">Marshall et al. (<a href="references.html#ref-marshallVariationChangeTime2024" role="doc-biblioref">2024</a>)</span>. Note that this complaint does not bear on their actual <em>results</em>.<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p> Where’s <span class="smallcaps">fleece</span>? Hold your horses.<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>There are some others too, see <code>?point_interval</code>.<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>That is, we’re looking at any effect of the word ‘lowing’ on tokens derived from the line ‘The Cattle are Lowing’ in our data set. That is, we’re looking at a few tokens of <span class="smallcaps">kit</span>.<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>See the OSF page, linked above, for the direct use of <code>emmeans</code> in the original script.<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>The ‘for the most part’ hedge here covers the case of BO (Boris Ord), whose choir’s produced lower front vowels in (1945-1958) before the apparently more conservative DW (David Wilcocks) took over.<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p> They’re linear predictions because log duration appears in the model as a linear term.<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
 </ol>
 </section>
 
